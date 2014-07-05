@@ -3,11 +3,11 @@
 # ----------------------- #
 
 url: http://nick-aschenbach.github.io
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: Aschenblog
+subtitle: Thoughts on Code and Fabrication
+author: Nick Aschenbach
 simple_search: https://www.google.com/search
-description:
+description: I am a Ruby on Rails developer for Hewlett-Packard's Instant Ink delivery subscription service.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
