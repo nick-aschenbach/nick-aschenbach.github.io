@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-05T12:23:40-07:00</updated>
+  <updated>2014-07-06T14:22:52-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,5 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
+    <updated>2014-07-06T08:26:04-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
+    <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
+
+<p><img class="right" src="http://nick-aschenbach.github.io/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
+
+<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
+
+<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
+
+<p>Here is an outline of the algorithm:</p>
+
+<ol>
+<li>Find the midpoint for the line segment</li>
+<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
+<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
+<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
+<li>Repeat previous until fractal is sufficiently detailed</li>
+</ol>
+
+
+<p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>
+
+<p>Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2<sup>N</sup> + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.</p>
+
+<p>Let&rsquo;s take a look at a Javascript implementation of the algorithm above.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="k">if</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">midIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">change</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">displacement</span><span class="p">;</span>
+</span><span class='line'><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
+</span><span class='line'><span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">midIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
+</span><span class='line'><span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">midIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.</p>
+
+<p>Here is the code in action:</p>
+
+<p><canvas id="canvas"></canvas></p>
+
+<p>I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.</p>
+
+<script>
+  var array_size = Math.pow(2, 9) + 1;
+  var terrain_array = [];
+  var roughness = 0.55;
+  var initial_displacement = 50;
+  var count = 0;
+
+  $(function() {
+    initializeArray();
+    generateTerrain(0, array_size - 1, initial_displacement);
+    drawTerrain();
+  });
+
+  function initializeArray() {
+    for(var i = 0; i < array_size; i++) {
+      terrain_array.push(0);
+    }
+  }
+
+  function generateTerrain(leftIndex, rightIndex, displacement) {
+    if((leftIndex + 1) == rightIndex) return;
+    var midIndex = Math.floor((leftIndex + rightIndex) / 2);
+    var change = (Math.random() * 2 - 1) * displacement;
+    terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
+
+    displacement = displacement * roughness;
+    generateTerrain(leftIndex, midIndex, displacement);
+    generateTerrain(midIndex, rightIndex, displacement);
+  }
+
+  function drawTerrain() {
+    var canvas = $('#canvas');
+    canvas.width(array_size);
+    canvas.height(4 * initial_displacement);
+
+    var context = canvas[0].getContext("2d");
+    context.canvas.width  = canvas.width();
+    context.canvas.height = canvas.height();
+
+    context.fillStyle = "black";
+    context.fillRect(0, 0, canvas.width(), canvas.height());
+
+    var gradient = context.createLinearGradient(0,0,0,initial_displacement * 4);
+    gradient.addColorStop(0, "purple");
+    gradient.addColorStop(1, "#333");
+    context.strokeStyle = 'grey';
+    context.fillStyle = gradient;
+    context.beginPath();
+    context.lineWidth = 0.5;
+    context.moveTo(i, terrain_array[count % array_size] + 2 * initial_displacement);
+    for(var i = 1; i < array_size; i++) {
+      context.lineTo(i, terrain_array[(count + i) % array_size] + 2 * initial_displacement);
+    }
+    context.lineTo(i, 4 * initial_displacement);
+    context.lineTo(0, 4 * initial_displacement);
+    context.closePath();
+
+    context.fill();
+    context.stroke();
+
+    count++;
+    setTimeout(drawTerrain, 30);
+  }
+</script>
+
+]]></content>
+  </entry>
   
 </feed>
