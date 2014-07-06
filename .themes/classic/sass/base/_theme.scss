@@ -76,6 +76,7 @@ html {
 body {
   > div {
     background: $sidebar-bg;
+    background-size: 100% auto;
     border-bottom: 1px solid $page-border-bottom;
     > div {
       background: $sidebar-bg;
