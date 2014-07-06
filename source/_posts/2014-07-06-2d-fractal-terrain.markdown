@@ -46,7 +46,7 @@ Here is the code in action:
 
 <canvas id="canvas"></canvas>
 
-I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.
+I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.    
 
 <script>
   var array_size = Math.pow(2, 9) + 1;
