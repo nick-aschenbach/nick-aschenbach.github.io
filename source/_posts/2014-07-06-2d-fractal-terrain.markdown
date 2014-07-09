@@ -29,14 +29,14 @@ Let's take a look at a Javascript implementation of the algorithm above.
 
 {% codeblock lang:js %}
 function generateTerrain(leftIndex, rightIndex, displacement) {
-if((leftIndex + 1) == rightIndex) return;
-var midIndex = Math.floor((leftIndex + rightIndex) / 2);
-var change = (Math.random() * 2 - 1) * displacement;
-terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
+  if((leftIndex + 1) == rightIndex) return;
+  var midIndex = Math.floor((leftIndex + rightIndex) / 2);
+  var change = (Math.random() * 2 - 1) * displacement;
+  terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
 
-displacement = displacement * roughness;
-generateTerrain(leftIndex, midIndex, displacement);
-generateTerrain(midIndex, rightIndex, displacement);
+  displacement = displacement * roughness;
+  generateTerrain(leftIndex, midIndex, displacement);
+  generateTerrain(midIndex, rightIndex, displacement);
 }
 {% endcodeblock %}
 
