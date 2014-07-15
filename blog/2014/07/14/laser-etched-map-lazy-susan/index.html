@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Aschenblog</title>
+  <title>Maps, Lasers and Bamboo - Aschenblog</title>
   <meta name="author" content="Nick Aschenbach">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nick-aschenbach.github.io">
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
@@ -37,15 +37,12 @@
 <body   >
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/07/14/laser-etched-map-lazy-susan/">Maps, Lasers and Bamboo</a></h1>
+      <h1 class="entry-title">Maps, Lasers and Bamboo</h1>
     
     
       <p class="meta">
@@ -68,7 +65,7 @@
   </header>
 
 
-  <div class="entry-content"><p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
+<div class="entry-content"><p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
 
 <p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
 
@@ -92,22 +89,16 @@
 
 <p><img src="/images/lazy-susan-collage.jpg" title="Finished lazy susan" ></p>
 </div>
-  
-  
 
     
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/06/2d-fractal-terrain/">2D Fractal Terrain Generation</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
 
 
 
@@ -119,147 +110,38 @@
   
 
 
-<time datetime="2014-07-06T08:26:04-07:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2014</time>
-        
-      </p>
+<time datetime="2014-07-14T22:41:29-07:00" pubdate data-updated="true">Jul 14<sup>th</sup>, 2014</time>
+      
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/" >Tweet</a>
+  
+  
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/06/2d-fractal-terrain/" title="Previous Post: 2D Fractal Terrain Generation">&laquo; 2D Fractal Terrain Generation</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
-
-<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
-
-<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
-
-<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
-
-<p>Here is an outline of the algorithm:</p>
-
-<ol>
-<li>Find the midpoint for the line segment</li>
-<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
-<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
-<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
-<li>Repeat previous until fractal is sufficiently detailed</li>
-</ol>
-
-
-<p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>
-
-<p>Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2<sup>N</sup> + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.</p>
-
-<p>Let&rsquo;s take a look at a Javascript implementation of the algorithm above.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">midIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">change</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">displacement</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">midIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">midIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.</p>
-
-<p>Here is the code in action:</p>
-
-<p><canvas id="canvas"></canvas></p>
-
-<p>I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.</p>
-
-<script>
-  var array_size = Math.pow(2, 9) + 1;
-  var terrain_array = [];
-  var roughness = 0.55;
-  var initial_displacement = 50;
-  var count = 0;
-
-  $(function() {
-    initializeArray();
-    generateTerrain(0, array_size - 1, initial_displacement);
-    drawTerrain();
-  });
-
-  function initializeArray() {
-    for(var i = 0; i < array_size; i++) {
-      terrain_array.push(0);
-    }
-  }
-
-  function generateTerrain(leftIndex, rightIndex, displacement) {
-    if((leftIndex + 1) == rightIndex) return;
-    var midIndex = Math.floor((leftIndex + rightIndex) / 2);
-    var change = (Math.random() * 2 - 1) * displacement;
-    terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
-
-    displacement = displacement * roughness;
-    generateTerrain(leftIndex, midIndex, displacement);
-    generateTerrain(midIndex, rightIndex, displacement);
-  }
-
-  function drawTerrain() {
-    var canvas = $('#canvas');
-    canvas.width(array_size);
-    canvas.height(4 * initial_displacement);
-
-    var context = canvas[0].getContext("2d");
-    context.canvas.width  = canvas.width();
-    context.canvas.height = canvas.height();
-
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width(), canvas.height());
-
-    var gradient = context.createLinearGradient(0,0,0,initial_displacement * 4);
-    gradient.addColorStop(0, "purple");
-    gradient.addColorStop(1, "#333");
-    context.strokeStyle = 'grey';
-    context.fillStyle = gradient;
-    context.beginPath();
-    context.lineWidth = 0.5;
-    context.moveTo(i, terrain_array[count % array_size] + 2 * initial_displacement);
-    for(var i = 1; i < array_size; i++) {
-      context.lineTo(i, terrain_array[(count + i) % array_size] + 2 * initial_displacement);
-    }
-    context.lineTo(i, 4 * initial_displacement);
-    context.lineTo(0, 4 * initial_displacement);
-    context.closePath();
-
-    context.fill();
-    context.stroke();
-
-    count++;
-    setTimeout(drawTerrain, 30);
-  }
-</script>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-    
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -293,6 +175,7 @@ Any views or opinions presented in this blog are my own and do not necessarily r
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -307,7 +190,10 @@ Any views or opinions presented in this blog are my own and do not necessarily r
       var disqus_shortname = 'nick-aschenbach';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
