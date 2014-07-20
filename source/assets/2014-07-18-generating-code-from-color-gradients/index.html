@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Particle System Test</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="js/jquery-2.1.1.js"></script>
+  <script src="js/particle.js"></script>
+  <script src="js/gradients.js"></script>
+  <script>
+    var particles = [];
+    var canvas = undefined;
+    var context = undefined;
+
+    var width = 250;
+    var height = 250;
+    var default_gradient = skyline;
+
+    $(document).ready(function () {
+      canvas = $('#myCanvas');
+      context = canvas[0].getContext("2d");
+      canvas.attr('height', width).attr('width', height);
+
+      // alpha blending
+      context.globalCompositeOperation = "lighter";
+
+      particles.push(new Particle(default_gradient));
+
+      updateParticles();
+
+      var self = this;
+      $('#gradient').change(function () {
+        var gradient = $(this).prop('value');
+        for (var i = 0; i < particles.length; i++) {
+          particles[i].setGradient(gradient);
+        }
+        default_gradient = gradient;
+      });
+    });
+
+    function updateParticles() {
+      context.clearRect(0, 0, canvas.width(), canvas.height());
+
+      // Update particle positions and draw them
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].step();
+        context.beginPath();
+        var radius = 1;
+        context.arc(particles[i].getX() + width / 2, particles[i].getY() + height / 2, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = particles[i].getColor();
+        context.fill();
+      }
+
+      // Filter out old particles
+      particles = particles.filter(function (n) {
+        return n.getAge() < 256;
+      });
+
+      // Create new particles as needed
+      if (particles.length < 1000) {
+        particles.push(new Particle(default_gradient));
+      }
+
+      setTimeout(updateParticles, 20);
+    }
+  </script>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+<select id="gradient">
+  <option value="skyline">Skyline</option>
+  <option value="carribean_blues">Carribean Blues</option>
+  <option value="deep_sea">Deep Sea</option>
+  <option value="full_saturation_spectrum">Full Spectrum</option>
+  <option value="greyscale">Greyscale</option>
+  <option value="horizon1">Horizon 1</option>
+  <option value="horizon2">Horizon 2</option>
+  <option value="incandescent">Incandescent</option>
+  <option value="land_and_sea">Land and Sea</option>
+  <option value="land">Land</option>
+  <option value="tropical_colors">Tropical Colors</option>
+  <option value="yellow_orange">Yellow Orange</option>
+</select>
+</body>
+</html>
