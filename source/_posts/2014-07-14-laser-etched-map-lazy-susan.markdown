@@ -3,7 +3,7 @@ layout: post
 title: "Maps, Lasers and Bamboo"
 date: 2014-07-14 22:41:29 -0700
 comments: true
-categories: 
+categories: graphics, terrain
 ---
 {% img right /images/colorado-mountains.jpg Snowy view towards Devil's Thumb Ranch %}
 

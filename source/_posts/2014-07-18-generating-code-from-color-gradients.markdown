@@ -3,7 +3,7 @@ layout: post
 title: "Generating Code from Images of Color Gradients"
 date: 2014-07-18 19:27:15 -0700
 comments: true
-categories: 
+categories: graphics, metaprogramming
 ---
 I needed to incorporate smooth color transitions into a few projects I worked on several months ago. I wrote a 3D virtual terrain generator and wanted to color areas based on altitude. Higher elevations should be colored white (mountains), medium elevations should be colored green (grass) and lower elevations should be colored blue (water). A second application for these transitions was a series of particle systems (see video below). Changing particle color as a function of age allows effects like fading to black before a particle is removed. We will come back to particle systems later with a small demo at the end of this post.
 
