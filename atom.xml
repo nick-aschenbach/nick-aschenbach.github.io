@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-21T00:39:32-07:00</updated>
+  <updated>2014-07-21T01:06:23-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -79,7 +79,7 @@
 
 <p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/hello-world.png" title="Echo message" ></p>
 
-<p>This application is trivial, so let&rsquo;s work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some users need a little help finding what words can be created with their letters.</p>
+<p>This application is trivial, so let&rsquo;s work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some people need a little help finding what words can be created with their letters.</p>
 
 <p>Let&rsquo;s write a little application that generates all letter permutations and compares these against a dictionary. We will extend the Sinatra app we wrote earlier and add a little helper Permutator class:</p>
 
