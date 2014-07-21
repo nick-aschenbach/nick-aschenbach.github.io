@@ -11,7 +11,7 @@ When using a trial account, you can set up a phone number for free in just a few
 
 {% img left /assets/2014-07-20-text-messaging-made-easy-with-twilio/images/get-number.png Get a Twilio number %}
 
-Click the 'Get started' button. Note that you will have to enter in a number (i.e. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.
+Click the 'Get started' button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.
 
 Now if you click on the 'NUMBERS' tab, you should see the number that was set up in the previous step. Note the 'Request URLs' associated with this phone number. We are going to modify the 'Messaging' link in a few minutes. This requires that we set up a publically available server on the internet.
 
@@ -50,7 +50,7 @@ Assuming that the app is deployed and Twilio is configured correctly, try to sen
 
 {% img left /assets/2014-07-20-text-messaging-made-easy-with-twilio/images/hello-world.png Echo message %}
 
-This application is trivial, so let's work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some users need a little help finding what words can be created with their letters. 
+This application is trivial, so let's work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some people need a little help finding what words can be created with their letters. 
 
 Let's write a little application that generates all letter permutations and compares these against a dictionary. We will extend the Sinatra app we wrote earlier and add a little helper Permutator class:
 
