@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Fabrication, | Aschenblog]]></title>
+  <link href="http://nick-aschenbach.github.io/blog/categories/fabrication/atom.xml" rel="self"/>
+  <link href="http://nick-aschenbach.github.io/"/>
+  <updated>2014-07-26T23:11:04-07:00</updated>
+  <id>http://nick-aschenbach.github.io/</id>
+  <author>
+    <name><![CDATA[Nick Aschenbach]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Something to Show at the End of the Day]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/"/>
+    <updated>2014-07-26T09:43:50-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams</id>
+    <content type="html"><![CDATA[<p>Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.</p>
+
+<p><img class="left" src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/voronoi.png" width="300" title="auto Voronoi Diagram" ></p>
+
+<p>I find that projects that engage both the analytical and creative parts of my brain are especially fun. Last summer I started making some custom wooden parts based on a space partitioning algorithm called a Voronoi Diagram (at left).</p>
+
+<p>First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.</p>
+
+<p>First, we will create a small helper class that will encapsulate a point&rsquo;s position and help us calculate the distance to a given pixel.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Point</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:x</span><span class="p">,</span> <span class="ss">:y</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@x = x</span>
+</span><span class='line'><span class="sr">@y = y</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">distanceTo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;deltaX = (x - @x).abs</span>
+</span><span class='line'><span class="sr">deltaY = (y - @y).abs</span>
+</span><span class='line'><span class="sr">Math.sqrt(deltaX ** 2 + deltaY ** 2) # Euclidean distance</span>
+</span><span class='line'><span class="sr"># deltaX + deltaY # Manhattan distance</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">random</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;Point.new(Random.rand(max_x), Random.rand(max_y))</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>I&rsquo;ve added a class factory method that returns new random Points. This will help us later when we generate seed points.</p>
+
+<p>Let&rsquo;s take a look at the main part of the Voronoi Diagram generation algorithm:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">chunky_png</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">require_relative</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">point</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Image size and voronoi seed sites&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">512</span>
+</span><span class='line'><span class="n">height</span> <span class="o">=</span> <span class="mi">512</span>
+</span><span class='line'><span class="n">sites</span> <span class="o">=</span> <span class="mi">20</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Create seed points and associated colors&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">seed_points</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">Point</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="n">seed_region_colors</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">rgb</span><span class="p">(</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span> <span class="p">}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Initialize a new image&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">png</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">TRANSPARENT</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Iterate over all pixels in the image&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;closest_index = -1</span>
+</span><span class='line'><span class="sr">closest_distance = width * height + 1</span>
+</span><span class='line'><span class="sr"># Determine the closest seed point</span>
+</span><span class='line'><span class="sr">seed_points.each_with_index do |point, index|</span>
+</span><span class='line'><span class="sr">  distance = point.distanceTo(x, y)</span>
+</span><span class='line'><span class="sr">  if distance &amp;lt; closest_distance</span>
+</span><span class='line'><span class="sr">    closest_distance = distance</span>
+</span><span class='line'><span class="sr">    closest_index = index</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span><span class='line'><span class="sr">png[x, y] = seed_region_colors[closest_index]</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Show</span> <span class="n">seed</span> <span class="n">points</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;seed_points.each do |point|</span>
+</span><span class='line'><span class="sr">  png.circle(point.x, point.y, 2, ChunkyPNG::Color::BLACK, ChunkyPNG::Color::BLACK)</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The <code>width</code>, <code>height</code> and <code>sites</code> are parameters to the Voronoi diagram. They determine the width and height of the image as well as the number of seed points.</p>
+
+<p>It should be noted that this code is particularly inefficient; it is written more for clarity than for speed. Several efficient algorithms exist. One of the best known is <a href="http://en.wikipedia.org/wiki/Fortune%27s_algorithm">Fortune&rsquo;s algorithm</a> and runs in O(n log n) time. Several open source implementations are available online.</p>
+
+<p>We use <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> to help us create the PNG output file.</p>
+
+<p><strong>Fabricated Wooden Boards</strong></p>
+
+<p><img class="right" src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/wall-hanging.jpg" title="Voronoi Wall Hanging" >
+The first wall art piece is fabricated from &frac12;" thick cherry and paduak</p>
+
+<p>Vector files are required to import designs into my CAD / CAM software. I used Raymond Hill&rsquo;s <a href="https://github.com/gorhill/Javascript-Voronoi">Javascript Voronoi</a> library, <a href="http://raphaeljs.com">Raphaël</a> and <a href="https://github.com/ElbertF/Raphael.Export">Raphaël Export</a> to generate SVG files. Two software tools were used to massage the geometry into something that could be machined: Autodesk&rsquo;s <a href="http://www.autodesk.com/products/autocad/">AutoCAD</a>&reg; and Vectric&rsquo;s <a href="http://www.vectric.com/products/aspire.html">Aspire</a>&reg;. The parts had to be machined precisely on a CNC router so that they could be nested and glued together as portrayed in the images below.</p>
+
+<p><img src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/cutting-board.jpg" title="Voronoi Cutting Board" >
+The second cutting board is fabricated from &frac12;" thick cherry and carbonized bamboo plywood</p>
+]]></content>
+  </entry>
+  
+</feed>
