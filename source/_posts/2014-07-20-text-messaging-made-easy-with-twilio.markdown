@@ -106,14 +106,14 @@ def xml(message)
 end
 {% endcodeblock %}
 
-This helper will generate all permutations using from one to the number of letters passed into the 'find_words' method. The class method 'init' is just called once when the application fires up.
-
-Here are the results when I sent a text message with a body of 'pots'
-
-{% img left /assets/2014-07-20-text-messaging-made-easy-with-twilio/images/permutations.png Permutations %}
+This helper will generate all permutations using from one to the number of letters passed into the 'find_words' method. The class method 'init' is just called once when the application fires up. To see the results check the image at the bottom of the post.
 
 I ran into a couple of issues using Twilio. The response message length needs to be kept less than 1600 characters. This limit can be exceeded with the permutator app we wrote. Also Twilio limits sending SMS to one message per second. 
 
 I found the [App monitor](https://www.twilio.com/user/account/developer-tools/app-monitor) to be very useful when diagnosing what went wrong with my application. The 'Request Inspector' keeps track of HTTP request and response details that is helpful for debugging.
 
 Twilio also supports sending SMS and MMS messages. Twilio supports a 'twilio-ruby' gem that can also be used for messaging. This gem can be used to send the same message to a number of recipients, for example. [Here](https://www.twilio.com/docs/quickstart/ruby/sms/sending-via-rest) is a Ruby code example using that gem.
+
+Here are the results when I sent a text message with a body of 'pots' given our little word scramble app:
+
+{% img /assets/2014-07-20-text-messaging-made-easy-with-twilio/images/permutations.png Permutations %}
