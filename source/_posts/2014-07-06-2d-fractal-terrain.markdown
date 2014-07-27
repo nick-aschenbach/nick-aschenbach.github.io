@@ -3,7 +3,7 @@ layout: post
 title: "2D Fractal Terrain Generation"
 date: 2014-07-06 08:26:04 -0700
 comments: true
-categories: graphics, terrain
+categories: graphics terrain
 ---
 A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games. 
 
