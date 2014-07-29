@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Wood | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/wood/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-27T01:34:43-07:00</updated>
+  <updated>2014-07-29T16:40:12-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -27,6 +27,9 @@
 <p>First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.</p>
 
 <p>First, we will create a small helper class that will encapsulate a point&rsquo;s position and help us calculate the distance to a given pixel.</p>
+
+<!-- more -->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -206,6 +209,9 @@ The second cutting board is fabricated from &frac12;" thick cherry and carbonize
 <p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
 
 <p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
+
+<!-- more -->
+
 
 <p><img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" ></p>
 

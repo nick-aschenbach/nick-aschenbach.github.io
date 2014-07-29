@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Communication | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/communication/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-27T01:34:43-07:00</updated>
+  <updated>2014-07-29T16:40:12-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -25,6 +25,9 @@
 <p><img class="left" src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/get-number.png" title="Get a Twilio number" ></p>
 
 <p>Click the &lsquo;Get started&rsquo; button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.</p>
+
+<!-- more -->
+
 
 <p>Now if you click on the &lsquo;NUMBERS&rsquo; tab, you should see the number that was set up in the previous step. Note the &lsquo;Request URLs&rsquo; associated with this phone number. We are going to modify the &lsquo;Messaging&rsquo; link in a few minutes. This requires that we set up a publically available server on the internet.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Terrain | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/terrain/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-27T01:34:43-07:00</updated>
+  <updated>2014-07-29T16:40:12-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -23,6 +23,9 @@
 <p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
 
 <p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
+
+<!-- more -->
+
 
 <p><img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" ></p>
 
@@ -66,6 +69,9 @@
 <li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
 <li>Repeat previous until fractal is sufficiently detailed</li>
 </ol>
+
+
+<!-- more -->
 
 
 <p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>

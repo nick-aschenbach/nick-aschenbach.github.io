@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-27T01:34:43-07:00</updated>
+  <updated>2014-07-29T16:40:12-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -27,6 +27,11 @@
 <p>First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.</p>
 
 <p>First, we will create a small helper class that will encapsulate a point&rsquo;s position and help us calculate the distance to a given pixel.</p>
+
+<!-- more -->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -176,6 +181,9 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 <p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/get-number.png" title="Get a Twilio number" ></p>
 
 <p>Click the &lsquo;Get started&rsquo; button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.</p>
+
+<!-- more -->
+
 
 <p>Now if you click on the &lsquo;NUMBERS&rsquo; tab, you should see the number that was set up in the previous step. Note the &lsquo;Request URLs&rsquo; associated with this phone number. We are going to modify the &lsquo;Messaging&rsquo; link in a few minutes. This requires that we set up a publically available server on the internet.</p>
 
@@ -361,6 +369,9 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 
 <p>To achieve color transitions in my programs, I figured that raster images with color gradients could be used. Programs like Adobe Photoshop or <a href="http://www.gimp.org/">GIMP</a> are excellent tools to use for this purpose. As an aside, I also enjoy using the ColorZilla <a href="http://www.colorzilla.com/gradient-editor/">Ultimate CSS Gradient Editor</a> for web projects. The problem I faced was getting red, blue and green values at each pixel along the gradient into code.</p>
 
+<!-- more -->
+
+
 <p>I found quite a few libraries that could read images. ImageMagick is a powerful set of tools that enable reading and writing over 100 image formats. It has interfaces for a <a href="http://www.imagemagick.org/script/api.php">number of languages</a>. However, I was looking for something light-weight and self contained.</p>
 
 <p>I found an easy-to-use gem called <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> that allows developers to read and write PNG files. Here is a snippet of code that shows how to open and read a PNG file in Ruby:</p>
@@ -462,6 +473,9 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 
 <p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
 
+<!-- more -->
+
+
 <p><img class="right" src="http://nick-aschenbach.github.io/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" ></p>
 
 <p>Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.</p>
@@ -504,6 +518,9 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 <li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
 <li>Repeat previous until fractal is sufficiently detailed</li>
 </ol>
+
+
+<!-- more -->
 
 
 <p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>

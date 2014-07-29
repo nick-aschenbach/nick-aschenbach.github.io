@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Metaprogramming | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/metaprogramming/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-27T01:34:43-07:00</updated>
+  <updated>2014-07-29T16:40:12-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -23,6 +23,9 @@
 <p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/-urfsS1OpYo" allowfullscreen></iframe></div></p>
 
 <p>To achieve color transitions in my programs, I figured that raster images with color gradients could be used. Programs like Adobe Photoshop or <a href="http://www.gimp.org/">GIMP</a> are excellent tools to use for this purpose. As an aside, I also enjoy using the ColorZilla <a href="http://www.colorzilla.com/gradient-editor/">Ultimate CSS Gradient Editor</a> for web projects. The problem I faced was getting red, blue and green values at each pixel along the gradient into code.</p>
+
+<!-- more -->
+
 
 <p>I found quite a few libraries that could read images. ImageMagick is a powerful set of tools that enable reading and writing over 100 image formats. It has interfaces for a <a href="http://www.imagemagick.org/script/api.php">number of languages</a>. However, I was looking for something light-weight and self contained.</p>
 
