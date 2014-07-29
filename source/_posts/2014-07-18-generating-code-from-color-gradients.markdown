@@ -11,6 +11,8 @@ I needed to incorporate smooth color transitions into a few projects I worked on
 
 To achieve color transitions in my programs, I figured that raster images with color gradients could be used. Programs like Adobe Photoshop or [GIMP](http://www.gimp.org/) are excellent tools to use for this purpose. As an aside, I also enjoy using the ColorZilla [Ultimate CSS Gradient Editor](http://www.colorzilla.com/gradient-editor/) for web projects. The problem I faced was getting red, blue and green values at each pixel along the gradient into code. 
 
+<!-- more -->
+
 I found quite a few libraries that could read images. ImageMagick is a powerful set of tools that enable reading and writing over 100 image formats. It has interfaces for a [number of languages](http://www.imagemagick.org/script/api.php). However, I was looking for something light-weight and self contained. 
 
 I found an easy-to-use gem called [Chunky PNG](https://github.com/wvanbergen/chunky_png) that allows developers to read and write PNG files. Here is a snippet of code that shows how to open and read a PNG file in Ruby:

@@ -13,6 +13,8 @@ When using a trial account, you can set up a phone number for free in just a few
 
 Click the 'Get started' button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.
 
+<!-- more -->
+
 Now if you click on the 'NUMBERS' tab, you should see the number that was set up in the previous step. Note the 'Request URLs' associated with this phone number. We are going to modify the 'Messaging' link in a few minutes. This requires that we set up a publically available server on the internet.
 
 I used [Heroku](https://www.heroku.com/) as a hosting service for this project at no cost. There are several alternatives. I have some experience using [Rackspace](http://www.rackspace.com/), [Microsoft Azure](http://azure.microsoft.com/) and [Amazon Web Services](https://aws.amazon.com/). If you use Heroku, please make sure to install the Heroku Toolbelt command line tools. For the rest of this post, I will assume that you are using Heroku.

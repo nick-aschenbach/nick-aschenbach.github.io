@@ -21,6 +21,8 @@ Here is an outline of the algorithm:
 0. Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)
 0. Repeat previous until fractal is sufficiently detailed
 
+<!-- more -->
+
 Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.
 
 Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2^N + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.

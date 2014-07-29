@@ -11,6 +11,8 @@ I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley 
 
 The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (http://viewer.nationalmap.gov/viewer/) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (http://co.grand.co.us/170/Digital-Data-Sets). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.
 
+<!-- more -->
+
 {% img right /images/colorado-mid-scale.jpg 350 auto Mid scale map %}
 
 Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.

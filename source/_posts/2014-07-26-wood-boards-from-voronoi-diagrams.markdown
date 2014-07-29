@@ -15,6 +15,8 @@ First, a number of seed points are generated. Then the space is divided into Vor
 
 First, we will create a small helper class that will encapsulate a point's position and help us calculate the distance to a given pixel. 
 
+<!-- more -->
+
 {% codeblock lang:rb %}
 class Point
   attr_reader :x, :y
