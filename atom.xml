@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-07-29T22:50:17-07:00</updated>
+  <updated>2014-07-30T08:52:44-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Quiz]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
+    <updated>2014-07-30T08:29:53-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
+    <content type="html"><![CDATA[<p>I listen to the <a href="http://rubyrogues.com/">Ruby Rogues</a> Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the <a href="http://rubyquiz.com/">Ruby Quiz</a>.</p>
+
+<p>At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by James Edward Gray II (<a href="https://twitter.com/JEG2">Twitter</a>, <a href="https://github.com/JEG2">Github</a>, <a href="http://graysoftinc.com/">Blog</a>). While the book is out of print, I found a digital copy available on <a href="http://it-ebooks-search.info/search?q=ruby%20quiz">IT Books</a>.</p>
+
+<p>Happy hacking!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Something to Show at the End of the Day]]></title>
