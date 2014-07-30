@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Ruby Quiz"
+date: 2014-07-30 08:29:53 -0700
+comments: true
+categories: learning
+---
+I listen to the [Ruby Rogues](http://rubyrogues.com/) Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the [Ruby Quiz](http://rubyquiz.com/).
+
+At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by James Edward Gray II ([Twitter](https://twitter.com/JEG2), [Github](https://github.com/JEG2), [Blog](http://graysoftinc.com/)). While the book is out of print, I found a digital copy available on [IT Books](http://it-ebooks-search.info/search?q=ruby%20quiz).
+
+Happy hacking!
