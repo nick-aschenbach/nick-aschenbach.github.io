@@ -9,7 +9,7 @@ Sometimes it is difficult as a software engineer to feel connected to our work p
 
 {% img left /assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/voronoi.png 300 auto Voronoi Diagram %}
 
-I find that projects that engage both the analytical and creative parts of my brain are especially fun. Last summer I started making some custom wooden parts based on a space partitioning algorithm called a Voronoi Diagram (at left). 
+I find that projects that engage both the analytical and creative parts of my brain are especially fun. Last summer I started making some custom wooden parts based on Voronoi Diagrams (at left).
 
 First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.
 
