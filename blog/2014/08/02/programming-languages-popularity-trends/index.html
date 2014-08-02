@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Popularity Trends in Programming Languages - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="Full disclosure: I am a Ruby and Java developer. Everyone has their favorite pet languages (myself included) and I realize that this is a topic that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Popularity Trends in Programming Languages</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-02T11:18:06-07:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Full disclosure: I am a Ruby and Java developer.</p>
+
+<p>Everyone has their favorite pet languages (myself included) and I realize that this is a topic that evokes some feelings among my peers. In recent years, I strove to be more agnostic about tools and languages. While I try to be careful about making predictions, the languages and tools that are relevant now may fall out of favor in the industry in a few years. I&rsquo;ll try stick to what I discovered, but I realize that my perception is colored by my experience.</p>
+
+<p>I reviewed several indexes and articles including <a href="http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html">TIOBE</a>, <a href="http://lang-index.sourceforge.net/">Transparent Language Popularity Index</a>, <a href="http://spectrum.ieee.org/static/interactive-the-top-programming-languages">IEEE Spectrum: Top Programming Languages</a>, <a href="https://sites.google.com/site/pydatalog/pypl/PyPL-PopularitY-of-Programming-Language">PopularitY of Programming Language Index</a>, <a href="http://redmonk.com/sogrady/2014/01/22/language-rankings-1-14/">RedMonk Programming Language Rankings</a>, <a href="http://langpop.corger.nl/">Programming Language Popularity Chart</a> and <a href="http://redmonk.com/dberkholz/2014/05/02/github-language-trends-and-the-fragmenting-landscape/">GitHub Language Trends and Fragmenting Landscape</a></p>
+
+<p>While there was correlation between highly ranked languages between the indexes, none of them were the same. Several metrics were used including number of open source projects, number of lines of code, number of tracked bugs / issues, number of tutorials and numbers of search engine searches. The list goes on and on. How these metrics were weighted had a big impact on the overall ranking results.</p>
+
+<p><img class="left" src="http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png" width="450" title="auto New GitHub Repos" ></p>
+
+<p>In alphabetical order some of the most highly ranked languages are C, C#, C++, Java, JavaScript, Objective-C, PHP, Perl, Python, Ruby and Visual Basic. About half the indexes I reviewed had C and Java in the top two spots.</p>
+
+<!-- more -->
+
+
+<p>Because there is no objective measurement of programming language popularity, the exact rank seemed less important to me than how things <a href="http://redmonk.com/dberkholz/2014/05/02/github-language-trends-and-the-fragmenting-landscape/">change over time</a> (see graph). Another approach that I liked was the use of <a href="http://sogrady-media.redmonk.com/sogrady/files/2014/01/lang-rank-114-wm.png">scatter plots</a>.</p>
+
+<p>I found Donnie Berkholz&rsquo;s analysis of programming language use on GitHub particularly insightful. He looks at new GitHub repos, new issues and new users as a function of time. Before we go deeper into the numbers, it is important to mention that GitHub was embraced by the Ruby community early on and the apparent drop in Ruby projects actually indicates that GitHub was adopted by the developer community at large over the past five years.</p>
+
+<p>Overall language trends (looking at GitHub issues):</p>
+
+<ul>
+<li>While JavaScript issues are increasing, the trend is decelerating. It may stabilize at around 25% of total issues on GitHub</li>
+<li>Ruby has seen a big decline and appears to be reaching 10% of issues</li>
+<li>Java and PHP have stabilized at 10% of issues</li>
+<li>Python has dropped from 15% to about 10% of issues since 2008/2009. It&rsquo;s unclear if this number has stabilized.</li>
+</ul>
+
+
+<p>He also points out that C# and Objective-C are widely used, but do not show up in his data because developers from those communities have not embraced GitHub to the same degree as some others. This is corroborated by <a href="http://langpop.corger.nl/">data</a> that indicates while C# is discussed widely on Stack Overflow, it is not correlated as strongly with lines of code on GitHub as are other languages like Java and JavaScript:</p>
+
+<table>
+<thead>
+<tr>
+<th>Language    </th>
+<th> Stack Overflow </th>
+<th> GitHub          </th>
+<th> Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C#          </td>
+<td> 679,776        </td>
+<td> 2,469,334,797   </td>
+<td> 3,632</td>
+</tr>
+<tr>
+<td>Java        </td>
+<td> 687,426        </td>
+<td> 7,090,897,887   </td>
+<td> 10,315</td>
+</tr>
+<tr>
+<td>JavaScript  </td>
+<td> 676,383        </td>
+<td> 15,664,918,541  </td>
+<td> 23,160</td>
+</tr>
+</tbody>
+</table>
+
+
+<br/>
+
+
+<p>The ratio is the number of lines of code on GitHub relative to the number of Stack Overflow comments. All three languages have a similar number of comments on Stack, but have very different ratios.</p>
+
+<p>The article closes by suggesting that we have moved towards an increasingly fragmented programming language landscape. With the rise of domain specific languages and the increasing reliance on web technologies, it will be fascinating to see what programming languages will dominate in the future.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-02T11:18:06-07:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/30/ruby-quiz/" title="Previous Post: Ruby Quiz">&laquo; Ruby Quiz</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/30/ruby-quiz/">Ruby Quiz</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/26/wood-boards-from-voronoi-diagrams/">Something to Show at the End of the Day</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/text-messaging-made-easy-with-twilio/">Text Messaging Made Easy With Twilio</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/18/generating-code-from-color-gradients/">Generating Code From Images of Color Gradients</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (2)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (2)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a software engineer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails development, but also have a lot of experience in Java. In my spare time, I write code and fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
