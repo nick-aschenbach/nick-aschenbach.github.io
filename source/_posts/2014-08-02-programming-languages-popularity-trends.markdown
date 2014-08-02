@@ -3,7 +3,7 @@ layout: post
 title: "Popularity Trends in Programming Languages"
 date: 2014-08-02 11:18:06 -0700
 comments: true
-categories: 
+categories: languages
 ---
 Full disclosure: I am a Ruby and Java developer. 
 
