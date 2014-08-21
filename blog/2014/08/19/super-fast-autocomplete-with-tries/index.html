@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Fast Autocomplete With Tries - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Fast Autocomplete With Tries</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-19T19:50:17-07:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="left" src="/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" ></p>
+
+<p>Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.</p>
+
+<!-- more -->
+
+
+<p>Tries are great for super-fast autocomplete search. A breadth first search from any given point in the tree will find an exact match (if it exists), then matches one character away, then two and so on down the tree.</p>
+
+<p>To build a trie we will need a recursively defined node called <code>TrieNode</code>. Let&rsquo;s take a look at some Ruby code that we will use to build a Trie:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">TrieNode</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">decoration</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@decoration</span> <span class="o">=</span> <span class="n">decoration</span>
+</span><span class='line'>    <span class="vi">@children</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">addLetters</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="p">,</span> <span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="p">,</span> <span class="n">full_word</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@full_word</span> <span class="o">=</span> <span class="n">full_word</span> <span class="ow">and</span> <span class="k">return</span> <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">first_letter</span> <span class="o">=</span> <span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>    <span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">]</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span> <span class="k">unless</span> <span class="vi">@children</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">].</span><span class="n">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">full_word</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It has a few instance variables including a <code>decoration</code> and a <code>full_word</code>. We store child relationships by recursively adding new <code>TrieNodes</code> in a <code>children</code> hash peeling off one letter at a time. I could have used a single method for the recursion, but use a <code>addLetters</code> method as a driver for the <code>addLettersRecursively</code> method.</p>
+
+<p>Finding a node in the Trie follows the same pattern as adding letters:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">findNode</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nb">self</span> <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="vi">@children</span><span class="o">[</span><span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]].</span><span class="n">findNode</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@children</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="kp">nil</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that not all nodes in the tree represent member strings that are stored in the Trie. We marked the Trie member nodes with the <code>full_word</code> instance variable above. We need the <code>findNode</code> method for traversals as we will see in a minute.</p>
+
+<p>Now we can implement the Trie itself. It maintains the root node of the tree and has facilities to insert, membership and search:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Trie</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">words</span> <span class="o">=</span> <span class="o">[]</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@root_node</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">words</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">addLetters</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@root_node</span><span class="o">.</span><span class="n">addLetters</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">contains?</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span>
+</span><span class='line'>    <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">letters</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">words</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="n">queue</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">[]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="n">words</span> <span class="o">&lt;&lt;</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span>
+</span><span class='line'>    <span class="n">queue</span> <span class="o">&lt;&lt;</span> <span class="n">node</span>
+</span><span class='line'>    <span class="k">until</span> <span class="n">queue</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">shift</span>
+</span><span class='line'>      <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">child_node</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">word</span> <span class="o">=</span> <span class="n">child_node</span><span class="o">.</span><span class="n">word</span>
+</span><span class='line'>        <span class="n">words</span> <span class="o">&lt;&lt;</span> <span class="n">word</span> <span class="k">unless</span> <span class="n">word</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>        <span class="n">queue</span> <span class="o">&lt;&lt;</span> <span class="n">child_node</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">words</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The search method maintains a list of found <code>words</code> and a <code>queue</code> for a breadth first search of the Trie. We use the <code>shift</code> and <code>&lt;&lt;</code> operators to get queue first-in-first-out behavior. Calling search without specifying letters will result in full search for all members in the Trie.</p>
+
+<p>The full source and dictionary is available on GitHub:</p>
+
+<p><a href="https://github.com/nick-aschenbach/trie-autocomplete">https://github.com/nick-aschenbach/trie-autocomplete</a></p>
+
+<p><em>Performance</em></p>
+
+<p>I used a database with about 210K words and did some rough, informal calculations to compare performance between arrays, hashes and my trie implementation. The prefix search is finding all words that started with a substring. Membership is for finding one exact string. Here is what I found:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Prefix search (1000x repetitions)
+</span><span class='line'>Trie: 0.034 seconds
+</span><span class='line'>Array: 51.3 seconds
+</span><span class='line'>Hash: 91.85 seconds
+</span><span class='line'>
+</span><span class='line'>Membership search (100,000x)
+</span><span class='line'>Trie: 0.22 seconds
+</span><span class='line'>Array: 1580 seconds (estimated: 10,000x took 158 seconds)
+</span><span class='line'>Hash: 0.027 seconds
+</span><span class='line'>
+</span><span class='line'>Insertion (100x)
+</span><span class='line'>Trie: 88.6 seconds
+</span><span class='line'>Array: 0.000023 seconds
+</span><span class='line'>Hash: 7.69 seconds</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Prefix search performance appears to be efficient compared to arrays and hashes. Membership search appears to be a little slower than hashes. Array membership requires a full search of the array in the worst case O(N). Hash lookup is expected constant time performance. Trie membership is O(M) where M is the number of characters in the string. Insertion performance is very slow (probably due to all of the hashes being generated with this implementation). Typical use of this data structure is for search and insertion should be relatively rare.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-19T19:50:17-07:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data-structures/'>data-structures</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/08/02/programming-languages-popularity-trends/" title="Previous Post: Popularity Trends in Programming Languages">&laquo; Popularity Trends in Programming Languages</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocomplete With Tries</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/30/ruby-quiz/">Ruby Quiz</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/26/wood-boards-from-voronoi-diagrams/">Something to Show at the End of the Day</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/text-messaging-made-easy-with-twilio/">Text Messaging Made Easy With Twilio</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (2)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (1)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (2)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a software engineer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails development, but also have a lot of experience in Java. In my spare time, I write code and fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
