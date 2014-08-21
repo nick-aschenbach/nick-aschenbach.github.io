@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-08-20T19:02:01-07:00</updated>
+  <updated>2014-08-20T19:05:54-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Fast Autocomplete With Tries]]></title>
+    <title type="html"><![CDATA[Fast Autocompletion With Tries]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/"/>
     <updated>2014-08-19T19:50:17-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries</id>
@@ -22,12 +22,14 @@
 
 <p>Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.</p>
 
-<!-- more -->
-
-
 <p>Tries are great for super-fast autocomplete search. A breadth first search from any given point in the tree will find an exact match (if it exists), then matches one character away, then two and so on down the tree.</p>
 
 <p>To build a trie we will need a recursively defined node called <code>TrieNode</code>. Let&rsquo;s take a look at some Ruby code that we will use to build a Trie:</p>
+
+<!-- more -->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

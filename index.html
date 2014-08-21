@@ -59,7 +59,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocomplete With Tries</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a></h1>
     
     
       <p class="meta">
@@ -85,6 +85,10 @@
   <div class="entry-content"><p><img class="left" src="/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" ></p>
 
 <p>Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.</p>
+
+<p>Tries are great for super-fast autocomplete search. A breadth first search from any given point in the tree will find an exact match (if it exists), then matches one character away, then two and so on down the tree.</p>
+
+<p>To build a trie we will need a recursively defined node called <code>TrieNode</code>. Let&rsquo;s take a look at some Ruby code that we will use to build a Trie:</p>
 
 </div>
   
@@ -446,7 +450,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocomplete With Tries</a>
+        <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a>
       </li>
     
       <li class="post">
