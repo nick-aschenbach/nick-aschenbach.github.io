@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of &hellip;">
+  <meta name="description" content="During a recent code review at work, I was surprised by how Ruby handles private and protected method visibility modifiers in derived classes. The &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -53,6 +53,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Protected and Private Visibility Modifiers and Inheritance in Ruby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-30T09:01:20-07:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobar&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
+</span><span class='line'>    <span class="n">foo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I did some experimentation in the irb console. As expected, one may not call the <code>private</code> method foo on an instance of A:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo</span>
+</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&#39; called for #&lt;A:0x00000102a0b498&gt;</span>
+</span><span class='line'><span class="sb">  from (irb):7</span>
+</span><span class='line'><span class="sb">  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `</span><span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;</span><span class="err">&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What surprised me is that in the child class <code>B</code> that we can call <code>foo</code> on the parent class. Again, back to irb:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
+</span><span class='line'><span class="n">foobar</span>
+</span><span class='line'> <span class="o">=&gt;</span> <span class="kp">nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -450,6 +546,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Protected and Private Visibility Modifiers and Inheritance in Ruby</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a>
       </li>
     
@@ -465,10 +565,6 @@
         <a href="/blog/2014/07/26/wood-boards-from-voronoi-diagrams/">Something to Show at the End of the Day</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/07/20/text-messaging-made-easy-with-twilio/">Text Messaging Made Easy With Twilio</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -478,6 +574,7 @@
 <li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
 <li class='category'><a href='/blog/categories/data-structures/'>data-structures (1)</a></li>
 <li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
 <li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>

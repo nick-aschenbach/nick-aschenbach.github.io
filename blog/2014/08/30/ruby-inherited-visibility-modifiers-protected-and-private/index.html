@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Protected and Private Visibility Modifiers and Inheritance in Ruby - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="During a recent code review at work, I was surprised by how Ruby handles private and protected method visibility modifiers in derived classes. The &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Protected and Private Visibility Modifiers and Inheritance in Ruby</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-30T09:01:20-07:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobar&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
+</span><span class='line'>    <span class="n">foo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I did some experimentation in the irb console. As expected, one may not call the <code>private</code> method foo on an instance of A:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo</span>
+</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&#39; called for #&lt;A:0x00000102a0b498&gt;</span>
+</span><span class='line'><span class="sb">  from (irb):7</span>
+</span><span class='line'><span class="sb">  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `</span><span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;</span><span class="err">&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What surprised me is that in the child class <code>B</code> that we can call <code>foo</code> on the parent class. Again, back to irb:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
+</span><span class='line'><span class="n">foobar</span>
+</span><span class='line'> <span class="o">=&gt;</span> <span class="kp">nil</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>Class B is calling a private method on class A, which seems to break with my expectations about encapsulation.</p>
+
+<p>Time for some digging. I read through a couple of articles and found a draft of the Ruby language specification. Section 13.3.5 discusses method visibility. While not an official spec, here is what it says about private methods:</p>
+
+<blockquote><p>A private method cannot be invoked with an explicit receiver, i.e., a private method cannot be invoked if a primary-expression or a chained-method-invocation occurs at the position which corresponds to the method receiver in the method invocation, except for a method invocation of any of the following forms where the primary-expression is a self-expression.</p><p>- single-method-assignment<br/>- abbreviated-method-assignment<br/>- single-indexing-assignment<br/>- abbreviated-indexing-assignment</p><footer><strong>IPA Ruby Standardization WG Draft</strong> <cite>Programming Languages - Ruby</cite></footer></blockquote>
+
+
+<p>The way I interpret the spec is that a private method can be called with an implicit receiver (read object). This is why calling <code>foo</code> from method <code>bar</code> above is allowable. Invoking a method with an explicit receiver is not allowed. This is why <code>A.new.foo</code> results in a <code>NoMethodError</code>.</p>
+
+<p>The following code may clarify the difference between calling a method with an implicit vs. explicit receiver:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
+</span><span class='line'>  <span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">baz</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobaz&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobar&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
+</span><span class='line'>    <span class="c1"># Implicit</span>
+</span><span class='line'>    <span class="n">baz</span>
+</span><span class='line'>    <span class="n">foo</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Explicit</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">baz</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">foo</span>    <span class="c1"># Results in NoMethodError</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that now we see that the <code>protected</code> method can be called explicitly, while the <code>private</code> method cannot. Let&rsquo;s exercise the above code in irb:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
+</span><span class='line'><span class="n">foobaz</span>
+</span><span class='line'><span class="n">foobar</span>
+</span><span class='line'><span class="n">foobaz</span>
+</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&#39; called for #&lt;B:0x000001019b3460&gt;</span>
+</span><span class='line'><span class="sb">  from (irb):23:in `</span><span class="n">bar</span><span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">  from (irb):26</span>
+</span><span class='line'><span class="s1">  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `&lt;main&gt;&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>References:</p>
+
+<ul>
+<li><a href="https://www.ipa.go.jp/osc/english/ruby/">Ruby Draft Specification</a></li>
+<li><a href="http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html">Tenderlovemaking blog</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-30T09:01:20-07:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/inheritance/'>inheritance</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/08/19/super-fast-autocomplete-with-tries/" title="Previous Post: Fast autocompletion with Tries">&laquo; Fast autocompletion with Tries</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Protected and Private Visibility Modifiers and Inheritance in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/30/ruby-quiz/">Ruby Quiz</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/26/wood-boards-from-voronoi-diagrams/">Something to Show at the End of the Day</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (2)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (1)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (2)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a software engineer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails development, but also have a lot of experience in Java. In my spare time, I write code and fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
