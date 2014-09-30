@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/</loc>
+    <lastmod>2014-09-29T18:49:06-07:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/</loc>
     <lastmod>2014-08-30T09:01:20-07:00</lastmod>
     <priority>0.8</priority>
@@ -59,14 +65,14 @@
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/archives/</loc>
-    <lastmod>2014-08-30T15:30:04-07:00</lastmod>
+    <lastmod>2014-09-29T20:21:02-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/</loc>
-    <lastmod>2014-08-30T15:30:04-07:00</lastmod>
+    <lastmod>2014-09-29T20:21:02-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -74,7 +80,7 @@
   
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>
-    <lastmod>2014-07-18T19:32:1405737139Z</lastmod>
+    <lastmod>2014-09-29T20:16:1412046963Z</lastmod>
     <priority>0.6</priority>
   </url>
   

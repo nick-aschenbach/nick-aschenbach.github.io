@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Building a Gem for RubyGems.org - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="We are going through some large code refactors at work and are building rails engines. This requires creating apps within our main app. Each sub-app &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Building a Gem for RubyGems.org</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-29T18:49:06-07:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides has its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
+
+<p>Developing the skeleton for a gem is extremely easy:</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle gem foobar</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Several files are created:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>create  foobar/Rakefile
+</span><span class='line'>create  foobar/LICENSE.txt
+</span><span class='line'>create  foobar/README.md
+</span><span class='line'>create  foobar/.gitignore
+</span><span class='line'>create  foobar/foobar.gemspec
+</span><span class='line'>create  foobar/lib/foobar.rb
+</span><span class='line'>create  foobar/lib/foobar/version.rb
+</span><span class='line'>Initializing git repo in /Users/sela/workspace/foobar</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s take a look at the gemspec file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># coding: utf-8</span>
+</span><span class='line'><span class="n">lib</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;../lib&#39;</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">)</span>
+</span><span class='line'><span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;foobar/version&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Gem</span><span class="o">::</span><span class="no">Specification</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">spec</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">name</span>          <span class="o">=</span> <span class="s2">&quot;foobar&quot;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">version</span>       <span class="o">=</span> <span class="no">Foobar</span><span class="o">::</span><span class="no">VERSION</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">authors</span>       <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Nick Aschenbach&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">email</span>         <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;nick.aschenbach@gmail.com&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">license</span>       <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">files</span>         <span class="o">=</span> <span class="sb">`git ls-files -z`</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x0</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">executables</span>   <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^bin/}</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">test_files</span>    <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^(test|spec|features)/}</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">require_paths</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;lib&quot;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s2">&quot;bundler&quot;</span><span class="p">,</span> <span class="s2">&quot;~&gt; 1.6&quot;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="s2">&quot;rake&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also a handy <code>README.md</code> file is created that shows users how to install the gem using bundler.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>TODO: Write a gem description
+</span><span class='line'>
+</span><span class='line'>## Installation
+</span><span class='line'>
+</span><span class='line'>Add this line to your application's Gemfile:
+</span><span class='line'>
+</span><span class='line'>    gem 'foobar'
+</span><span class='line'>
+</span><span class='line'>And then execute:
+</span><span class='line'>
+</span><span class='line'>    $ bundle
+</span><span class='line'>
+</span><span class='line'>Or install it yourself as:
+</span><span class='line'>
+</span><span class='line'>    $ gem install foobar
+</span><span class='line'>
+</span><span class='line'>## Usage
+</span><span class='line'>
+</span><span class='line'>TODO: Write usage instructions here
+</span><span class='line'>
+</span><span class='line'>## Contributing
+</span><span class='line'>
+</span><span class='line'>1. Fork it ( https://github.com/[my-github-username]/foobar/fork )
+</span><span class='line'>2. Create your feature branch (`git checkout -b my-new-feature`)
+</span><span class='line'>3. Commit your changes (`git commit -am 'Add some feature'`)
+</span><span class='line'>4. Push to the branch (`git push origin my-new-feature`)
+</span><span class='line'>5. Create a new Pull Request</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I used this template for my <code>scrabble_score</code> gem. The full source code is available on <a href="https://github.com/nick-aschenbach/scrabble-score">Github</a>. The project is extremely simple and has the following structure:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>.
+</span><span class='line'>├── Gemfile
+</span><span class='line'>├── Gemfile.lock
+</span><span class='line'>├── LICENSE.txt
+</span><span class='line'>├── README.md
+</span><span class='line'>├── assets
+</span><span class='line'>│   └── dictionary.txt
+</span><span class='line'>├── lib
+</span><span class='line'>│   ├── scrabble_score
+</span><span class='line'>│   │   ├── dictionary.rb
+</span><span class='line'>│   │   ├── letters.rb
+</span><span class='line'>│   │   ├── version.rb
+</span><span class='line'>│   │   └── word_finder.rb
+</span><span class='line'>│   └── scrabble_score.rb
+</span><span class='line'>├── scrabble_score.gemspec
+</span><span class='line'>└── spec
+</span><span class='line'>    ├── assets
+</span><span class='line'>    │   └── dictionary.txt
+</span><span class='line'>    ├── lib
+</span><span class='line'>    │   └── scrabble_score
+</span><span class='line'>    │       ├── dictionary_spec.rb
+</span><span class='line'>    │       ├── letters_spec.rb
+</span><span class='line'>    │       └── word_finder_spec.rb
+</span><span class='line'>    └── spec_helper.rb
+</span><span class='line'>
+</span><span class='line'>7 directories, 16 files</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After getting my specs green and playing around with the code a bit, I went to generate the gem. First, let&rsquo;s upgrade to the latest RubyGems version:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem update --system</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, let&rsquo;s build the gem:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem build scrabble_score.gemspec</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first time I ran this tool I received a handful of warnings:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>WARNING:  no homepage specified
+</span><span class='line'>WARNING:  open-ended dependency on rspec (&gt;= 0, development) is not recommended
+</span><span class='line'>  if rspec is semantically versioned, use:
+</span><span class='line'>    add_development_dependency 'rspec', '~&gt; 0'
+</span><span class='line'>WARNING:  open-ended dependency on simplecov (&gt;= 0, development) is not recommended
+</span><span class='line'>  if simplecov is semantically versioned, use:
+</span><span class='line'>    add_development_dependency 'simplecov', '~&gt; 0'
+</span><span class='line'>WARNING:  See http://guides.rubygems.org/specification-reference/ for help
+</span><span class='line'>  Successfully built RubyGem
+</span><span class='line'>  Name: scrabble_score
+</span><span class='line'>  Version: 0.1.0
+</span><span class='line'>  File: scrabble_score-0.1.0.gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For the homepage I used the project&rsquo;s Github repository. I also added versions to the development dependencies:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>spec.add_development_dependency 'bundler', '~&gt; 1.6'
+</span><span class='line'>spec.add_development_dependency 'rspec', '3.0.0'
+</span><span class='line'>spec.add_development_dependency 'simplecov', '0.9.1'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I deleted the <code>scrabble_score-0.1.0.gem</code> file and ran the <code>gem build</code> command again. Here is the output:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  Successfully built RubyGem
+</span><span class='line'>  Name: scrabble_score
+</span><span class='line'>  Version: 0.1.0
+</span><span class='line'>  File: scrabble_score-0.1.0.gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Everything looks good, so I proceeded with the last step by running:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem push scrabble_score-0.1.0.gem </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Which created the following output:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Enter your RubyGems.org credentials.
+</span><span class='line'>Don't have an account yet? Create one at https://rubygems.org/sign_up
+</span><span class='line'>   Email:   nick.aschenbach@gmail.com
+</span><span class='line'>Password:   
+</span><span class='line'>
+</span><span class='line'>Signed in.
+</span><span class='line'>Pushing gem to https://rubygems.org...
+</span><span class='line'>Successfully registered gem: scrabble_score (0.1.0)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>My experience creating a gem for RubyGems was a pleasant one. Please do a quick search to ensure that your gem name is unique before you get started. There are many guides out there for how to write gems. It is a good idea to take a look at one or two of these before getting started.</p>
+
+<p>Happy gem cutting!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-29T18:49:06-07:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data-structures/'>data-structures</a>, <a class='category' href='/blog/categories/gems/'>gems,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/" title="Previous Post: Protected and private visibility modifiers and inheritance in Ruby">&laquo; Protected and private visibility modifiers and inheritance in Ruby</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/">Building a Gem for RubyGems.org</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Protected and Private Visibility Modifiers and Inheritance in Ruby</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/30/ruby-quiz/">Ruby Quiz</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (2)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/gems-/'>gems, (1)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (2)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a software engineer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails development, but also have a lot of experience in Java. In my spare time, I write code and fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
