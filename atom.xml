@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-09-29T20:21:02-07:00</updated>
+  <updated>2014-09-29T20:31:48-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,7 +18,7 @@
     <link href="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/"/>
     <updated>2014-09-29T18:49:06-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org</id>
-    <content type="html"><![CDATA[<p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides has its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
+    <content type="html"><![CDATA[<p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
 
 <p>Developing the skeleton for a gem is extremely easy:</p>
 
