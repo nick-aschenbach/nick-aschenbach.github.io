@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Gems, - Aschenblog</title>
+  <title>Aschenblog</title>
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="Category: gems,">
+  <meta name="description" content="A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/categories/gems">
+  <link rel="canonical" href="http://nick-aschenbach.github.io/posts/2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
@@ -51,40 +51,75 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
-    <h1 class="entry-title">Category: Gems,</h1>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/06/2d-fractal-terrain/">2D Fractal Terrain Generation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-06T09:26:04-06:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+  <div class="entry-content"><p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
 
-  
-  <h2>2014</h2>
+<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
 
-<article>
-  
-<h1><a href="/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/">Building a Gem for RubyGems.org</a></h1>
-<time datetime="2014-09-29T19:49:06-06:00" pubdate><span class='month'>Sep</span> <span class='day'>29</span> <span class='year'>2014</span></time>
+<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/data-structures/'>data-structures</a>, <a class='category' href='/blog/categories/gems/'>gems,</a></span>
-</footer>
+<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
 
+<p>Here is an outline of the algorithm:</p>
 
-</article>
+<ol>
+<li>Find the midpoint for the line segment</li>
+<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
+<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
+<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
+<li>Repeat previous until fractal is sufficiently detailed</li>
+</ol>
+
 
 </div>
-
   
-</article>
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/07/06/2d-fractal-terrain/">Read on &rarr;</a>
+    </footer>
+  
 
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/index.html">Newer &rarr;</a>
+    
+  </div>
 </div>
-
 <aside class="sidebar">
   
     <section>
@@ -142,7 +177,6 @@ Any views or opinions presented in this blog are my own and do not necessarily r
 
   
 </aside>
-
 
     </div>
   </div>

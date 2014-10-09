@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-09-29T20:31:48-07:00</updated>
+  <updated>2014-10-09T10:06:11-06:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -14,9 +14,81 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Time Lapse at 8,600 Feet]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/"/>
+    <updated>2014-10-09T08:47:58-06:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet</id>
+    <content type="html"><![CDATA[<p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
+
+<p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;av_capture&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span> <span class="o">=</span> <span class="no">AVCapture</span><span class="o">::</span><span class="no">Session</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">dev</span>     <span class="o">=</span> <span class="no">AVCapture</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:video?</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
+</span><span class='line'>  <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;img_</span><span class="si">#{</span><span class="n">counter</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">connection</span><span class="o">.</span><span class="n">capture</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I left fill with zeros so that the files will be <code>img_0000.jpg</code>, <code>img_0001.jpg</code> &hellip; If you want to increase the number of times we take photos (let&rsquo;s call it N) then change the <code>4</code> on line 8 to be <code>log_10(N).ceil</code>. So if we want to take 15,000 photos:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.</p>
+
+<p>To install it on OSX (requires brew):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew install ffmpeg</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now to turn the photos into a movie:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ffmpeg -r 60 -i img_%04d.jpg output.mp4</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>-r 60</code> flag sets the video frame rate to 60 frames per second.</p>
+
+<p>I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&rsquo;s Thumb, a local geological feature. Here is the result:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div>
+
+
+<p>I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&rsquo;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Building a Gem for RubyGems.org]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/"/>
-    <updated>2014-09-29T18:49:06-07:00</updated>
+    <updated>2014-09-29T19:49:06-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org</id>
     <content type="html"><![CDATA[<p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
 
@@ -313,7 +385,7 @@
   <entry>
     <title type="html"><![CDATA[Protected and Private Visibility Modifiers and Inheritance in Ruby]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/"/>
-    <updated>2014-08-30T09:01:20-07:00</updated>
+    <updated>2014-08-30T10:01:20-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private</id>
     <content type="html"><![CDATA[<p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
 
@@ -473,7 +545,7 @@
   <entry>
     <title type="html"><![CDATA[Fast Autocompletion With Tries]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/"/>
-    <updated>2014-08-19T19:50:17-07:00</updated>
+    <updated>2014-08-19T20:50:17-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" ></p>
 
@@ -674,7 +746,7 @@
   <entry>
     <title type="html"><![CDATA[Popularity Trends in Programming Languages]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/"/>
-    <updated>2014-08-02T11:18:06-07:00</updated>
+    <updated>2014-08-02T12:18:06-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends</id>
     <content type="html"><![CDATA[<p>Full disclosure: I am a Ruby and Java developer.</p>
 
@@ -751,7 +823,7 @@
   <entry>
     <title type="html"><![CDATA[Ruby Quiz]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
-    <updated>2014-07-30T08:29:53-07:00</updated>
+    <updated>2014-07-30T09:29:53-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
     <content type="html"><![CDATA[<p>I listen to the <a href="http://rubyrogues.com/">Ruby Rogues</a> Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the <a href="http://rubyquiz.com/">Ruby Quiz</a>.</p>
 
@@ -764,7 +836,7 @@
   <entry>
     <title type="html"><![CDATA[Something to Show at the End of the Day]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/"/>
-    <updated>2014-07-26T09:43:50-07:00</updated>
+    <updated>2014-07-26T10:43:50-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams</id>
     <content type="html"><![CDATA[<p>Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.</p>
 
@@ -920,7 +992,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Text Messaging Made Easy With Twilio]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/"/>
-    <updated>2014-07-20T21:01:23-07:00</updated>
+    <updated>2014-07-20T22:01:23-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio</id>
     <content type="html"><![CDATA[<p>A few months ago I was determined to find out how to send and receive SMS text messages programmatically. After some research, I found that <a href="https://www.twilio.com">Twilio</a> has a range of communication tools for developers for SMS / MMS, voice, mobile and web. They take care of low level details which facilitates the process of focusing on the core app. Their <a href="https://www.twilio.com/docs">documentation</a> is excellent and you can experiment with their tools for free.</p>
 
@@ -1108,7 +1180,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Generating Code From Images of Color Gradients]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients/"/>
-    <updated>2014-07-18T19:27:15-07:00</updated>
+    <updated>2014-07-18T20:27:15-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients</id>
     <content type="html"><![CDATA[<p>I needed to incorporate smooth color transitions into a few projects I worked on several months ago. I wrote a 3D virtual terrain generator and wanted to color areas based on altitude. Higher elevations should be colored white (mountains), medium elevations should be colored green (grass) and lower elevations should be colored blue (water). A second application for these transitions was a series of particle systems (see video below). Changing particle color as a function of age allows effects like fading to black before a particle is removed. We will come back to particle systems later with a small demo at the end of this post.</p>
 
@@ -1213,7 +1285,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Maps, Lasers and Bamboo]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
-    <updated>2014-07-14T22:41:29-07:00</updated>
+    <updated>2014-07-14T23:41:29-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://nick-aschenbach.github.io/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
 
@@ -1247,7 +1319,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
-    <updated>2014-07-06T08:26:04-07:00</updated>
+    <updated>2014-07-06T09:26:04-06:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
     <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
 

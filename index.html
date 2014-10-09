@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="We are going through some large code refactors at work and are building rails engines. This requires creating apps within our main app. Each sub-app &hellip;">
+  <meta name="description" content="While on vacation near Devil&rsquo;s Thumb Ranch I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +59,105 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-09T08:47:58-06:00" pubdate data-updated="true">Oct 9<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
+
+<p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;av_capture&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span> <span class="o">=</span> <span class="no">AVCapture</span><span class="o">::</span><span class="no">Session</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">dev</span>     <span class="o">=</span> <span class="no">AVCapture</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:video?</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
+</span><span class='line'>  <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;img_</span><span class="si">#{</span><span class="n">counter</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">connection</span><span class="o">.</span><span class="n">capture</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I left fill with zeros so that the files will be <code>img_0000.jpg</code>, <code>img_0001.jpg</code> &hellip; If you want to increase the number of times we take photos (let&rsquo;s call it N) then change the <code>4</code> on line 8 to be <code>log_10(N).ceil</code>. So if we want to take 15,000 photos:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.</p>
+
+<p>To install it on OSX (requires brew):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>brew install ffmpeg</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now to turn the photos into a movie:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ffmpeg -r 60 -i img_%04d.jpg output.mp4</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>-r 60</code> flag sets the video frame rate to 60 frames per second.</p>
+
+<p>I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&rsquo;s Thumb, a local geological feature. Here is the result:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div>
+
+
+<p>I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&rsquo;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/">Building a Gem for RubyGems.org</a></h1>
     
     
@@ -75,7 +174,7 @@
   
 
 
-<time datetime="2014-09-29T18:49:06-07:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
+<time datetime="2014-09-29T19:49:06-06:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -118,7 +217,7 @@
   
 
 
-<time datetime="2014-08-30T09:01:20-07:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
+<time datetime="2014-08-30T10:01:20-06:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -214,7 +313,7 @@
   
 
 
-<time datetime="2014-08-19T19:50:17-07:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
+<time datetime="2014-08-19T20:50:17-06:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -261,7 +360,7 @@
   
 
 
-<time datetime="2014-08-02T11:18:06-07:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
+<time datetime="2014-08-02T12:18:06-06:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
         
       </p>
     
@@ -312,7 +411,7 @@
   
 
 
-<time datetime="2014-07-30T08:29:53-07:00" pubdate data-updated="true">Jul 30<sup>th</sup>, 2014</time>
+<time datetime="2014-07-30T09:29:53-06:00" pubdate data-updated="true">Jul 30<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -352,7 +451,7 @@
   
 
 
-<time datetime="2014-07-26T09:43:50-07:00" pubdate data-updated="true">Jul 26<sup>th</sup>, 2014</time>
+<time datetime="2014-07-26T10:43:50-06:00" pubdate data-updated="true">Jul 26<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -401,7 +500,7 @@
   
 
 
-<time datetime="2014-07-20T21:01:23-07:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+<time datetime="2014-07-20T22:01:23-06:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -448,7 +547,7 @@
   
 
 
-<time datetime="2014-07-18T19:27:15-07:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2014</time>
+<time datetime="2014-07-18T20:27:15-06:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -494,7 +593,7 @@
   
 
 
-<time datetime="2014-07-14T22:41:29-07:00" pubdate data-updated="true">Jul 14<sup>th</sup>, 2014</time>
+<time datetime="2014-07-14T23:41:29-06:00" pubdate data-updated="true">Jul 14<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -518,65 +617,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/06/2d-fractal-terrain/">2D Fractal Terrain Generation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-06T08:26:04-07:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
-
-<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
-
-<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
-
-<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
-
-<p>Here is an outline of the algorithm:</p>
-
-<ol>
-<li>Find the midpoint for the line segment</li>
-<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
-<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
-<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
-<li>Repeat previous until fractal is sufficiently detailed</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/07/06/2d-fractal-terrain/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -587,6 +630,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/">Building a Gem for RubyGems.org</a>
@@ -604,10 +651,6 @@
         <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/07/30/ruby-quiz/">Ruby Quiz</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -622,7 +665,7 @@
 <li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
 <li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
-<li class='category'><a href='/blog/categories/terrain/'>terrain (2)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (3)</a></li>
 <li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
 
   </ul>
