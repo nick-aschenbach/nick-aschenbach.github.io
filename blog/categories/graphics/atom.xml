@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Graphics | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/graphics/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-10-09T10:06:11-06:00</updated>
+  <updated>2014-10-26T13:59:59-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Generating Code From Images of Color Gradients]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients/"/>
-    <updated>2014-07-18T20:27:15-06:00</updated>
+    <updated>2014-07-18T19:27:15-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients</id>
     <content type="html"><![CDATA[<p>I needed to incorporate smooth color transitions into a few projects I worked on several months ago. I wrote a 3D virtual terrain generator and wanted to color areas based on altitude. Higher elevations should be colored white (mountains), medium elevations should be colored green (grass) and lower elevations should be colored blue (water). A second application for these transitions was a series of particle systems (see video below). Changing particle color as a function of age allows effects like fading to black before a particle is removed. We will come back to particle systems later with a small demo at the end of this post.</p>
 
@@ -129,7 +129,7 @@
   <entry>
     <title type="html"><![CDATA[Maps, Lasers and Bamboo]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
-    <updated>2014-07-14T23:41:29-06:00</updated>
+    <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
     <content type="html"><![CDATA[<p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil&rsquo;s Thumb Ranch" ></p>
 
@@ -163,7 +163,7 @@
   <entry>
     <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
-    <updated>2014-07-06T09:26:04-06:00</updated>
+    <updated>2014-07-06T08:26:04-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
     <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
 

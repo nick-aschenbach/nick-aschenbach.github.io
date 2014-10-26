@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Terrain | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/terrain/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-10-09T10:06:11-06:00</updated>
+  <updated>2014-10-26T13:59:59-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -16,11 +16,14 @@
   <entry>
     <title type="html"><![CDATA[Time Lapse at 8,600 Feet]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/"/>
-    <updated>2014-10-09T08:47:58-06:00</updated>
+    <updated>2014-10-09T07:47:58-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet</id>
     <content type="html"><![CDATA[<p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
 
 <p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
+
+<!-- more -->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -101,7 +104,7 @@ ffmpeg -r 60 -i img_%04d.jpg output.mp4
   <entry>
     <title type="html"><![CDATA[Maps, Lasers and Bamboo]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
-    <updated>2014-07-14T23:41:29-06:00</updated>
+    <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
     <content type="html"><![CDATA[<p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil&rsquo;s Thumb Ranch" ></p>
 
@@ -135,7 +138,7 @@ ffmpeg -r 60 -i img_%04d.jpg output.mp4
   <entry>
     <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
-    <updated>2014-07-06T09:26:04-06:00</updated>
+    <updated>2014-07-06T08:26:04-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
     <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Inheritance | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/inheritance/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-10-09T10:06:11-06:00</updated>
+  <updated>2014-10-26T13:59:59-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Protected and Private Visibility Modifiers and Inheritance in Ruby]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/"/>
-    <updated>2014-08-30T10:01:20-06:00</updated>
+    <updated>2014-08-30T09:01:20-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private</id>
     <content type="html"><![CDATA[<p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
 

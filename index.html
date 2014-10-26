@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="While on vacation near Devil&rsquo;s Thumb Ranch I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a &hellip;">
+  <meta name="description" content="This year we decided to take on a small project to help decorate the front yard for Halloween. We were sad to lose our dear orange tabby cat Frank &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -59,6 +59,59 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/10/25/pet-cemetery-headstones/">Pet Cemetery Headstones</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-25T13:37:23-07:00" pubdate data-updated="true">Oct 25<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This year we decided to take on a small project to help decorate the front yard for Halloween. We were sad to lose our dear orange tabby cat Frank this July. To memorialize Frank and our pets from years past, we decided to create a small faux pet cemetary in the front yard.</p>
+
+<p>Here are the raw materials we used:</p>
+
+<ul>
+<li>1&#8221; x 48&#8221; x 96&#8221; Owens Corning FOAMULAR insulation (about $20, Home Depot)</li>
+<li>Grey and black spray primer (about $6 each)</li>
+<li>5x Paint mixing sticks (free, Home Depot)</li>
+<li>10x 1 &frac14;&#8221; long wood screws</li>
+</ul>
+
+
+<p><strong>Cutting the foam</strong></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/25/pet-cemetery-headstones/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a></h1>
     
     
@@ -75,7 +128,7 @@
   
 
 
-<time datetime="2014-10-09T08:47:58-06:00" pubdate data-updated="true">Oct 9<sup>th</sup>, 2014</time>
+<time datetime="2014-10-09T07:47:58-07:00" pubdate data-updated="true">Oct 9<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -86,68 +139,12 @@
 
 <p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;av_capture&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">session</span> <span class="o">=</span> <span class="no">AVCapture</span><span class="o">::</span><span class="no">Session</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">dev</span>     <span class="o">=</span> <span class="no">AVCapture</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:video?</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
-</span><span class='line'>  <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;img_</span><span class="si">#{</span><span class="n">counter</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">connection</span><span class="o">.</span><span class="n">capture</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I left fill with zeros so that the files will be <code>img_0000.jpg</code>, <code>img_0001.jpg</code> &hellip; If you want to increase the number of times we take photos (let&rsquo;s call it N) then change the <code>4</code> on line 8 to be <code>log_10(N).ceil</code>. So if we want to take 15,000 photos:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.</p>
-
-<p>To install it on OSX (requires brew):</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>brew install ffmpeg</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now to turn the photos into a movie:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ffmpeg -r 60 -i img_%04d.jpg output.mp4</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>-r 60</code> flag sets the video frame rate to 60 frames per second.</p>
-
-<p>I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&rsquo;s Thumb, a local geological feature. Here is the result:</p>
-
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div>
-
-
-<p>I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&rsquo;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/09/time-lapse-at-8600-feet/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -174,7 +171,7 @@
   
 
 
-<time datetime="2014-09-29T19:49:06-06:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
+<time datetime="2014-09-29T18:49:06-07:00" pubdate data-updated="true">Sep 29<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -217,7 +214,7 @@
   
 
 
-<time datetime="2014-08-30T10:01:20-06:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
+<time datetime="2014-08-30T09:01:20-07:00" pubdate data-updated="true">Aug 30<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -313,7 +310,7 @@
   
 
 
-<time datetime="2014-08-19T20:50:17-06:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
+<time datetime="2014-08-19T19:50:17-07:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -360,7 +357,7 @@
   
 
 
-<time datetime="2014-08-02T12:18:06-06:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
+<time datetime="2014-08-02T11:18:06-07:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
         
       </p>
     
@@ -411,7 +408,7 @@
   
 
 
-<time datetime="2014-07-30T09:29:53-06:00" pubdate data-updated="true">Jul 30<sup>th</sup>, 2014</time>
+<time datetime="2014-07-30T08:29:53-07:00" pubdate data-updated="true">Jul 30<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -451,7 +448,7 @@
   
 
 
-<time datetime="2014-07-26T10:43:50-06:00" pubdate data-updated="true">Jul 26<sup>th</sup>, 2014</time>
+<time datetime="2014-07-26T09:43:50-07:00" pubdate data-updated="true">Jul 26<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -500,7 +497,7 @@
   
 
 
-<time datetime="2014-07-20T22:01:23-06:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+<time datetime="2014-07-20T21:01:23-07:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -547,7 +544,7 @@
   
 
 
-<time datetime="2014-07-18T20:27:15-06:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2014</time>
+<time datetime="2014-07-18T19:27:15-07:00" pubdate data-updated="true">Jul 18<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -572,51 +569,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/14/laser-etched-map-lazy-susan/">Maps, Lasers and Bamboo</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-14T23:41:29-06:00" pubdate data-updated="true">Jul 14<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
-
-<p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
-
-<p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/07/14/laser-etched-map-lazy-susan/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -630,6 +582,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/25/pet-cemetery-headstones/">Pet Cemetery Headstones</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a>
@@ -647,19 +603,15 @@
         <a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cnc/'>cnc (2)</a></li>
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (3)</a></li>
 <li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
 <li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
-<li class='category'><a href='/blog/categories/gems-/'>gems, (1)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (1)</a></li>
 <li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>

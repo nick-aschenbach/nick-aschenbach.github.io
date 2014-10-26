@@ -3,82 +3,88 @@
   
   
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2014/10/25/pet-cemetery-headstones/</loc>
+    <lastmod>2014-10-25T13:37:23-07:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/</loc>
-    <lastmod>2014-10-09T08:47:58-06:00</lastmod>
+    <lastmod>2014-10-09T07:47:58-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/</loc>
-    <lastmod>2014-09-29T19:49:06-06:00</lastmod>
+    <lastmod>2014-09-29T18:49:06-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/</loc>
-    <lastmod>2014-08-30T10:01:20-06:00</lastmod>
+    <lastmod>2014-08-30T09:01:20-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/</loc>
-    <lastmod>2014-08-19T20:50:17-06:00</lastmod>
+    <lastmod>2014-08-19T19:50:17-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/</loc>
-    <lastmod>2014-08-02T12:18:06-06:00</lastmod>
+    <lastmod>2014-08-02T11:18:06-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/</loc>
-    <lastmod>2014-07-30T09:29:53-06:00</lastmod>
+    <lastmod>2014-07-30T08:29:53-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/</loc>
-    <lastmod>2014-07-26T10:43:50-06:00</lastmod>
+    <lastmod>2014-07-26T09:43:50-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/</loc>
-    <lastmod>2014-07-20T22:01:23-06:00</lastmod>
+    <lastmod>2014-07-20T21:01:23-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients/</loc>
-    <lastmod>2014-07-18T20:27:15-06:00</lastmod>
+    <lastmod>2014-07-18T19:27:15-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/</loc>
-    <lastmod>2014-07-14T23:41:29-06:00</lastmod>
+    <lastmod>2014-07-14T22:41:29-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/</loc>
-    <lastmod>2014-07-06T09:26:04-06:00</lastmod>
+    <lastmod>2014-07-06T08:26:04-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/archives/</loc>
-    <lastmod>2014-10-09T10:06:11-06:00</lastmod>
+    <lastmod>2014-10-26T13:59:59-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/</loc>
-    <lastmod>2014-10-09T10:06:11-06:00</lastmod>
+    <lastmod>2014-10-26T13:59:59-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -86,7 +92,7 @@
   
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>
-    <lastmod>2014-09-29T21:16:1412046963Z</lastmod>
+    <lastmod>2014-09-29T20:16:1412046963Z</lastmod>
     <priority>0.6</priority>
   </url>
   

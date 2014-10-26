@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2014-10-09T10:06:11-06:00</updated>
+  <updated>2014-10-26T13:59:59-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -14,13 +14,66 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Pet Cemetery Headstones]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2014/10/25/pet-cemetery-headstones/"/>
+    <updated>2014-10-25T13:37:23-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2014/10/25/pet-cemetery-headstones</id>
+    <content type="html"><![CDATA[<p>This year we decided to take on a small project to help decorate the front yard for Halloween. We were sad to lose our dear orange tabby cat Frank this July. To memorialize Frank and our pets from years past, we decided to create a small faux pet cemetary in the front yard.</p>
+
+<p>Here are the raw materials we used:</p>
+
+<ul>
+<li>1&#8221; x 48&#8221; x 96&#8221; Owens Corning FOAMULAR insulation (about $20, Home Depot)</li>
+<li>Grey and black spray primer (about $6 each)</li>
+<li>5x Paint mixing sticks (free, Home Depot)</li>
+<li>10x 1 &frac14;&#8221; long wood screws</li>
+</ul>
+
+
+<p><strong>Cutting the foam</strong></p>
+
+<!-- more -->
+
+
+<p>My wife who is a graphic designer created the geometry for the project <a href="http://nick-aschenbach.github.io/assets/2014-10-25-pet-cemetery-headstones/files/petcemetary.zip">download here</a>. The PDF files can be enlarged to a desired size on paper and then cut out with a pair of scissors. You can print large format sheets at a copy center or use regular copier paper taped together to form a template. I used the PDF files in my CAD / CAM software and cut the patterns out on my CNC router.</p>
+
+<p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-10-25-pet-cemetery-headstones/images/pre-finished.jpg" width="300" title="auto Pre-finished Headstones" ></p>
+
+<p>The Corning foam can be fabricated with a utility knife, hot knife or a router. The best cut can probably be achieved with a small router or a Dremel tool. In addition, I found that the material was hand-sandable. I would experiment to find which tools work best for you. This <a href="http://insulation.owenscorning.com/assets/0/428/429/465/07b971b3-5112-46b7-a783-1f7132b59897.pdf">guide</a> from the manufacturer has some fabrication tips. If I did the project again, I would consider hand drawing the letters / designs or using stencils.</p>
+
+<p><em>Transportation note:</em> We had a gentleman at Home Depot cut the foam sheet so it would fit in the back of my car. The guide shows a trick for breaking the sheet. You can take a box cutter and run it along a straight-edge (a 2&#8221; x 4&#8221; in our case) a couple of times. Then you can break the sheet along the score line by pushing down in one swift motion over the edge of a table (or in our case a stack of plywood sheet).</p>
+
+<p><strong> Painting the headstones </strong></p>
+
+<p><img class="right" src="http://nick-aschenbach.github.io/assets/2014-10-25-pet-cemetery-headstones/images/stake.jpg" width="400" title="auto Stake with Headstone" ></p>
+
+<p>Our goal was to give the headstones the an aged, dirty appearance. We started with the black spray primer with long strokes perhaps 6-12&#8221; away from the headstone. Start with short bursts of spray and take care not to stay in one spot. Cover the front, back and the edges until the purple color of the foam is not noticeable. Let dry and apply another coat as necessary. Then we applied the grey primer in streaks around the head stones. You may want to alternate between the grey and black primer to achieve the desired effect.</p>
+
+<p><strong> Installing the headstones </strong></p>
+
+<p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-10-25-pet-cemetery-headstones/images/collage.jpg" width="400" title="auto Headstone Collage" ></p>
+
+<p>I cut the paint mixing sticks on a compound miter saw into the form of a V on one end (pictured above). This allows the sticks to be used as a stake. These were driven several inches deep into the ground (perhaps 5-7&#8221;). I used a small 3-pound sledge to drive these into the group taking care not to split the wood. You may consider putting a small piece of wood behind the stake to help distribute the load a little bit. This should help to minimize splitting.</p>
+
+<p>After the stake was in the ground, I drilled a pilot hole through each stake about 1-2&#8221; from the top. Then I centered the headstone in front of each stake. While pushing down slightly on the headstone, I drove a wood screw from the front face about 1&#8221; from the bottom back into the stake through the foam. Then from the back, I put a screw in through the pilot hole into the back of the foam. Take care to drill slowly and softly as it will be pretty easy to drive a screw right through the foam.</p>
+
+<p>Have fun time decorating this year and have a safe and happy Halloween!</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Time Lapse at 8,600 Feet]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/"/>
-    <updated>2014-10-09T08:47:58-06:00</updated>
+    <updated>2014-10-09T07:47:58-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet</id>
     <content type="html"><![CDATA[<p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
 
 <p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
+
+<!-- more -->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -88,7 +141,7 @@
   <entry>
     <title type="html"><![CDATA[Building a Gem for RubyGems.org]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/"/>
-    <updated>2014-09-29T19:49:06-06:00</updated>
+    <updated>2014-09-29T18:49:06-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org</id>
     <content type="html"><![CDATA[<p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
 
@@ -385,7 +438,7 @@
   <entry>
     <title type="html"><![CDATA[Protected and Private Visibility Modifiers and Inheritance in Ruby]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/"/>
-    <updated>2014-08-30T10:01:20-06:00</updated>
+    <updated>2014-08-30T09:01:20-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private</id>
     <content type="html"><![CDATA[<p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
 
@@ -545,7 +598,7 @@
   <entry>
     <title type="html"><![CDATA[Fast Autocompletion With Tries]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/"/>
-    <updated>2014-08-19T20:50:17-06:00</updated>
+    <updated>2014-08-19T19:50:17-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries</id>
     <content type="html"><![CDATA[<p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" ></p>
 
@@ -746,7 +799,7 @@
   <entry>
     <title type="html"><![CDATA[Popularity Trends in Programming Languages]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/"/>
-    <updated>2014-08-02T12:18:06-06:00</updated>
+    <updated>2014-08-02T11:18:06-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends</id>
     <content type="html"><![CDATA[<p>Full disclosure: I am a Ruby and Java developer.</p>
 
@@ -823,7 +876,7 @@
   <entry>
     <title type="html"><![CDATA[Ruby Quiz]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
-    <updated>2014-07-30T09:29:53-06:00</updated>
+    <updated>2014-07-30T08:29:53-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
     <content type="html"><![CDATA[<p>I listen to the <a href="http://rubyrogues.com/">Ruby Rogues</a> Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the <a href="http://rubyquiz.com/">Ruby Quiz</a>.</p>
 
@@ -836,7 +889,7 @@
   <entry>
     <title type="html"><![CDATA[Something to Show at the End of the Day]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/"/>
-    <updated>2014-07-26T10:43:50-06:00</updated>
+    <updated>2014-07-26T09:43:50-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams</id>
     <content type="html"><![CDATA[<p>Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.</p>
 
@@ -992,7 +1045,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Text Messaging Made Easy With Twilio]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/"/>
-    <updated>2014-07-20T22:01:23-06:00</updated>
+    <updated>2014-07-20T21:01:23-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio</id>
     <content type="html"><![CDATA[<p>A few months ago I was determined to find out how to send and receive SMS text messages programmatically. After some research, I found that <a href="https://www.twilio.com">Twilio</a> has a range of communication tools for developers for SMS / MMS, voice, mobile and web. They take care of low level details which facilitates the process of focusing on the core app. Their <a href="https://www.twilio.com/docs">documentation</a> is excellent and you can experiment with their tools for free.</p>
 
@@ -1180,7 +1233,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Generating Code From Images of Color Gradients]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients/"/>
-    <updated>2014-07-18T20:27:15-06:00</updated>
+    <updated>2014-07-18T19:27:15-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients</id>
     <content type="html"><![CDATA[<p>I needed to incorporate smooth color transitions into a few projects I worked on several months ago. I wrote a 3D virtual terrain generator and wanted to color areas based on altitude. Higher elevations should be colored white (mountains), medium elevations should be colored green (grass) and lower elevations should be colored blue (water). A second application for these transitions was a series of particle systems (see video below). Changing particle color as a function of age allows effects like fading to black before a particle is removed. We will come back to particle systems later with a small demo at the end of this post.</p>
 
@@ -1285,7 +1338,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[Maps, Lasers and Bamboo]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
-    <updated>2014-07-14T23:41:29-06:00</updated>
+    <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://nick-aschenbach.github.io/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
 
@@ -1319,7 +1372,7 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
   <entry>
     <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
-    <updated>2014-07-06T09:26:04-06:00</updated>
+    <updated>2014-07-06T08:26:04-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
     <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
 
