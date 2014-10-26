@@ -9,6 +9,7 @@ categories: terrain
 While on vacation near [Devil's Thumb Ranch](https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9) I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a [Tenderlovemaking post](http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html) that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX. 
 
 I modified the script from Tenderlove's `av_capture` gem's [github page](https://github.com/tenderlove/av_capture):
+<!-- more -->
 
 {% codeblock lang:rb %}
 require 'av_capture'
