@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Game Time - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2014/11/26/game-time">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Game Time</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-26T11:09:34-08:00" pubdate data-updated="true">Nov 26<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including <code>Pizza Gazebo</code> instead of <code>Pizza Hut</code>). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the <a href="https://www.thegamegal.com/word-generator/">Game Gal&rsquo;s word generator</a>.</p>
+
+<p>I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome&rsquo;s POSTman tool to issue GET requests to the following URL:</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>https://www.thegamegal.com/wordgenerator/generator.php?game=2&category=6</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>2</code> is pictionary and <code>6</code> is for the easy category. See the <code>generator.js</code> file or look at the word generator DOM for more details.</p>
+
+<p>I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born (<a href="https://github.com/nick-aschenbach/game-words">Github</a>, <a href="http://rubygems.org/gems/game_words">RubyGems</a>). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:</p>
+
+<p>To install the GameWords gem (which requires Ruby) from a terminal:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install game_words</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running the command with no options will show the help:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords
+</span><span class='line'>Usage: gamewords [options] game [category]
+</span><span class='line'>    -l, --list                       List games
+</span><span class='line'>    -c, --categories GAME            List categories for a GAME
+</span><span class='line'>    -r, --random                     Show one random word or phrase for a GAME [CATEGORY]
+</span><span class='line'>    -v, --version                    Show the version
+</span><span class='line'>    -h, --help                       Display help screen</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To find a Pictionary word for all categories:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords pictionary</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Show all words for a specific game category:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords catchphrase people</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Show a list of games with the <code>-l</code> option:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords -l</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Show a list of categories for a game via the <code>-c</code> option:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords -c pictionary</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Show a single random word or phrase use the <code>-r</code> option:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gamewords -r charades actions</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.</p>
+
+<p>Happy Holidays!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-26T11:09:34-08:00" pubdate data-updated="true">Nov 26<sup>th</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/games/'>games,</a>, <a class='category' href='/blog/categories/gems/'>gems</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2014/11/26/game-time/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2014/11/26/game-time/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/10/25/pet-cemetery-headstones/" title="Previous Post: pet cemetery headstones">&laquo; pet cemetery headstones</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/11/26/game-time/">Game Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/25/pet-cemetery-headstones/">Pet Cemetery Headstones</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/">Building a Gem for RubyGems.org</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/">Protected and Private Visibility Modifiers and Inheritance in Ruby</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cnc/'>cnc (3)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/games-/'>games, (1)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (2)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (3)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (1)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (3)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a software engineer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails development, but also have a lot of experience in Java. In my spare time, I write code and fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2014/11/26/game-time/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2014/11/26/game-time/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
