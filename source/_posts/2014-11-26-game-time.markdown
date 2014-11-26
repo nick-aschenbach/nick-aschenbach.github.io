@@ -1,0 +1,73 @@
+---
+layout: post
+title: "Game Time"
+date: 2014-11-26 11:09:34 -0800
+comments: true
+categories: games, gems
+---
+
+My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including `Pizza Gazebo` instead of `Pizza Hut`). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the [Game Gal's word generator](https://www.thegamegal.com/word-generator/).
+ 
+I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome's POSTman tool to issue GET requests to the following URL:
+
+<!-- more -->
+
+```
+https://www.thegamegal.com/wordgenerator/generator.php?game=2&category=6
+```
+
+The `2` is pictionary and `6` is for the easy category. See the `generator.js` file or look at the word generator DOM for more details. 
+
+I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born ([Github](https://github.com/nick-aschenbach/game-words), [RubyGems](http://rubygems.org/gems/game_words)). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:
+
+To install the GameWords gem (which requires Ruby) from a terminal:
+
+```
+$ gem install game_words
+```
+
+Running the command with no options will show the help:
+
+```
+$ gamewords
+Usage: gamewords [options] game [category]
+    -l, --list                       List games
+    -c, --categories GAME            List categories for a GAME
+    -r, --random                     Show one random word or phrase for a GAME [CATEGORY]
+    -v, --version                    Show the version
+    -h, --help                       Display help screen
+```
+
+To find a Pictionary word for all categories:
+
+```
+$ gamewords pictionary
+```
+
+Show all words for a specific game category:
+
+```
+$ gamewords catchphrase people
+```
+
+Show a list of games with the `-l` option:
+
+```
+$ gamewords -l
+```
+
+Show a list of categories for a game via the `-c` option:
+
+```
+$ gamewords -c pictionary
+```
+
+Show a single random word or phrase use the `-r` option:
+
+```
+$ gamewords -r charades actions
+```
+
+The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.
+
+Happy Holidays!
