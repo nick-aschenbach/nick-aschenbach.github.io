@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Games, | Aschenblog]]></title>
+  <title><![CDATA[Category: Games | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/games/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-01-12T22:49:23-08:00</updated>
+  <updated>2015-01-13T22:10:14-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
