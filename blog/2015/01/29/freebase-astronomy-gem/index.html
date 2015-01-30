@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Building Better Worlds With Terragen 3 - Aschenblog</title>
+  <title>Freebase Astronomy Gems - Aschenblog</title>
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a &hellip;">
+  <meta name="description" content="With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are closing up shop by &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds">
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
@@ -56,7 +57,7 @@
   
   <header>
     
-      <h1 class="entry-title">Building Better Worlds With Terragen 3</h1>
+      <h1 class="entry-title">Freebase Astronomy Gems</h1>
     
     
       <p class="meta">
@@ -72,46 +73,78 @@
   
 
 
-<time datetime="2015-01-12T21:13:04-08:00" pubdate data-updated="true">Jan 12<sup>th</sup>, 2015</time>
+<time datetime="2015-01-29T20:34:04-08:00" pubdate data-updated="true">Jan 29<sup>th</sup>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a side project I am working on, I utilized an excellent rendering engine for natural environments and terrain called <a href="http://planetside.co.uk/products/terragen3">Terragen 3</a> from Planetside Software. Here are a couple of screen shots from their <a href="http://planetside.co.uk/galleries/terragen-gallery">image gallery</a>:</p>
+<div class="entry-content"><p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
+Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
+assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
+to do a small project using their data sets.</p>
 
-<p><a href="/assets/2015-01-12-building-better-worlds/images/lake.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/lake.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/desert.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/desert.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/village.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/village.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/volcano.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/volcano.jpg" width="300" title="auto" ></a></p>
+<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
+
+<ul>
+<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
+description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
+<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
+in a Rails project:</li>
+</ul>
+
+
+<p><a href="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
 
 <!-- more -->
 
 
-<p>I found the <a href="http://planetside.co.uk/products/download-tg3">free version</a> fairly capable. There are some limitations over the pay version of the software that include restricting resolution, render detail and degree to which anti-aliasing is applied. However, what impressed me most is how easy it is to get started (user interface pictured below left).</p>
+<p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
 
-<p>When you load the program it creates a simple environment for you. To render this basic scene, click the <code>View-&gt;Render</code> menu. Click <code>Render</code> button and wait. On my Macbook Pro, the rendering took approximately 40 seconds (pictured below right). A shortcut for the Render command is ⌘R. There is a rough view in the upper right that shows an approximation of how the rendered scene will appear.</p>
-
-<p><a href="/assets/2015-01-12-building-better-worlds/images/ui.png"><img src="/assets/2015-01-12-building-better-worlds/images/ui.png" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/basic.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/basic.jpg" width="300" title="auto" ></a></p>
-
-<p>The node network displayed in the lower right part of the interface is a hierarchial display of the scene. This includes Renderers, Cameras and scene elements like clouds, terrain and shaders. Double clicking on the <code>Render 01</code> node in the <code>Renderers</code> pane brings up the properties (to change the resolution, etc). This is limited to a maximum of 1280x900 in the free version.</p>
-
-<p>The same configuration page is also available via the <code>Renderers</code> button on the bar at the top of the window. Adding new elements is easy. For example, to add clouds to the scene click <code>Atmosphere</code> and then the <code>Add cloud layer</code> button. I find the 3D / Volumetric clouds to be more interesting than the 2D ones.</p>
-
-<p>I spent some time following Vladimir Chopine&rsquo;s video tutorials on youtube. This was a good starting point for me:</p>
-
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/HnRFJ4Vptt8" allowfullscreen></iframe></div>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">mount</span> <span class="no">AstronomyEngine</span><span class="o">::</span><span class="no">App</span> <span class="o">=&gt;</span> <span class="s1">&#39;/astronomy&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>I followed along with a couple of videos and with some trial and error created this rendering:</p>
+<p>This adds the web page at the root and adds a few additional routes.</p>
 
-<p><a href="/assets/2015-01-12-building-better-worlds/images/mountain.jpg"><img class="left" src="/assets/2015-01-12-building-better-worlds/images/mountain.jpg" title="auto auto" ></a></p>
+<p>Request the list of categories:</p>
 
-<p>Here is the Terragen 3 <a href="/assets//2015-01-12-building-better-worlds/images/layered_colors3.tgd">file</a> I used to generate the above rendering. Mainly I focused on creating shaders for the elements in the scene (grass, snow, sand). I played with the atmospheric, lighting and cloud elements until I found something that I liked. The rendering took about 11 minutes to complete on my laptop.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/categories
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Terragen supports import and export FBX, Wavefront OBJ, Lightwave LWO2 and their own native TGO format. It can also import and export heightfield / DEM formats including real geographical data from GeoTIFFs. This makes it easy to communicate with other modeling packages like Rhino, Maya, 3D Studio Max, Blender and Cinema 4D.</p>
+
+<p>Request all topics for a given category:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/categories/Star/topics
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Search all topic names and descriptions:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/topics?q<span class="o">=</span>cluster
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
+Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and
+<a href="https://github.com/nick-aschenbach/astronomy-engine">astronomy_engine</a> gem.</p>
+
+<p>Resources:</p>
+
+<ul>
+<li>Amazon makes a handful of <a href="https://aws.amazon.com/search?searchQuery=freebase">Freebase Data Dumps</a> freely available.
+Also they several other <a href="https://aws.amazon.com/datasets/">public data sets</a>.</li>
+<li>Wikidata <a href="http://dumps.wikimedia.org/">data dumps</a> are also available.</li>
+</ul>
+
 </div>
 
 
@@ -134,12 +167,12 @@
   
 
 
-<time datetime="2015-01-12T21:13:04-08:00" pubdate data-updated="true">Jan 12<sup>th</sup>, 2015</time>
+<time datetime="2015-01-29T20:34:04-08:00" pubdate data-updated="true">Jan 29<sup>th</sup>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/graphics/'>graphics</a>, <a class='category' href='/blog/categories/terrain/'>terrain</a>
+    <a class='category' href='/blog/categories/astronomy/'>astronomy</a>, <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/learning/'>learning</a>
   
 </span>
 
@@ -148,7 +181,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/" >Tweet</a>
   
   
   
@@ -157,10 +190,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/11/26/game-time/" title="Previous Post: Game Time">&laquo; Game Time</a>
+        <a class="basic-alignment left" href="/blog/2015/01/12/building-better-worlds/" title="Previous Post: Building Better Worlds with Terragen 3">&laquo; Building Better Worlds with Terragen 3</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/01/29/freebase-astronomy-gem/" title="Next Post: Freebase Astronomy Gems">Freebase Astronomy Gems &raquo;</a>
       
     </p>
   </footer>
@@ -250,8 +281,8 @@ Any views or opinions presented in this blog are my own and do not necessarily r
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/';
-        var disqus_url = 'http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/';
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/';
         var disqus_script = 'embed.js';
       
     (function () {

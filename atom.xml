@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-01-13T22:10:14-08:00</updated>
+  <updated>2015-01-29T22:41:44-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Freebase Astronomy Gems]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/"/>
+    <updated>2015-01-29T20:34:04-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem</id>
+    <content type="html"><![CDATA[<p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
+Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
+assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
+to do a small project using their data sets.</p>
+
+<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
+
+<ul>
+<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
+description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
+<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
+in a Rails project:</li>
+</ul>
+
+
+<p><a href="http://nick-aschenbach.github.io/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="http://nick-aschenbach.github.io/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
+
+<!-- more -->
+
+
+<p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">mount</span> <span class="no">AstronomyEngine</span><span class="o">::</span><span class="no">App</span> <span class="o">=&gt;</span> <span class="s1">&#39;/astronomy&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This adds the web page at the root and adds a few additional routes.</p>
+
+<p>Request the list of categories:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/categories
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Request all topics for a given category:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/categories/Star/topics
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Search all topic names and descriptions:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="o">{</span>APPLICATION_ROOT<span class="o">}</span>/astronomy/topics?q<span class="o">=</span>cluster
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
+Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and
+<a href="https://github.com/nick-aschenbach/astronomy-engine">astronomy_engine</a> gem.</p>
+
+<p>Resources:</p>
+
+<ul>
+<li>Amazon makes a handful of <a href="https://aws.amazon.com/search?searchQuery=freebase">Freebase Data Dumps</a> freely available.
+Also they several other <a href="https://aws.amazon.com/datasets/">public data sets</a>.</li>
+<li>Wikidata <a href="http://dumps.wikimedia.org/">data dumps</a> are also available.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building Better Worlds With Terragen 3]]></title>
