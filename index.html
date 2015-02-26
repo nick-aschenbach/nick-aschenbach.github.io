@@ -9,8 +9,8 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="In this post, I write a small domain specific language to handle HTTP requests (inspired by
-Sinatra) using Rack. We start by taking a quick look at a &hellip;">
+  <meta name="description" content="In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
+of 3D graphics in games. For years, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -54,6 +54,62 @@ Sinatra) using Rack. We start by taking a quick look at a &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-25T22:40:30-08:00" pubdate data-updated="true">Feb 25<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
+of 3D graphics in games.</p>
+
+<p>For years, side-scrolling video games use a projection where the camera is aligned along one of the axes. Many original
+game titles like Tetris, Zelda, Super Mario Bros place the camera either above the player looking down along a
+vertical axis or looking directly from the side. Basic techniques like shading and parallax scrolling (where foreground
+images scroll faster than background images) help to provide a sense of depth.</p>
+
+<p><img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" ></p>
+
+<p>An <a href="http://en.wikipedia.org/wiki/Isometric_projection">isometric projection</a> is a popular way of visualizing 3D objects
+on a 2D screen. This involves rotating the camera 45 degrees to one side and then angling down roughly 30 degrees. This
+approach is used in several role playing and strategy games (Sim City 2000 pictured below). Q*bert, released in 1982,
+was perhaps one of the first games that used isometric graphics.</p>
+
+<p><img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" ></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/02/25/isometric-tile-engine/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -590,57 +646,6 @@ in a Rails project:</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/02/programming-languages-popularity-trends/">Popularity Trends in Programming Languages</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-02T11:18:06-07:00" pubdate data-updated="true">Aug 2<sup>nd</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Full disclosure: I am a Ruby and Java developer.</p>
-
-<p>Everyone has their favorite pet languages (myself included) and I realize that this is a topic that evokes some feelings among my peers. In recent years, I strove to be more agnostic about tools and languages. While I try to be careful about making predictions, the languages and tools that are relevant now may fall out of favor in the industry in a few years. I&rsquo;ll try stick to what I discovered, but I realize that my perception is colored by my experience.</p>
-
-<p>I reviewed several indexes and articles including <a href="http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html">TIOBE</a>, <a href="http://lang-index.sourceforge.net/">Transparent Language Popularity Index</a>, <a href="http://spectrum.ieee.org/static/interactive-the-top-programming-languages">IEEE Spectrum: Top Programming Languages</a>, <a href="https://sites.google.com/site/pydatalog/pypl/PyPL-PopularitY-of-Programming-Language">PopularitY of Programming Language Index</a>, <a href="http://redmonk.com/sogrady/2014/01/22/language-rankings-1-14/">RedMonk Programming Language Rankings</a>, <a href="http://langpop.corger.nl/">Programming Language Popularity Chart</a> and <a href="http://redmonk.com/dberkholz/2014/05/02/github-language-trends-and-the-fragmenting-landscape/">GitHub Language Trends and Fragmenting Landscape</a></p>
-
-<p>While there was correlation between highly ranked languages between the indexes, none of them were the same. Several metrics were used including number of open source projects, number of lines of code, number of tracked bugs / issues, number of tutorials and numbers of search engine searches. The list goes on and on. How these metrics were weighted had a big impact on the overall ranking results.</p>
-
-<p><img class="left" src="http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png" width="450" title="auto New GitHub Repos" ></p>
-
-<p>In alphabetical order some of the most highly ranked languages are C, C#, C++, Java, JavaScript, Objective-C, PHP, Perl, Python, Ruby and Visual Basic. About half the indexes I reviewed had C and Java in the top two spots.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/08/02/programming-languages-popularity-trends/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -654,6 +659,10 @@ in a Rails project:</li>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/02/21/a-small-dsl-rack-app/">Writing a Small DSL Using Rack</a>
@@ -671,10 +680,6 @@ in a Rails project:</li>
         <a href="/blog/2014/11/26/game-time/">Game Time</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/10/25/pet-cemetery-headstones/">Pet Cemetery Headstones</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -685,15 +690,15 @@ in a Rails project:</li>
 <li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
 <li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
 <li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
-<li class='category'><a href='/blog/categories/games/'>games (1)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (2)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (3)</a></li>
-<li class='category'><a href='/blog/categories/graphics/'>graphics (4)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (5)</a></li>
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
 <li class='category'><a href='/blog/categories/learning/'>learning (2)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
-<li class='category'><a href='/blog/categories/terrain/'>terrain (4)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
 <li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
 
   </ul>

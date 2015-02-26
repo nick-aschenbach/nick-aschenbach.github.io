@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine/</loc>
+    <lastmod>2015-02-25T22:40:30-08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/02/21/a-small-dsl-rack-app/</loc>
     <lastmod>2015-02-21T22:03:36-08:00</lastmod>
     <priority>0.8</priority>
@@ -101,14 +107,14 @@
   
   <url>
     <loc>http://nick-aschenbach.github.io/blog/archives/</loc>
-    <lastmod>2015-02-21T13:32:33-08:00</lastmod>
+    <lastmod>2015-02-25T22:06:08-08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://nick-aschenbach.github.io/</loc>
-    <lastmod>2015-02-21T13:32:33-08:00</lastmod>
+    <lastmod>2015-02-25T22:06:08-08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -117,6 +123,24 @@
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>
     <lastmod>2014-09-29T20:16:1412046963Z</lastmod>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric01/index.html</loc>
+    <lastmod>2015-02-23T22:44:1424760272Z</lastmod>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric02/index.html</loc>
+    <lastmod>2015-02-24T18:45:1424832330Z</lastmod>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric03/index.html</loc>
+    <lastmod>2015-02-25T00:13:1424852031Z</lastmod>
     <priority>0.6</priority>
   </url>
   
