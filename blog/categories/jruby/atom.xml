@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Languages | Aschenblog]]></title>
-  <link href="http://nick-aschenbach.github.io/blog/categories/languages/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Jruby | Aschenblog]]></title>
+  <link href="http://nick-aschenbach.github.io/blog/categories/jruby/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
   <updated>2015-03-14T14:12:52-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
@@ -267,83 +267,6 @@ as the layout manager for the <code>JFrame</code>:</p>
 the window here to show the scrollbars:</p>
 
 <p><img src="/assets/2015-03-14-getting-started-with-jruby/images/browser.png" width="800" height="300"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Popularity Trends in Programming Languages]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/"/>
-    <updated>2014-08-02T11:18:06-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends</id>
-    <content type="html"><![CDATA[<p>Full disclosure: I am a Ruby and Java developer.</p>
-
-<p>Everyone has their favorite pet languages (myself included) and I realize that this is a topic that evokes some feelings among my peers. In recent years, I strove to be more agnostic about tools and languages. While I try to be careful about making predictions, the languages and tools that are relevant now may fall out of favor in the industry in a few years. I&rsquo;ll try stick to what I discovered, but I realize that my perception is colored by my experience.</p>
-
-<p>I reviewed several indexes and articles including <a href="http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html">TIOBE</a>, <a href="http://lang-index.sourceforge.net/">Transparent Language Popularity Index</a>, <a href="http://spectrum.ieee.org/static/interactive-the-top-programming-languages">IEEE Spectrum: Top Programming Languages</a>, <a href="https://sites.google.com/site/pydatalog/pypl/PyPL-PopularitY-of-Programming-Language">PopularitY of Programming Language Index</a>, <a href="http://redmonk.com/sogrady/2014/01/22/language-rankings-1-14/">RedMonk Programming Language Rankings</a>, <a href="http://langpop.corger.nl/">Programming Language Popularity Chart</a> and <a href="http://redmonk.com/dberkholz/2014/05/02/github-language-trends-and-the-fragmenting-landscape/">GitHub Language Trends and Fragmenting Landscape</a></p>
-
-<p>While there was correlation between highly ranked languages between the indexes, none of them were the same. Several metrics were used including number of open source projects, number of lines of code, number of tracked bugs / issues, number of tutorials and numbers of search engine searches. The list goes on and on. How these metrics were weighted had a big impact on the overall ranking results.</p>
-
-<p><img class="left <a" src="href="http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png">http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png</a>" width="450" title="auto New GitHub Repos" ></p>
-
-<p>In alphabetical order some of the most highly ranked languages are C, C#, C++, Java, JavaScript, Objective-C, PHP, Perl, Python, Ruby and Visual Basic. About half the indexes I reviewed had C and Java in the top two spots.</p>
-
-<!-- more -->
-
-
-<p>Because there is no objective measurement of programming language popularity, the exact rank seemed less important to me than how things <a href="http://redmonk.com/dberkholz/2014/05/02/github-language-trends-and-the-fragmenting-landscape/">change over time</a> (see graph). Another approach that I liked was the use of <a href="http://sogrady-media.redmonk.com/sogrady/files/2014/01/lang-rank-114-wm.png">scatter plots</a>.</p>
-
-<p>I found Donnie Berkholz&rsquo;s analysis of programming language use on GitHub particularly insightful. He looks at new GitHub repos, new issues and new users as a function of time. Before we go deeper into the numbers, it is important to mention that GitHub was embraced by the Ruby community early on and the apparent drop in Ruby projects actually indicates that GitHub was adopted by the developer community at large over the past five years.</p>
-
-<p>Overall language trends (looking at GitHub issues):</p>
-
-<ul>
-<li>While JavaScript issues are increasing, the trend is decelerating. It may stabilize at around 25% of total issues on GitHub</li>
-<li>Ruby has seen a big decline and appears to be reaching 10% of issues</li>
-<li>Java and PHP have stabilized at 10% of issues</li>
-<li>Python has dropped from 15% to about 10% of issues since 2008/2009. It&rsquo;s unclear if this number has stabilized.</li>
-</ul>
-
-
-<p>He also points out that C# and Objective-C are widely used, but do not show up in his data because developers from those communities have not embraced GitHub to the same degree as some others. This is corroborated by <a href="http://langpop.corger.nl/">data</a> that indicates while C# is discussed widely on Stack Overflow, it is not correlated as strongly with lines of code on GitHub as are other languages like Java and JavaScript:</p>
-
-<table>
-<thead>
-<tr>
-<th>Language    </th>
-<th> Stack Overflow </th>
-<th> GitHub          </th>
-<th> Ratio</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C#          </td>
-<td> 679,776        </td>
-<td> 2,469,334,797   </td>
-<td> 3,632</td>
-</tr>
-<tr>
-<td>Java        </td>
-<td> 687,426        </td>
-<td> 7,090,897,887   </td>
-<td> 10,315</td>
-</tr>
-<tr>
-<td>JavaScript  </td>
-<td> 676,383        </td>
-<td> 15,664,918,541  </td>
-<td> 23,160</td>
-</tr>
-</tbody>
-</table>
-
-
-<br/>
-
-
-<p>The ratio is the number of lines of code on GitHub relative to the number of Stack Overflow comments. All three languages have a similar number of comments on Stack, but have very different ratios.</p>
-
-<p>The article closes by suggesting that we have moved towards an increasingly fragmented programming language landscape. With the rise of domain specific languages and the increasing reliance on web technologies, it will be fascinating to see what programming languages will dominate in the future.</p>
 ]]></content>
   </entry>
   

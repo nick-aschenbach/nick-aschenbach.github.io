@@ -9,8 +9,7 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
-of 3D graphics in games. For years, &hellip;">
+  <meta name="description" content="After hearing about jRuby on several Ruby Rogues podcasts and reading posts about it online, I wanted to give it a shot. Installation is super easy &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -54,6 +53,80 @@ of 3D graphics in games. For years, &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/14/getting-started-with-jruby/">jRuby Test Drive</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-14T09:09:13-07:00" pubdate data-updated="true">Mar 14<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>After hearing about jRuby on several Ruby Rogues podcasts and reading posts about it online, I wanted to give it a shot.</p>
+
+<p>Installation is super easy if you use <a href="https://rvm.io/">rvm</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">rvm</span> <span class="nx">install</span> <span class="nx">jruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will install several dependencies (like the patch, gawk, g++ and the JDK if you do not already have them
+installed). The installation and setup took about seven minutes on a clean Ubuntu 12.04 Vagrant box I spun up for
+testing purposes.</p>
+
+<p>Let&rsquo;s say hello in irb:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Specifying the package is a little cumbersome. Importing the <code>java.lang.System</code> makes things a little easier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">System</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span> <span class="s1">&#39;Hello World!&#39;</span>
+</span><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/14/getting-started-with-jruby/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -599,53 +672,6 @@ in a Rails project:</li>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Fast Autocompletion With Tries</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-19T19:50:17-07:00" pubdate data-updated="true">Aug 19<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="left" src="/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" ></p>
-
-<p>Tries (pronounced &lsquo;try&rsquo; or &lsquo;trie&rsquo; as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.</p>
-
-<p>Tries are great for super-fast autocomplete search. A breadth first search from any given point in the tree will find an exact match (if it exists), then matches one character away, then two and so on down the tree.</p>
-
-<p>To build a trie we will need a recursively defined node called <code>TrieNode</code>. Let&rsquo;s take a look at some Ruby code that we will use to build a Trie:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/08/19/super-fast-autocomplete-with-tries/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -659,6 +685,10 @@ in a Rails project:</li>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/03/14/getting-started-with-jruby/">jRuby Test Drive</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a>
@@ -676,10 +706,6 @@ in a Rails project:</li>
         <a href="/blog/2015/01/12/building-better-worlds/">Building Better Worlds With Terragen 3</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/11/26/game-time/">Game Time</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -694,7 +720,8 @@ in a Rails project:</li>
 <li class='category'><a href='/blog/categories/gems/'>gems (3)</a></li>
 <li class='category'><a href='/blog/categories/graphics/'>graphics (5)</a></li>
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
-<li class='category'><a href='/blog/categories/languages/'>languages (1)</a></li>
+<li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
 <li class='category'><a href='/blog/categories/learning/'>learning (2)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
