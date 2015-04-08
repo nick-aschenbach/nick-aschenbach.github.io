@@ -1,153 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/</loc>
+    <lastmod>2015-04-07T22:28:10-07:00</lastmod>
+  </url>
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/03/14/getting-started-with-jruby/</loc>
     <lastmod>2015-03-14T09:09:13-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine/</loc>
     <lastmod>2015-02-25T22:40:30-08:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/02/21/a-small-dsl-rack-app/</loc>
     <lastmod>2015-02-21T22:03:36-08:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/</loc>
     <lastmod>2015-01-29T20:34:04-08:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/</loc>
     <lastmod>2015-01-12T21:13:04-08:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/11/26/game-time/</loc>
     <lastmod>2014-11-26T11:09:34-08:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/10/25/pet-cemetery-headstones/</loc>
     <lastmod>2014-10-25T13:37:23-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/</loc>
     <lastmod>2014-10-09T07:47:58-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/</loc>
     <lastmod>2014-09-29T18:49:06-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/</loc>
     <lastmod>2014-08-30T09:01:20-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/</loc>
     <lastmod>2014-08-19T19:50:17-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/08/02/programming-languages-popularity-trends/</loc>
     <lastmod>2014-08-02T11:18:06-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/</loc>
     <lastmod>2014-07-30T08:29:53-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/</loc>
     <lastmod>2014-07-26T09:43:50-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/</loc>
     <lastmod>2014-07-20T21:01:23-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/18/generating-code-from-color-gradients/</loc>
     <lastmod>2014-07-18T19:27:15-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/</loc>
     <lastmod>2014-07-14T22:41:29-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/</loc>
     <lastmod>2014-07-06T08:26:04-07:00</lastmod>
-    <priority>0.8</priority>
   </url>
-  
-  
   <url>
     <loc>http://nick-aschenbach.github.io/blog/archives/</loc>
-    <lastmod>2015-03-14T14:12:52-07:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/</loc>
-    <lastmod>2015-03-14T14:12:52-07:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
   </url>
-  
-  
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/graphics/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/terrain/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/cnc/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/wood/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/metaprogramming/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/communication/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/learning/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/languages/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/data-structures/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/inheritance/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/gems/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/games/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/astronomy/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/engine/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/rack/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/dsl/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/blog/categories/jruby/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/posts/2/</loc>
+  </url>
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>
-    <lastmod>2014-09-29T20:16:1412046963Z</lastmod>
-    <priority>0.6</priority>
+    <lastmod>2014-09-29T20:16:03-07:00</lastmod>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric01/index.html</loc>
-    <lastmod>2015-02-23T22:44:1424760272Z</lastmod>
-    <priority>0.6</priority>
+    <lastmod>2015-02-23T22:44:32-08:00</lastmod>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric02/index.html</loc>
-    <lastmod>2015-02-24T18:45:1424832330Z</lastmod>
-    <priority>0.6</priority>
+    <lastmod>2015-02-24T18:45:30-08:00</lastmod>
   </url>
-  
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric03/index.html</loc>
-    <lastmod>2015-02-25T00:13:1424852031Z</lastmod>
-    <priority>0.6</priority>
+    <lastmod>2015-02-25T00:13:51-08:00</lastmod>
   </url>
-  
 </urlset>

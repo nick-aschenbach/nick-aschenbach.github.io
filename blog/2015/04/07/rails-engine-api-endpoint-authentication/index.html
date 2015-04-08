@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails Engine API Endpoint Authentication Using Rack Middleware - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host
+application, we require that &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Rails Engine API Endpoint Authentication Using Rack Middleware</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-07T22:28:10-07:00" pubdate data-updated="true">Apr 7<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host
+application, we require that clients use tokens for API authentication. In a parent class before filter, we call a
+remote web service to validate these tokens. We all agreed that it was a bad idea to copy this code over from the host
+into the engine.</p>
+
+<p>There were a couple of reasons for this. Not only would the code be duplicated, but we felt like it would be a better
+separation of concerns to keep authentication out of the engine. Another argument is that we would not want
+to impose an authentication system from the gem on the host application. Ryan Bigg expands on this in a
+<a href="http://ryanbigg.com/2012/03/engines-and-authentication/">blog post</a> on Forem.</p>
+
+<!-- more -->
+
+
+<p>We investigated a handful of approaches. The simplest, least invasive approach seemed to be to use Rack middleware.
+First, we register the middleware with an array of endpoints to validate:</p>
+
+<figure class='code'><figcaption><span>application.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">Middleware</span><span class="o">::</span><span class="no">TokenAuthorizer</span><span class="p">,</span> <span class="o">[</span><span class="s1">&#39;api/accounts/&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then we define the middleware:</p>
+
+<figure class='code'><figcaption><span>token_authorizer.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">module</span> <span class="nn">Middleware</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">TokenAuthorizer</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">validation_endpoints</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+</span><span class='line'>      <span class="vi">@validation_endpoints</span> <span class="o">=</span> <span class="n">validation_endpoints</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">unauthorized</span> <span class="k">if</span> <span class="n">need_to_validate?</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="o">]</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">invalid_token?</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s1">&#39;HTTP_AUTHORIZATION&#39;</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">need_to_validate?</span><span class="p">(</span><span class="n">request_path</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@validation_endpoints</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">validation_endpoint</span><span class="o">|</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">request_path</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">validation_endpoint</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">invalid_token?</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="o">!</span><span class="no">WebServices</span><span class="o">::</span><span class="no">TokenAuth</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">is_valid_token?</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">unauthorized</span>
+</span><span class='line'>      <span class="o">[</span><span class="mi">401</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s1">&#39;Unauthorized&#39;</span><span class="o">]]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In most cases, we will just end up executing calling the host application (via <code>@app.call(env)</code>). However if the
+<code>PATH_INFO</code> matches an initialized endpoint and we pass in an invalid token, then we will return a <code>401</code> HTTP status
+code.</p>
+
+<p>There are a few drawbacks to this approach:</p>
+
+<ul>
+<li>We do not take into the HTTP verb into account and may match more endpoints than we intend (e.g. api/accounts/:account_identifier)</li>
+<li>The middleware runs for all requests, even ones where we have a separate authentication mechanism</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-04-07T22:28:10-07:00" pubdate data-updated="true">Apr 7<sup>th</sup>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/engine/'>engine</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/14/getting-started-with-jruby/" title="Previous Post: jRuby Test Drive">&laquo; jRuby Test Drive</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/07/rails-engine-api-endpoint-authentication/">Rails Engine API Endpoint Authentication Using Rack Middleware</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/14/getting-started-with-jruby/">jRuby Test Drive</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/21/a-small-dsl-rack-app/">Writing a Small DSL Using Rack</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/01/29/freebase-astronomy-gem/">Freebase Astronomy Gems</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/astronomy/'>astronomy (1)</a></li>
+<li class='category'><a href='/blog/categories/cnc/'>cnc (3)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
+<li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (2)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (3)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (5)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (2)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (2)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a web developer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails
+development, but also have experience in Java, C# and Microsoft Cloud (Azure). In my spare time, I write code and
+fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

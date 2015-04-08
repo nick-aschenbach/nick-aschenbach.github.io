@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Data-structures | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/data-structures/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-03-14T14:12:52-07:00</updated>
+  <updated>2015-04-07T23:42:25-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -25,14 +25,12 @@
 <!-- more -->
 
 
-<p><code>
-bundle gem foobar
-</code></p>
+<pre><code>bundle gem foobar
+</code></pre>
 
 <p>Several files are created:</p>
 
-<p><code>
-create  foobar/Rakefile
+<pre><code>create  foobar/Rakefile
 create  foobar/LICENSE.txt
 create  foobar/README.md
 create  foobar/.gitignore
@@ -40,11 +38,11 @@ create  foobar/foobar.gemspec
 create  foobar/lib/foobar.rb
 create  foobar/lib/foobar/version.rb
 Initializing git repo in /Users/sela/workspace/foobar
-</code></p>
+</code></pre>
 
 <p>Let&rsquo;s take a look at the gemspec file:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -82,7 +80,7 @@ Initializing git repo in /Users/sela/workspace/foobar
 </span><span class='line'><span class="sr">  spec.name          = &amp;ldquo;foobar&amp;rdquo;</span>
 </span><span class='line'><span class="sr">  spec.version       = Foobar::VERSION</span>
 </span><span class='line'><span class="sr">  spec.authors       = [&amp;ldquo;Nick Aschenbach&amp;rdquo;]</span>
-</span><span class='line'><span class="sr">  spec.email         = [&amp;ldquo;&lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#116;&amp;#x6f;&amp;#58;&amp;#x6e;&amp;#x69;&amp;#99;&amp;#107;&amp;#x2e;&amp;#x61;&amp;#115;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#x6e;&amp;#98;&amp;#97;&amp;#99;&amp;#104;&amp;#64;&amp;#103;&amp;#109;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#46;&amp;#x63;&amp;#111;&amp;#x6d;&quot;&gt;&amp;#110;&amp;#105;&amp;#99;&amp;#x6b;&amp;#x2e;&amp;#97;&amp;#115;&amp;#x63;&amp;#104;&amp;#x65;&amp;#110;&amp;#98;&amp;#x61;&amp;#99;&amp;#x68;&amp;#64;&amp;#x67;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#46;&amp;#x63;&amp;#111;&amp;#109;&lt;/</span><span class="n">a</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]</span>
+</span><span class='line'><span class="sr">  spec.email         = [&amp;ldquo;&lt;a href=&quot;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#116;&amp;#x6f;&amp;#58;&amp;#110;&amp;#105;&amp;#x63;&amp;#107;&amp;#46;&amp;#x61;&amp;#115;&amp;#99;&amp;#104;&amp;#x65;&amp;#110;&amp;#98;&amp;#x61;&amp;#99;&amp;#x68;&amp;#x40;&amp;#x67;&amp;#109;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&quot;&gt;&amp;#x6e;&amp;#x69;&amp;#99;&amp;#x6b;&amp;#46;&amp;#x61;&amp;#x73;&amp;#x63;&amp;#104;&amp;#101;&amp;#x6e;&amp;#98;&amp;#97;&amp;#x63;&amp;#104;&amp;#x40;&amp;#103;&amp;#x6d;&amp;#x61;&amp;#105;&amp;#108;&amp;#46;&amp;#x63;&amp;#111;&amp;#x6d;&lt;/</span><span class="n">a</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
@@ -96,50 +94,42 @@ Initializing git repo in /Users/sela/workspace/foobar
 </span><span class='line'><span class="sr">&lt;p&gt;  spec.add_development_dependency &amp;ldquo;bundler&amp;rdquo;, &amp;ldquo;~&gt; 1.6&amp;rdquo;</span>
 </span><span class='line'><span class="sr">  spec.add_development_dependency &amp;ldquo;rake&amp;rdquo;</span>
 </span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Also a handy <code>README.md</code> file is created that shows users how to install the gem using bundler.</p>
 
-<p>```
-TODO: Write a gem description</p>
+<pre><code>TODO: Write a gem description
 
-<h2>Installation</h2>
+## Installation
 
-<p>Add this line to your application&rsquo;s Gemfile:</p>
+Add this line to your application's Gemfile:
 
-<pre><code>gem 'foobar'
+    gem 'foobar'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install foobar
+
+## Usage
+
+TODO: Write usage instructions here
+
+## Contributing
+
+1. Fork it ( https://github.com/[my-github-username]/foobar/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
 </code></pre>
-
-<p>And then execute:</p>
-
-<pre><code>$ bundle
-</code></pre>
-
-<p>Or install it yourself as:</p>
-
-<pre><code>$ gem install foobar
-</code></pre>
-
-<h2>Usage</h2>
-
-<p>TODO: Write usage instructions here</p>
-
-<h2>Contributing</h2>
-
-<ol>
-<li>Fork it ( <a href="https://github.com/">https://github.com/</a>[my-github-username]/foobar/fork )</li>
-<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
-<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
-<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
-<li>Create a new Pull Request
-```</li>
-</ol>
-
 
 <p>I used this template for my <code>scrabble_score</code> gem. The full source code is available on <a href="https://github.com/nick-aschenbach/scrabble-score">Github</a>. The project is extremely simple and has the following structure:</p>
 
-<p>```
-.
+<pre><code>.
 ├── Gemfile
 ├── Gemfile.lock
 ├── LICENSE.txt
@@ -154,91 +144,76 @@ TODO: Write a gem description</p>
 │   │   └── word_finder.rb
 │   └── scrabble_score.rb
 ├── scrabble_score.gemspec
-└── spec</p>
+└── spec
+    ├── assets
+    │   └── dictionary.txt
+    ├── lib
+    │   └── scrabble_score
+    │       ├── dictionary_spec.rb
+    │       ├── letters_spec.rb
+    │       └── word_finder_spec.rb
+    └── spec_helper.rb
 
-<pre><code>├── assets
-│   └── dictionary.txt
-├── lib
-│   └── scrabble_score
-│       ├── dictionary_spec.rb
-│       ├── letters_spec.rb
-│       └── word_finder_spec.rb
-└── spec_helper.rb
+7 directories, 16 files
 </code></pre>
-
-<p>7 directories, 16 files
-```</p>
 
 <p>After getting my specs green and playing around with the code a bit, I went to generate the gem. First, let&rsquo;s upgrade to the latest RubyGems version:</p>
 
-<p><code>
-gem update --system
-</code></p>
+<pre><code>gem update --system
+</code></pre>
 
 <p>Now, let&rsquo;s build the gem:</p>
 
-<p><code>
-gem build scrabble_score.gemspec
-</code></p>
+<pre><code>gem build scrabble_score.gemspec
+</code></pre>
 
 <p>The first time I ran this tool I received a handful of warnings:</p>
 
-<p>```
-WARNING:  no homepage specified
-WARNING:  open-ended dependency on rspec (>= 0, development) is not recommended
-  if rspec is semantically versioned, use:</p>
-
-<pre><code>add_development_dependency 'rspec', '~&gt; 0'
-</code></pre>
-
-<p>WARNING:  open-ended dependency on simplecov (>= 0, development) is not recommended
-  if simplecov is semantically versioned, use:</p>
-
-<pre><code>add_development_dependency 'simplecov', '~&gt; 0'
-</code></pre>
-
-<p>WARNING:  See <a href="http://guides.rubygems.org/specification-reference/">http://guides.rubygems.org/specification-reference/</a> for help
+<pre><code>WARNING:  no homepage specified
+WARNING:  open-ended dependency on rspec (&gt;= 0, development) is not recommended
+  if rspec is semantically versioned, use:
+    add_development_dependency 'rspec', '~&gt; 0'
+WARNING:  open-ended dependency on simplecov (&gt;= 0, development) is not recommended
+  if simplecov is semantically versioned, use:
+    add_development_dependency 'simplecov', '~&gt; 0'
+WARNING:  See http://guides.rubygems.org/specification-reference/ for help
   Successfully built RubyGem
   Name: scrabble_score
   Version: 0.1.0
   File: scrabble_score-0.1.0.gem
-```</p>
+</code></pre>
 
 <p>For the homepage I used the project&rsquo;s Github repository. I also added versions to the development dependencies:</p>
 
-<p><code>
-spec.add_development_dependency 'bundler', '~&gt; 1.6'
+<pre><code>spec.add_development_dependency 'bundler', '~&gt; 1.6'
 spec.add_development_dependency 'rspec', '3.0.0'
 spec.add_development_dependency 'simplecov', '0.9.1'
-</code></p>
+</code></pre>
 
 <p>I deleted the <code>scrabble_score-0.1.0.gem</code> file and ran the <code>gem build</code> command again. Here is the output:</p>
 
-<p><code>
-  Successfully built RubyGem
+<pre><code>  Successfully built RubyGem
   Name: scrabble_score
   Version: 0.1.0
   File: scrabble_score-0.1.0.gem
-</code></p>
+</code></pre>
 
 <p>Everything looks good, so I proceeded with the last step by running:</p>
 
-<p><code>
-gem push scrabble_score-0.1.0.gem
-</code></p>
+<pre><code>gem push scrabble_score-0.1.0.gem 
+</code></pre>
 
 <p>Which created the following output:</p>
 
-<p>```
-Enter your RubyGems.org credentials.
-Don&rsquo;t have an account yet? Create one at <a href="https://rubygems.org/sign_up">https://rubygems.org/sign_up</a>
-   Email:   <a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#110;&#x69;&#99;&#x6b;&#46;&#x61;&#115;&#99;&#104;&#x65;&#110;&#x62;&#x61;&#99;&#x68;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#109;">&#x6e;&#105;&#x63;&#x6b;&#46;&#x61;&#x73;&#x63;&#x68;&#x65;&#x6e;&#98;&#x61;&#99;&#104;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;</a>
-Password:</p>
+<pre><code>Enter your RubyGems.org credentials.
+Don't have an account yet? Create one at https://rubygems.org/sign_up
+   Email:   nick.aschenbach@gmail.com
+Password:   
 
-<p>Signed in.
-Pushing gem to <a href="https://rubygems.org...">https://rubygems.org...</a>
+Signed in.
+Pushing gem to https://rubygems.org...
 Successfully registered gem: scrabble_score (0.1.0)
-```</p>
+</code></pre>
 
 <p>My experience creating a gem for RubyGems was a pleasant one. Please do a quick search to ensure that your gem name is unique before you get started. There are many guides out there for how to write gems. It is a good idea to take a look at one or two of these before getting started.</p>
 
@@ -262,7 +237,7 @@ Successfully registered gem: scrabble_score (0.1.0)
 <!-- more -->
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -284,49 +259,35 @@ Successfully registered gem: scrabble_score (0.1.0)
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">TrieNode</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">decoration</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">.</span><span class="n">&amp;rsquo</span><span class="p">;)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">decoration</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">.</span><span class="n">&amp;rsquo</span><span class="p">;)</span>
+</span><span class='line'>    <span class="vi">@decoration</span> <span class="o">=</span> <span class="n">decoration</span>
+</span><span class='line'>    <span class="vi">@children</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@decoration = decoration</span>
-</span><span class='line'><span class="sr">@children = {}</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">addLetters</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;addLettersRecursively(letters, letters)</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">&lt;p&gt;  def addLetters(letters)</span>
+</span><span class='line'><span class="sr">    addLettersRecursively(letters, letters)</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">protected</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def addLettersRecursively(letters, full_word)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">&lt;p&gt;  def addLettersRecursively(letters, full_word)</span>
+</span><span class='line'><span class="sr">    @full_word = full_word and return if letters.size == 0&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="vi">@full_word</span> <span class="o">=</span> <span class="n">full_word</span> <span class="ow">and</span> <span class="k">return</span> <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">first_letter</span> <span class="o">=</span> <span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">first_letter</span> <span class="o">=</span> <span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
 </span><span class='line'><span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">]</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span> <span class="k">unless</span> <span class="vi">@children</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span>
 </span><span class='line'><span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">].</span><span class="n">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">full_word</span><span class="p">)</span>
 </span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>It has a few instance variables including a <code>decoration</code> and a <code>full_word</code>. We store child relationships by recursively adding new <code>TrieNodes</code> in a <code>children</code> hash peeling off one letter at a time. I could have used a single method for the recursion, but use a <code>addLetters</code> method as a driver for the <code>addLettersRecursively</code> method.</p>
 
 <p>Finding a node in the Trie follows the same pattern as adding letters:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -338,13 +299,13 @@ Successfully registered gem: scrabble_score (0.1.0)
 </span><span class='line'><span class="sr">&lt;p&gt;  return @children[letters[0]].findNode(letters[1..-1]) if @children.has_key?(letters[0])</span>
 </span><span class='line'><span class="sr">  nil</span>
 </span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Note that not all nodes in the tree represent member strings that are stored in the Trie. We marked the Trie member nodes with the <code>full_word</code> instance variable above. We need the <code>findNode</code> method for traversals as we will see in a minute.</p>
 
 <p>Now we can implement the Trie itself. It maintains the root node of the tree and has facilities to insert, membership and search:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -381,64 +342,44 @@ Successfully registered gem: scrabble_score (0.1.0)
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Trie</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">words</span> <span class="o">=</span> <span class="o">[]</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">words</span> <span class="o">=</span> <span class="o">[]</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@root_node</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">words</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">addLetters</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@root_node = TrieNode.new</span>
-</span><span class='line'><span class="sr">words.each { |word| @root_node.addLetters(word) }</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'><span class="sr">&lt;p&gt;  def insert(word)</span>
+</span><span class='line'><span class="sr">    @root_node.addLetters(word)</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">contains?</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;@root_node.addLetters(word)</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">contains?</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;node = @root_node.findNode(word)</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">return true if node and node.word</span>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;return true if node and node.word</span>
 </span><span class='line'><span class="sr">false</span>
 </span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">letters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;words = []</span>
-</span><span class='line'><span class="sr">queue = []</span>
-</span><span class='line'><span class="sr">node = @root_node.findNode(letters)</span>
-</span><span class='line'><span class="sr">return [] if node.nil?</span>
-</span><span class='line'><span class="sr">words &amp;lt;&amp;lt; node.word if node.word</span>
-</span><span class='line'><span class="sr">queue &amp;lt;&amp;lt; node</span>
-</span><span class='line'><span class="sr">until queue.size == 0 do</span>
-</span><span class='line'><span class="sr">  node = queue.shift</span>
-</span><span class='line'><span class="sr">  node.children.each do |child_node|</span>
-</span><span class='line'><span class="sr">    word = child_node.word</span>
-</span><span class='line'><span class="sr">    words &amp;lt;&amp;lt; word unless word.nil?</span>
-</span><span class='line'><span class="sr">    queue &amp;lt;&amp;lt; child_node</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span><span class='line'><span class="sr">words</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">letters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span>
+</span><span class='line'>    <span class="n">words</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="n">queue</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">[]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="n">words</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span>
+</span><span class='line'>    <span class="n">queue</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">node</span>
+</span><span class='line'>    <span class="k">until</span> <span class="n">queue</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">shift</span>
+</span><span class='line'>      <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">child_node</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">word</span> <span class="o">=</span> <span class="n">child_node</span><span class="o">.</span><span class="n">word</span>
+</span><span class='line'>        <span class="n">words</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">word</span> <span class="k">unless</span> <span class="n">word</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>        <span class="n">queue</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">child_node</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">words</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>The search method maintains a list of found <code>words</code> and a <code>queue</code> for a breadth first search of the Trie. We use the <code>shift</code> and <code>&lt;&lt;</code> operators to get queue first-in-first-out behavior. Calling search without specifying letters will result in full search for all members in the Trie.</p>
 
@@ -450,22 +391,21 @@ Successfully registered gem: scrabble_score (0.1.0)
 
 <p>I used a database with about 210K words and did some rough, informal calculations to compare performance between arrays, hashes and my trie implementation. The prefix search is finding all words that started with a substring. Membership is for finding one exact string. Here is what I found:</p>
 
-<p>```
-Prefix search (1000x repetitions)
+<pre><code>Prefix search (1000x repetitions)
 Trie: 0.034 seconds
 Array: 51.3 seconds
-Hash: 91.85 seconds</p>
+Hash: 91.85 seconds
 
-<p>Membership search (100,000x)
+Membership search (100,000x)
 Trie: 0.22 seconds
 Array: 1580 seconds (estimated: 10,000x took 158 seconds)
-Hash: 0.027 seconds</p>
+Hash: 0.027 seconds
 
-<p>Insertion (100x)
+Insertion (100x)
 Trie: 88.6 seconds
 Array: 0.000023 seconds
 Hash: 7.69 seconds
-```</p>
+</code></pre>
 
 <p>Prefix search performance appears to be efficient compared to arrays and hashes. Membership search appears to be a little slower than hashes. Array membership requires a full search of the array in the worst case O(N). Hash lookup is expected constant time performance. Trie membership is O(M) where M is the number of characters in the string. Insertion performance is very slow (probably due to all of the hashes being generated with this implementation). Typical use of this data structure is for search and insertion should be relatively rare.</p>
 ]]></content>

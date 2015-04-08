@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Astronomy | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/astronomy/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-03-14T14:12:52-07:00</updated>
+  <updated>2015-04-07T23:42:25-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -41,30 +41,26 @@ in a Rails project:</li>
 
 <p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
 
-<p><code>ruby
-Rails.application.routes.draw do
+<pre><code class="ruby">Rails.application.routes.draw do
   mount AstronomyEngine::App =&gt; '/astronomy'
-</code></p>
+</code></pre>
 
 <p>This adds the web page at the root and adds a few additional routes.</p>
 
 <p>Request the list of categories:</p>
 
-<p><code>bash
-curl {APPLICATION_ROOT}/astronomy/categories
-</code></p>
+<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories
+</code></pre>
 
 <p>Request all topics for a given category:</p>
 
-<p><code>bash
-curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
-</code></p>
+<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
+</code></pre>
 
 <p>Search all topic names and descriptions:</p>
 
-<p><code>bash
-curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
-</code></p>
+<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
+</code></pre>
 
 <p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
 Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and

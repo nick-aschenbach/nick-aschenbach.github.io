@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Languages | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/languages/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-03-14T14:12:52-07:00</updated>
+  <updated>2015-04-07T23:42:25-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -22,9 +22,9 @@
 
 <p>Installation is super easy if you use <a href="https://rvm.io/">rvm</a>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">rvm</span> <span class="nx">install</span> <span class="nx">jruby</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>This will install several dependencies (like the patch, gawk, g++ and the JDK if you do not already have them
 installed). The installation and setup took about seven minutes on a clean Ubuntu 12.04 Vagrant box I spun up for
@@ -32,7 +32,7 @@ testing purposes.</p>
 
 <p>Let&rsquo;s say hello in irb:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -40,11 +40,11 @@ testing purposes.</p>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;java.lang.System.out.println &amp;lsquo;Hello World!&amp;rsquo;</span>
 </span><span class='line'><span class="sr">Hello World!</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
 
 <p>Specifying the package is a little cumbersome. Importing the <code>java.lang.System</code> makes things a little easier:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -54,7 +54,7 @@ testing purposes.</p>
 </span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;import java.lang.System</span>
 </span><span class='line'><span class="sr">System.out.println &amp;lsquo;Hello World!&amp;rsquo;</span>
 </span><span class='line'><span class="sr">Hello World!</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
 
 <!-- more -->
 
@@ -86,7 +86,7 @@ which need to handle multiple client connections concurrently.</p>
 
 <p>Let&rsquo;s take jRuby out for a spin with a hello world example that utilizes <code>JFrame</code>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -113,48 +113,40 @@ which need to handle multiple client connections concurrently.</p>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JButton</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JFrame</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;p&gt;class HelloFrame &amp;lt; JFrame</span>
-</span><span class='line'><span class="sr">  def initialize&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">  def initialize</span>
+</span><span class='line'><span class="sr">    super(&amp;lsquo;Hello&amp;rsquo;)</span>
+</span><span class='line'><span class="sr">    self.setup_interface</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">super</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setup_interface</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">setup_interface</span>
+</span><span class='line'>    <span class="n">button</span> <span class="o">=</span> <span class="no">JButton</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;)</span>
+</span><span class='line'>    <span class="n">button</span><span class="o">.</span><span class="n">addActionListener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Hello</span> <span class="no">World</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;self.add(button)</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def setup_interface&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">self.setDefaultCloseOperation(JFrame::EXIT_ON_CLOSE)</span>
+</span><span class='line'><span class="sr">self.setSize(300, 200)</span>
+</span><span class='line'><span class="sr">self.setLocationRelativeTo(nil)</span>
+</span><span class='line'><span class="sr">self.setVisible(true)</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">button</span> <span class="o">=</span> <span class="no">JButton</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">button</span><span class="o">.</span><span class="n">addActionListener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;Hello World&#39;</span>
-</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
+</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setDefaultCloseOperation</span><span class="p">(</span><span class="no">JFrame</span><span class="o">::</span><span class="no">EXIT_ON_CLOSE</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setLocationRelativeTo</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;HelloFrame.new</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">HelloFrame</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>If you save this as a file called <code>hello.rb</code> then it can be run from the command line by:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby hello.rb
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Here is the app in action:</p>
 
@@ -163,29 +155,23 @@ which need to handle multiple client connections concurrently.</p>
 <p>The action listener <code>do ... end</code> Ruby syntax is quite a bit cleaner than the Java alternative using an anonymous inner
 class:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">button</span><span class="o">.</span><span class="na">addActionListener</span><span class="o">(</span><span class="k">new</span> <span class="n">ActionListener</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">actionPerformed</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">button</span><span class="o">.</span><span class="na">addActionListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">ActionListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">actionPerformed</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Hello</span> <span class="n">World</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'>  <span class="o">}</span>
 </span><span class='line'><span class="o">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Taking what I learned and hungry for more, I decided to write a minimal web browser using jRuby. The interface is
 comprised of a <code>JTextField</code> to input the URI and a <code>JEditorPane</code> to render the HTML. In addition, I use <code>BorderLayout</code>
 as the layout manager for the <code>JFrame</code>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -219,10 +205,6 @@ as the layout manager for the <code>JFrame</code>:</p>
 <span class='line-number'>32</span>
 <span class='line-number'>33</span>
 <span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JScrollPane</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JTextField</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JEditorPane</span>
@@ -230,19 +212,15 @@ as the layout manager for the <code>JFrame</code>:</p>
 </span><span class='line'><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">awt</span><span class="o">.</span><span class="n">BorderLayout</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;p&gt;class Browser &amp;lt; JFrame</span>
-</span><span class='line'><span class="sr">  def initialize&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">  def initialize</span>
+</span><span class='line'><span class="sr">    super(&amp;lsquo;jRuby Browser&amp;rsquo;)</span>
+</span><span class='line'><span class="sr">    self.initialize_interface</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">super</span><span class="p">(</span><span class="s1">&#39;jRuby Browser&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">initialize_interface</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">initialize_interface</span>
+</span><span class='line'>    <span class="n">response_body</span> <span class="o">=</span> <span class="no">JEditorPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">text</span><span class="o">/</span><span class="n">html</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="kp">nil</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def initialize_interface&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">response_body</span> <span class="o">=</span> <span class="no">JEditorPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;text/html&#39;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">uri_input</span> <span class="o">=</span> <span class="no">JTextField</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;uri_input = JTextField.new(&#39;http:/</span><span class="o">/</span><span class="err">&#39;</span><span class="p">)</span>
 </span><span class='line'><span class="n">uri_input</span><span class="o">.</span><span class="n">add_action_listener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
 </span><span class='line'>  <span class="n">response_body</span><span class="o">.</span><span class="n">setPage</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">getActionCommand</span><span class="p">)</span>
 </span><span class='line'><span class="k">end</span>
@@ -261,7 +239,7 @@ as the layout manager for the <code>JFrame</code>:</p>
 </span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;p&gt;Browser.new</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>While <code>JEditorPane</code> HTML support is very limited, we are able to display the webpage data for <code>example.com</code>. I resized
 the window here to show the scrollbars:</p>
@@ -283,7 +261,7 @@ the window here to show the scrollbars:</p>
 
 <p>While there was correlation between highly ranked languages between the indexes, none of them were the same. Several metrics were used including number of open source projects, number of lines of code, number of tracked bugs / issues, number of tutorials and numbers of search engine searches. The list goes on and on. How these metrics were weighted had a big impact on the overall ranking results.</p>
 
-<p><img class="left <a" src="href="http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png">http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png</a>" width="450" title="auto New GitHub Repos" ></p>
+<p><img class="left <a" src="href="http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png">http://dberkholz-media.redmonk.com/dberkholz/files/2014/05/github_new_users_repos_issues_multiplot_composite_simple.png</a>&#8221; width=&#8221;450&#8221; title=&#8221;auto New GitHub Repos&#8221; ></p>
 
 <p>In alphabetical order some of the most highly ranked languages are C, C#, C++, Java, JavaScript, Objective-C, PHP, Perl, Python, Ruby and Visual Basic. About half the indexes I reviewed had C and Java in the top two spots.</p>
 
@@ -306,40 +284,12 @@ the window here to show the scrollbars:</p>
 
 <p>He also points out that C# and Objective-C are widely used, but do not show up in his data because developers from those communities have not embraced GitHub to the same degree as some others. This is corroborated by <a href="http://langpop.corger.nl/">data</a> that indicates while C# is discussed widely on Stack Overflow, it is not correlated as strongly with lines of code on GitHub as are other languages like Java and JavaScript:</p>
 
-<table>
-<thead>
-<tr>
-<th>Language    </th>
-<th> Stack Overflow </th>
-<th> GitHub          </th>
-<th> Ratio</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C#          </td>
-<td> 679,776        </td>
-<td> 2,469,334,797   </td>
-<td> 3,632</td>
-</tr>
-<tr>
-<td>Java        </td>
-<td> 687,426        </td>
-<td> 7,090,897,887   </td>
-<td> 10,315</td>
-</tr>
-<tr>
-<td>JavaScript  </td>
-<td> 676,383        </td>
-<td> 15,664,918,541  </td>
-<td> 23,160</td>
-</tr>
-</tbody>
-</table>
-
-
-<br/>
-
+<p>Language    | Stack Overflow | GitHub          | Ratio
+&mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;-
+C#          | 679,776        | 2,469,334,797   | 3,632
+Java        | 687,426        | 7,090,897,887   | 10,315
+JavaScript  | 676,383        | 15,664,918,541  | 23,160
+<br/></p>
 
 <p>The ratio is the number of lines of code on GitHub relative to the number of Stack Overflow comments. All three languages have a similar number of comments on Stack, but have very different ratios.</p>
 

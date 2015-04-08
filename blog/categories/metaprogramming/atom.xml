@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Metaprogramming | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/metaprogramming/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-03-14T14:12:52-07:00</updated>
+  <updated>2015-04-07T23:42:25-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -31,7 +31,7 @@
 
 <p>I found an easy-to-use gem called <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> that allows developers to read and write PNG files. Here is a snippet of code that shows how to open and read a PNG file in Ruby:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -39,27 +39,21 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">image</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="p">;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
-</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="p">;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;r = ChunkyPNG::Color.r(image[x, y])</span>
-</span><span class='line'><span class="sr">g = ChunkyPNG::Color.g(image[x, y])</span>
-</span><span class='line'><span class="sr">b = ChunkyPNG::Color.b(image[x, y])</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>While this gem is written in 100% Ruby, there is a gem extension library that speeds up Chunky called <a href="https://github.com/wvanbergen/oily_png">Oily PNG</a>. It optimizes some operations like encoding and decoding PNG files using native C code.</p>
 
 <p>By taking PNG files as input and generating Java code as output, I found that I could save a lot of time and be more flexible with changing color transitions than if I had typed out the code by hand. This is easy to do:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -73,27 +67,25 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-<span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">parse_image</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="kp">public</span> <span class="n">static</span> <span class="no">Color</span> <span class="n">gradient</span><span class="o">[]</span> <span class="o">=</span> <span class="p">{\</span><span class="n">n</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">image</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="p">;</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.image</span><span class="o">.</span><span class="n">dimension</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;r = ChunkyPNG::Color.r(image[x, 0])</span>
-</span><span class='line'><span class="sr">g = ChunkyPNG::Color.g(image[x, 0])</span>
-</span><span class='line'><span class="sr">b = ChunkyPNG::Color.b(image[x, 0])</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">str += &quot;  new Color(</span><span class="si">#{</span><span class="n">r</span><span class="si">}</span><span class="sr">, </span><span class="si">#{</span><span class="n">g</span><span class="si">}</span><span class="sr">, </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="sr">),\n&quot;</span>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;str += &quot;  new Color(</span><span class="si">#{</span><span class="n">r</span><span class="si">}</span><span class="sr">, </span><span class="si">#{</span><span class="n">g</span><span class="si">}</span><span class="sr">, </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="sr">),\n&quot;</span>
 </span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;p&gt;  end</span>
 </span><span class='line'><span class="sr">  str += &amp;ldquo;};&amp;rdquo;;</span>
 </span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>I ended up generating about 40 images that I used in conjuncton with a small color gradient manager library in Java. The source code and generator are available on <a href="https://github.com/nick-aschenbach/code-generated-color-gradients">Github</a>. This example shows its use:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -117,7 +109,7 @@
 </span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Color</span> <span class="n">c</span> <span class="o">:</span> <span class="n">cgm</span><span class="o">.</span><span class="na">gradient</span><span class="o">())</span> <span class="o">{</span>
 </span><span class='line'>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">c</span> <span class="o">+</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span> <span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
 </span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>I decided to modify the generator a little bit to output code for Javascript and used it for a simple particle system simulation (available on <a href="https://github.com/nick-aschenbach/particle-system-color-gradients">Github</a>). The color gradients can be changed out dynamically via the drop down box.</p>
 
