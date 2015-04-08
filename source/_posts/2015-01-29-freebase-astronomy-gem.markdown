@@ -3,7 +3,7 @@ layout: post
 title: "Freebase Astronomy Gems"
 date: 2015-01-29 20:34:04 -0800
 comments: true
-categories: gems astronomy learning
+categories: gems astronomy learning engine
 ---
 
 With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
