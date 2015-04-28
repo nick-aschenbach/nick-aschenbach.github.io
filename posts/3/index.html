@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/posts/3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/06/2d-fractal-terrain/">2D Fractal Terrain Generation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-06T08:26:04-07:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
+
+<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
+
+<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
+
+<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
+
+<p>Here is an outline of the algorithm:</p>
+
+<ol>
+<li>Find the midpoint for the line segment</li>
+<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
+<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
+<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
+<li>Repeat previous until fractal is sufficiently detailed</li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/07/06/2d-fractal-terrain/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/2">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/13/building-a-custom-machined-raised-bed/">Building a Custom Machined Raised Bed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/07/rails-engine-api-endpoint-authentication/">Rails Engine API Endpoint Authentication Using Rack Middleware</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/14/getting-started-with-jruby/">jRuby Test Drive</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/astronomy/'>astronomy (1)</a></li>
+<li class='category'><a href='/blog/categories/cnc/'>cnc (4)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
+<li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (3)</a></li>
+<li class='category'><a href='/blog/categories/gardening/'>gardening (1)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (3)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (6)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (2)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (3)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a web developer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails
+development, but also have experience in Java, C# and Microsoft Cloud (Azure). In my spare time, I write code and
+fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

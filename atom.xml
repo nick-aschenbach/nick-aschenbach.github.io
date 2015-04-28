@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-04-14T00:16:46-07:00</updated>
+  <updated>2015-04-28T00:01:00-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,529 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Arkanoid Game Levels]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/04/27/arkanoid-game-levels/"/>
+    <updated>2015-04-27T19:12:09-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/04/27/arkanoid-game-levels</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/images/arkanoid_arcadeflyer.png" title="auto auto" > I loved playing
+Arkanoid when I was a kid. I spent hours playing the game over at my friend&rsquo;s house when I was growing up on
+the original Nintendo Entertainment System. It was rated as one of the top games after its release in 1986.</p>
+
+<p>I found a great Arkanoid background map set on <a href="http://www.nesmaps.com/">NES maps</a> by Rick Bruns (see below). Each
+level was perfectly aligned at 192 pixels wide by 232 pixels tall. The top, left and right edges were 8 pixels. Each
+brick was 16 pixels wide by 8 pixels tall. With a little math (and confirming in Photoshop), I found that the
+background could support exactly 11 brick tiles wide by 28 tall.</p>
+
+<p>This made the map set the perfect asset for image parsing. My plan was to take the image as input and generate
+source code with level data as output. Finally, I used a 3D graphics library to render the levels in browser.</p>
+
+<p><strong>Image Parsing</strong></p>
+
+<p>I wanted to use the <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> and
+<a href="https://github.com/wvanbergen/oily_png">Oily PNG</a> gems for image parsing. The former is a 100% Ruby implementation
+for encoding and decoding PNG images with read / write access at the pixel level. The latter gem uses native C
+extensions to improve encoding and decoding speed for Chunky. I used these gems on other projects with good success.</p>
+
+<p><img src="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/images/arkanoid.png" title="auto auto" ></p>
+
+<!-- more -->
+
+
+<p>The brick colors were consistent among all of the levels. Rick created a legend with all of the colors on one page for
+convenience. I created a hash in Ruby to associate R, G, B values with a color index using Photoshop and my IDE:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="no">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;252,252,252&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># white</span>
+</span><span class='line'>  <span class="s2">&quot;252,116,96&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># orange</span>
+</span><span class='line'>  <span class="s2">&quot;60,188,252&quot;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># light blue</span>
+</span><span class='line'>  <span class="s2">&quot;128,208,16&quot;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="c1"># green</span>
+</span><span class='line'>  <span class="s2">&quot;216,40,0&quot;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="c1"># red</span>
+</span><span class='line'>  <span class="s2">&quot;0,112,236&quot;</span> <span class="o">=&gt;</span> <span class="mi">6</span><span class="p">,</span> <span class="c1"># blue</span>
+</span><span class='line'>  <span class="s2">&quot;252,116,180&quot;</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span> <span class="c1"># pink</span>
+</span><span class='line'>  <span class="s2">&quot;252,152,56&quot;</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="c1"># yellow</span>
+</span><span class='line'>  <span class="s2">&quot;188,188,188&quot;</span> <span class="o">=&gt;</span> <span class="mi">9</span><span class="p">,</span> <span class="c1"># silver</span>
+</span><span class='line'>  <span class="s2">&quot;240,188,60&quot;</span> <span class="o">=&gt;</span> <span class="mi">10</span> <span class="c1"># gold</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I mentioned earlier that bricks were 16 pixels x 8 pixels, however some tiles had a drop shadow of one or two pixels.
+I decided to scan images for blocks of color that matched one of the keys in the hash above. I made this decision
+because I needed to be able to differentiate between the background (which often had long runs of pixels) and bricks.</p>
+
+<p>I stored the color of the pixel in the upper left corner of a block and checked each color against this. If a
+sufficiently large block of color was found, I determined that it was a brick and returned <code>nil</code> otherwise:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">r_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">g_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">b_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">14</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x_offset</span><span class="o">|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y_offset</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">r_initial</span> <span class="o">||</span> <span class="n">g</span> <span class="o">!=</span> <span class="n">g_initial</span> <span class="o">||</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">b_initial</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">r_initial</span><span class="p">,</span> <span class="n">g_initial</span><span class="p">,</span> <span class="n">b_initial</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>My plan was to scan the 11 tile x 28 tile grid for bricks using the <code>get_brick_color</code> method. Finally,
+I wrote a little code to generate Javascript code by printing to standard output. I decided to output two digit numbers
+so that the grid index colors would line up because the color indexes went up to 10.</p>
+
+<p>Here is the full source for the image parsing code:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;oily_png&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;awesome_print&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;252,252,252&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># white</span>
+</span><span class='line'>  <span class="s2">&quot;252,116,96&quot;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># orange</span>
+</span><span class='line'>  <span class="s2">&quot;60,188,252&quot;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># light blue</span>
+</span><span class='line'>  <span class="s2">&quot;128,208,16&quot;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="c1"># green</span>
+</span><span class='line'>  <span class="s2">&quot;216,40,0&quot;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="c1"># red</span>
+</span><span class='line'>  <span class="s2">&quot;0,112,236&quot;</span> <span class="o">=&gt;</span> <span class="mi">6</span><span class="p">,</span> <span class="c1"># blue</span>
+</span><span class='line'>  <span class="s2">&quot;252,116,180&quot;</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span> <span class="c1"># pink</span>
+</span><span class='line'>  <span class="s2">&quot;252,152,56&quot;</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="c1"># yellow</span>
+</span><span class='line'>  <span class="s2">&quot;188,188,188&quot;</span> <span class="o">=&gt;</span> <span class="mi">9</span><span class="p">,</span> <span class="c1"># silver</span>
+</span><span class='line'>  <span class="s2">&quot;240,188,60&quot;</span> <span class="o">=&gt;</span> <span class="mi">10</span> <span class="c1"># gold</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Notes:</span>
+</span><span class='line'><span class="c1"># 8 pixel border left, top and right</span>
+</span><span class='line'><span class="c1"># brick size: 16 wide x 8 tall (including 1 px shadow)</span>
+</span><span class='line'><span class="c1"># Each sub image size is 192, 232</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">scan_grid_location</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sheet_grid_x</span><span class="p">,</span> <span class="n">sheet_grid_y</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">startx</span> <span class="o">=</span> <span class="n">sheet_grid_x</span> <span class="o">*</span> <span class="mi">192</span>
+</span><span class='line'>  <span class="n">starty</span> <span class="o">=</span> <span class="n">sheet_grid_y</span> <span class="o">*</span> <span class="mi">232</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">array</span> <span class="o">=</span> <span class="n">initialize_array</span>
+</span><span class='line'>  <span class="c1"># 11 columns wide x 28 rows tall</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_x</span><span class="o">|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_y</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">color</span> <span class="o">=</span> <span class="n">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">startx</span> <span class="o">+</span> <span class="n">brick_x</span> <span class="o">*</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="n">starty</span> <span class="o">+</span> <span class="n">brick_y</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">next</span> <span class="k">if</span> <span class="n">color</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">color_index</span> <span class="o">=</span> <span class="no">COLOR_MAP</span><span class="o">[</span><span class="n">color</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="no">StandardError</span> <span class="k">if</span> <span class="n">color_index</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">array</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">]</span> <span class="o">=</span> <span class="n">color_index</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">array</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Zero out the brick array</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">initialize_array</span>
+</span><span class='line'>  <span class="n">array</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="mi">11</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">inner_array</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="mi">28</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">inner_array</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">array</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">inner_array</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">array</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Scan to ensure block is a brick</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">r_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">g_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">b_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">14</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x_offset</span><span class="o">|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y_offset</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">r_initial</span> <span class="o">||</span> <span class="n">g</span> <span class="o">!=</span> <span class="n">g_initial</span> <span class="o">||</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">b_initial</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">r_initial</span><span class="p">,</span> <span class="n">g_initial</span><span class="p">,</span> <span class="n">b_initial</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">arkanoid</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;arkanoid.png&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Emit javascript code</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s1">&#39;[&#39;</span>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">level</span> <span class="o">=</span> <span class="n">scan_grid_location</span><span class="p">(</span><span class="n">arkanoid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;[&#39;</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_y</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">print</span> <span class="s1">&#39;[&#39;</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_x</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">print</span> <span class="n">level</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">].</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s1">&#39;],&#39;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s1">&#39;],&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="nb">puts</span> <span class="s1">&#39;];&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is sample output from the second map file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">[</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">02</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">02</span><span class="p">,</span> <span class="mi">03</span><span class="p">,</span> <span class="mi">04</span><span class="p">,</span> <span class="mi">06</span><span class="p">,</span> <span class="mi">05</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">09</span><span class="p">,</span> <span class="mi">02</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
+</span><span class='line'><span class="p">],</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong> Visualization </strong></p>
+
+<p>I use the <a href="http://threejs.org/">Three.js</a> Javascript library for in browser 3D graphics projects. It abstracts
+some of the low level details of WebGL and provides some nice primitives.</p>
+
+<p>I started with some boilerplate code which I modified from Three.js:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Define scene, camera and renderer</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">camera</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">({</span><span class="nx">antialias</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">);</span>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Render frames in a tight loop</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">render</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">render</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I defined some of the basics: a <code>scene</code>, <code>camera</code> and a <code>renderer</code>. The <code>render</code> function creates a loop that
+triggers the scene to be redrawn at 60 frames per second.</p>
+
+<p>I divided the drawing elements into three parts: drawing the level, drawing a wireframe box to enclose the level and
+lights that provide some nice effects.</p>
+
+<p>Here is the source code that describes drawing the level:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Draw bricks (defined in levels.js)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">draw_level</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scene</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">28</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">11</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">color_index</span> <span class="o">=</span> <span class="nx">level_data</span><span class="p">[</span><span class="nx">level</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">)</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span> <span class="c1">// Gold and silver</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">material</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshPhongMaterial</span><span class="p">({</span>
+</span><span class='line'>        <span class="nx">color</span><span class="o">:</span> <span class="nx">color_data</span><span class="p">[</span><span class="nx">color_index</span><span class="p">],</span>
+</span><span class='line'>        <span class="nx">specular</span><span class="o">:</span> <span class="mh">0x232322</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">shininess</span><span class="o">:</span> <span class="mi">50</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">BoxGeometry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">mesh</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">j</span> <span class="o">*</span> <span class="mf">2.2</span> <span class="o">-</span> <span class="mi">12</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">i</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.2</span> <span class="o">+</span> <span class="mi">18</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">object_list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I defined a <code>level_data</code> array (see <code>level.js</code> below). This code was the output from the Ruby image parser described
+earlier in the post. We look up the <code>color_index</code> based on where are are in the loop. If the index is zero, then we skip
+that element. Otherwise, we create a new box that is twice is wide as it is tall (proportional to the 16 pixel x 8
+pixel blocks from the original image).</p>
+
+<p>We assign a material using Phong shading and the color defined in a <code>color_data</code> array:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">color_data</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>  <span class="mh">0x000000</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xfcfcfc</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xfc7460</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0x3cbcfc</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0x80d010</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xd82800</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0x0070ec</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xfc74b4</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xfc9838</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xbcbcbc</span><span class="p">,</span>
+</span><span class='line'>  <span class="mh">0xf0bc3c</span>
+</span><span class='line'><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The index of the array corresponds to the value in the <code>level_data</code> array. We use black <code>0x000000</code> as a placeholder
+color. Finally we define a mesh with the <code>geometry</code> and <code>material</code> variables. The brick position is defined by
+its (i, j) position.</p>
+
+<p>Here is the demo for the code (<a href="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/demo/index.html">fullscreen</a>):</p>
+
+<iframe src="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/demo/index.html" width="700" height="600"></iframe>
+
+
+<p>These are the relevant full source files:</p>
+
+<ul>
+<li><a href="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/demo/js/3d.js">3d.js</a> - Event handling and rendering code</li>
+<li><a href="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/demo/js/levels.js">levels.js</a> - Level and color data</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building a Custom Machined Raised Bed]]></title>
@@ -105,7 +628,7 @@ ensured that the screws would not intersect in the middle of the post:</p>
 <p><img src="http://nick-aschenbach.github.io/assets/2015-04-13-building-a-custom-machined-raised-bed/holes.jpg" title="auto auto" ></p>
 
 <p>The last operation was to reverse drill the pilot holes with a countersink bit on the drill press. I recessed the
-countersink roughly 0.5&#8221; into the end of the board to hide the 4&#8221; galvanized screws that I purchased. The
+countersink roughly 0.5&#8221; into the board to hide the 4&#8221; galvanized screws that I purchased. The
 one pound box ($7.50) contained 50 screws and I needed 48 to do the job (12 boards x 4 fasteners per board):</p>
 
 <p><img src="http://nick-aschenbach.github.io/assets/2015-04-13-building-a-custom-machined-raised-bed/countersink.jpg" title="auto auto" ></p>
@@ -2738,138 +3261,6 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 <p>To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (<a href="http://www.tapplastics.com/">http://www.tapplastics.com/</a>). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.</p>
 
 <p><img src="http://nick-aschenbach.github.io/images/lazy-susan-collage.jpg" title="Finished lazy susan" ></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[2D Fractal Terrain Generation]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
-    <updated>2014-07-06T08:26:04-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
-    <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
-
-<p><img class="right" src="http://nick-aschenbach.github.io/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
-
-<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
-
-<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
-
-<p>Here is an outline of the algorithm:</p>
-
-<ol>
-<li>Find the midpoint for the line segment</li>
-<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
-<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
-<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
-<li>Repeat previous until fractal is sufficiently detailed</li>
-</ol>
-
-
-<!-- more -->
-
-
-<p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>
-
-<p>Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2<sup>N</sup> + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.</p>
-
-<p>Let&rsquo;s take a look at a Javascript implementation of the algorithm above.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">midIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">change</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">displacement</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">midIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">midIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.</p>
-
-<p>Here is the code in action:</p>
-
-<p><canvas id="canvas"></canvas></p>
-
-<p>I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.</p>
-
-<script>
-  var array_size = Math.pow(2, 9) + 1;
-  var terrain_array = [];
-  var roughness = 0.55;
-  var initial_displacement = 50;
-  var count = 0;
-
-  $(function() {
-    initializeArray();
-    generateTerrain(0, array_size - 1, initial_displacement);
-    drawTerrain();
-  });
-
-  function initializeArray() {
-    for(var i = 0; i < array_size; i++) {
-      terrain_array.push(0);
-    }
-  }
-
-  function generateTerrain(leftIndex, rightIndex, displacement) {
-    if((leftIndex + 1) == rightIndex) return;
-    var midIndex = Math.floor((leftIndex + rightIndex) / 2);
-    var change = (Math.random() * 2 - 1) * displacement;
-    terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
-
-    displacement = displacement * roughness;
-    generateTerrain(leftIndex, midIndex, displacement);
-    generateTerrain(midIndex, rightIndex, displacement);
-  }
-
-  function drawTerrain() {
-    var canvas = $('#canvas');
-    canvas.width(array_size);
-    canvas.height(4 * initial_displacement);
-
-    var context = canvas[0].getContext("2d");
-    context.canvas.width  = canvas.width();
-    context.canvas.height = canvas.height();
-
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width(), canvas.height());
-
-    var gradient = context.createLinearGradient(0,0,0,initial_displacement * 4);
-    gradient.addColorStop(0, "purple");
-    gradient.addColorStop(1, "#333");
-    context.strokeStyle = 'grey';
-    context.fillStyle = gradient;
-    context.beginPath();
-    context.lineWidth = 0.5;
-    context.moveTo(i, terrain_array[count % array_size] + 2 * initial_displacement);
-    for(var i = 1; i < array_size; i++) {
-      context.lineTo(i, terrain_array[(count + i) % array_size] + 2 * initial_displacement);
-    }
-    context.lineTo(i, 4 * initial_displacement);
-    context.lineTo(0, 4 * initial_displacement);
-    context.closePath();
-
-    context.fill();
-    context.stroke();
-
-    count++;
-    setTimeout(drawTerrain, 30);
-  }
-</script>
-
 ]]></content>
   </entry>
   

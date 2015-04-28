@@ -9,7 +9,7 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="We are going through some large code refactors at work and are building rails engines. This requires creating apps within our main app. Each sub-app &hellip;">
+  <meta name="description" content="While on vacation near Devil&rsquo;s Thumb Ranch I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -53,6 +53,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/09/time-lapse-at-8600-feet/">Time Lapse at 8,600 Feet</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-09T07:47:58-07:00" pubdate data-updated="true">Oct 9<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
+
+<p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/09/time-lapse-at-8600-feet/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -518,65 +561,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/07/06/2d-fractal-terrain/">2D Fractal Terrain Generation</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-06T08:26:04-07:00" pubdate data-updated="true">Jul 6<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
-
-<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
-
-<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
-
-<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
-
-<p>Here is an outline of the algorithm:</p>
-
-<ol>
-<li>Find the midpoint for the line segment</li>
-<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
-<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
-<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
-<li>Repeat previous until fractal is sufficiently detailed</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/07/06/2d-fractal-terrain/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -589,6 +576,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/04/13/building-a-custom-machined-raised-bed/">Building a Custom Machined Raised Bed</a>
@@ -606,10 +597,6 @@
         <a href="/blog/2015/02/25/isometric-tile-engine/">Simple Isometric Tiling</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/02/21/a-small-dsl-rack-app/">Writing a Small DSL Using Rack</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -621,10 +608,10 @@
 <li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
 <li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
 <li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
-<li class='category'><a href='/blog/categories/games/'>games (2)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (3)</a></li>
 <li class='category'><a href='/blog/categories/gardening/'>gardening (1)</a></li>
 <li class='category'><a href='/blog/categories/gems/'>gems (3)</a></li>
-<li class='category'><a href='/blog/categories/graphics/'>graphics (5)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (6)</a></li>
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
