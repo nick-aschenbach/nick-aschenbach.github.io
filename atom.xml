@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-04-28T00:01:00-07:00</updated>
+  <updated>2015-06-17T21:15:31-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,158 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Renumber Filenames Sequentially]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem/"/>
+    <updated>2015-06-17T20:07:04-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem</id>
+    <content type="html"><![CDATA[<p><code>renumber</code> is a small command line utility that renames files in a single directory. Files are sorted in
+lexicographic order and then renamed with sequential numbers. It is possible to specify a prefix and suffix - these are
+optional parameters. There are a couple of examples of usage below.</p>
+
+<p>The code is open source and available on <a href="https://github.com/nick-aschenbach/renumber">GitHub</a>.</p>
+
+<p><strong>Command Line Usage</strong></p>
+
+<pre><code>$ renumber &lt;directory&gt; &lt;prefix&gt; &lt;suffix&gt;
+</code></pre>
+
+<!-- more -->
+
+
+<p><strong>Installation</strong></p>
+
+<p>The tool requires that Ruby is installed. If so, install <code>renumber</code> with the following command:</p>
+
+<pre><code>$ gem install renumber
+</code></pre>
+
+<p><strong>Use case</strong></p>
+
+<p>I developed <code>renumber</code> so that I could renumber thousands images from a digital camera for use in a time lapse movie.
+The tool I used to stitch these images together into a movie (called <a href="https://www.ffmpeg.org/">ffmpeg</a>) died if the file
+names had a gap (e.g. &hellip;, IMG2047, IMG2049, IMG2050, &hellip;).</p>
+
+<p>The <code>renumber</code> tool solved this problem by renumbering the files to not have gaps.</p>
+
+<p><strong>Simple Usage</strong></p>
+
+<p>Let&rsquo;s take a directory with several non-sequential files:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drwxr-xr-x  15 troy  staff  510 Jun 17 20:12 .
+</span><span class='line'>drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 03.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 04.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 07.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 09.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 10.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 11.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 13.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 15.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 17.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 19.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 20.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 22.txt
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 99.txt</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&rsquo;s change to that directory and run the following:</p>
+
+<pre><code>$ renumber .
+</code></pre>
+
+<p>Here&rsquo;s the directory listing after running the command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drwxr-xr-x  15 troy  staff  510 Jun 17 20:14 .
+</span><span class='line'>drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 00
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 01
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 02
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 03
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 04
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 05
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 06
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 07
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 08
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 09
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 10
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 11
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:12 12</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Prefix and Suffix</strong></p>
+
+<p>Let&rsquo;s take the same initial file list as the above example. Let&rsquo;s add a prefix and suffix:</p>
+
+<pre><code>$ renumber . foo .text
+</code></pre>
+
+<p>Here&rsquo;s the directory listing after running the command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drwxr-xr-x  15 troy  staff  510 Jun 17 20:17 .
+</span><span class='line'>drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo00.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo01.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo02.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo03.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo04.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo05.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo06.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo07.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo08.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo09.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo10.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo11.text
+</span><span class='line'>-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo12.text</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Arkanoid Game Levels]]></title>
@@ -3227,40 +3379,6 @@ The second cutting board is fabricated from &frac12;&#8221; thick cherry and car
 
 <iframe src="http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html" width="300" height="300"></iframe>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Maps, Lasers and Bamboo]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
-    <updated>2014-07-14T22:41:29-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://nick-aschenbach.github.io/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" ></p>
-
-<p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
-
-<p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
-
-<!-- more -->
-
-
-<p><img class="right" src="http://nick-aschenbach.github.io/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" ></p>
-
-<p>Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.</p>
-
-<p>Although ArcGIS is well equipped to edit vector data, it focuses on this data in a geographic context, and we needed to specify details in the final, printable vector format. This is where Adobe Illustrator comes in. Here we were able to carefully specify line widths as well as place labels for these lines. The most important part of this process was separating different features into different layers that would be cut (burned) with different settings and intensities by the laser.</p>
-
-<p>Computer Numerical Controlled (CNC) machine tools are robots that help automate the process of making custom parts. They typically involve the use of computer aided design (CAD) and computer aided manufacturing (CAM) software tools. The main benefit of CNC tools is both that they automate the manufacturing process and are precise. In recent years CNC machines have become much more affordable. For example, small CNC routers that can cut wood, plastics and light metals are commercially available for a few thousand dollars (USD).</p>
-
-<p>Creating the lazy susan involved several steps that included both a CNC router and CNC laser. Carbonized &frac34;&#8221; thick three-ply natural bamboo plywood sheet was selected due to its light color and durability. A 17&#8221; diameter circle was cut out on a CNC router. We used ADX Portland (<a href="http://www.adxportland.com">http://www.adxportland.com</a>) for their CNC laser service (they have an 18&#8221; x 24&#8221; table). We were able to index the part on the laser table by first cutting a 17&#8221; diameter disk in a thin piece of cardboard. We could then locate the same-sized bamboo disk into the hole we cut in the cardboard.</p>
-
-<p>CNC lasers can be configured to cut in either a vector or raster mode. Vectors cutting is best for lines and arcs that are precisely (aka mathematically) defined. Raster cutting is better for laser engraving and is ideal for filled areas and photographs. Our project required both raster and vector cut modes. The raster mode was used to fill in the lakes and the interiors of the letters. The vector mode was used for the contour lines and letter outlines.</p>
-
-<p>Map details look best when line weights are taken into consideration. While the laser typically cuts lines the same thickness in vector mode, we found that we could cut wider lines by defocusing the laser. This was achieved by setting the Z-home position roughly 1/8&#8221; or 3/16&#8221; above the part instead of on the part. Without this hack, we would have needed to do the burning in a &ldquo;raster&rdquo; mode in which the machine burns in a pixel-based mannor similiar to what you would see with an ink jet printer. This would have taken a very long time, and we were charged by the minute.</p>
-
-<p>To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (<a href="http://www.tapplastics.com/">http://www.tapplastics.com/</a>). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.</p>
-
-<p><img src="http://nick-aschenbach.github.io/images/lazy-susan-collage.jpg" title="Finished lazy susan" ></p>
 ]]></content>
   </entry>
   

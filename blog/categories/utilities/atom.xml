@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Utilities | Aschenblog]]></title>
+  <link href="http://nick-aschenbach.github.io/blog/categories/utilities/atom.xml" rel="self"/>
+  <link href="http://nick-aschenbach.github.io/"/>
+  <updated>2015-06-17T21:15:31-07:00</updated>
+  <id>http://nick-aschenbach.github.io/</id>
+  <author>
+    <name><![CDATA[Nick Aschenbach]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Renumber Filenames Sequentially]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem/"/>
+    <updated>2015-06-17T20:07:04-07:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem</id>
+    <content type="html"><![CDATA[<p><code>renumber</code> is a small command line utility that renames files in a single directory. Files are sorted in
+lexicographic order and then renamed with sequential numbers. It is possible to specify a prefix and suffix - these are
+optional parameters. There are a couple of examples of usage below.</p>
+
+<p>The code is open source and available on <a href="https://github.com/nick-aschenbach/renumber">GitHub</a>.</p>
+
+<p><strong>Command Line Usage</strong></p>
+
+<pre><code>$ renumber &lt;directory&gt; &lt;prefix&gt; &lt;suffix&gt;
+</code></pre>
+
+<!-- more -->
+
+
+<p><strong>Installation</strong></p>
+
+<p>The tool requires that Ruby is installed. If so, install <code>renumber</code> with the following command:</p>
+
+<pre><code>$ gem install renumber
+</code></pre>
+
+<p><strong>Use case</strong></p>
+
+<p>I developed <code>renumber</code> so that I could renumber thousands images from a digital camera for use in a time lapse movie.
+The tool I used to stitch these images together into a movie (called <a href="https://www.ffmpeg.org/">ffmpeg</a>) died if the file
+names had a gap (e.g. &hellip;, IMG2047, IMG2049, IMG2050, &hellip;).</p>
+
+<p>The <code>renumber</code> tool solved this problem by renumbering the files to not have gaps.</p>
+
+<p><strong>Simple Usage</strong></p>
+
+<p>Let&rsquo;s take a directory with several non-sequential files:</p>
+
+<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:12 .
+drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 03.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 04.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 07.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 09.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 10.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 11.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 13.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 15.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 17.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 19.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 20.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 22.txt
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 99.txt
+</code></pre>
+
+<p>Let&rsquo;s change to that directory and run the following:</p>
+
+<pre><code>$ renumber .
+</code></pre>
+
+<p>Here&rsquo;s the directory listing after running the command:</p>
+
+<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:14 .
+drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 00
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 01
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 02
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 03
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 04
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 05
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 06
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 07
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 08
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 09
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 10
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 11
+-rw-r--r--   1 troy  staff    3 Jun 17 20:12 12
+</code></pre>
+
+<p><strong>Prefix and Suffix</strong></p>
+
+<p>Let&rsquo;s take the same initial file list as the above example. Let&rsquo;s add a prefix and suffix:</p>
+
+<pre><code>$ renumber . foo .text
+</code></pre>
+
+<p>Here&rsquo;s the directory listing after running the command:</p>
+
+<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:17 .
+drwx------+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo00.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo01.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo02.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo03.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo04.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo05.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo06.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo07.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo08.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo09.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo10.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo11.text
+-rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo12.text
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
