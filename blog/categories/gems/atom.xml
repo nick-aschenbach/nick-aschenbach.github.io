@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gems | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/gems/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-06-17T21:15:31-07:00</updated>
+  <updated>2015-10-15T22:40:53-07:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -317,7 +317,7 @@ Initializing git repo in /Users/sela/workspace/foobar
 </span><span class='line'><span class="sr">  spec.name          = &amp;ldquo;foobar&amp;rdquo;</span>
 </span><span class='line'><span class="sr">  spec.version       = Foobar::VERSION</span>
 </span><span class='line'><span class="sr">  spec.authors       = [&amp;ldquo;Nick Aschenbach&amp;rdquo;]</span>
-</span><span class='line'><span class="sr">  spec.email         = [&amp;ldquo;&lt;a href=&quot;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#116;&amp;#x6f;&amp;#58;&amp;#110;&amp;#105;&amp;#99;&amp;#x6b;&amp;#x2e;&amp;#97;&amp;#x73;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#110;&amp;#x62;&amp;#x61;&amp;#99;&amp;#x68;&amp;#x40;&amp;#103;&amp;#109;&amp;#x61;&amp;#x69;&amp;#108;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;&quot;&gt;&amp;#110;&amp;#105;&amp;#99;&amp;#107;&amp;#46;&amp;#97;&amp;#x73;&amp;#99;&amp;#104;&amp;#101;&amp;#x6e;&amp;#98;&amp;#x61;&amp;#x63;&amp;#x68;&amp;#64;&amp;#x67;&amp;#109;&amp;#97;&amp;#x69;&amp;#x6c;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&lt;/</span><span class="n">a</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]</span>
+</span><span class='line'><span class="sr">  spec.email         = [&amp;ldquo;&lt;a href=&quot;&amp;#109;&amp;#97;&amp;#105;&amp;#x6c;&amp;#116;&amp;#x6f;&amp;#x3a;&amp;#x6e;&amp;#x69;&amp;#x63;&amp;#x6b;&amp;#x2e;&amp;#97;&amp;#115;&amp;#x63;&amp;#104;&amp;#101;&amp;#x6e;&amp;#98;&amp;#97;&amp;#99;&amp;#x68;&amp;#64;&amp;#x67;&amp;#x6d;&amp;#97;&amp;#x69;&amp;#108;&amp;#46;&amp;#x63;&amp;#x6f;&amp;#109;&quot;&gt;&amp;#x6e;&amp;#x69;&amp;#x63;&amp;#x6b;&amp;#46;&amp;#97;&amp;#x73;&amp;#99;&amp;#x68;&amp;#101;&amp;#x6e;&amp;#98;&amp;#97;&amp;#99;&amp;#104;&amp;#64;&amp;#103;&amp;#109;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&lt;/</span><span class="n">a</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>

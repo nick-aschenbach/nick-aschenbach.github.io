@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="Recently I have been having fun using a packet sniffer running on my Android phone to explore non-public APIs. I will
+provide a small example using &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-15T21:09:30-07:00" pubdate data-updated="true">Oct 15<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Recently I have been having fun using a packet sniffer running on my Android phone to explore non-public APIs. I will
+provide a small example using the overstock.com app to look into current Flash Deals. This technique can be used to
+monitor a large variety of network traffic running on the phone. The app I used also decrypts SSL packets, which is
+useful for viewing HTTPS traffic.</p>
+
+<p><img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png" width="250" title="auto" ></p>
+
+<p>First, I installed <a href="https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture&amp;hl=en">Packet Capture</a> for
+Android. The application requires permission to monitor network traffic when you press the <code>Play</code> button. Please do
+so at your own risk. Also, this captures a large amount of data, so you might want to limit the length of time it is
+running.</p>
+
+<p><img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png" width="250" title="auto" ></p>
+
+<p>I downloaded the <a href="https://play.google.com/store/apps/details?id=com.overstock&amp;hl=en">Overstock.com</a> Android application,
+started it and then started the packet capture. I tapped <code>FLASH DEALS</code> and then stopped the packet capture. The last
+image (above right) shows the HTTP request and response that corresponded to my interaction with the application. You may
+have to look through a large number of packets to identify the one of interest.</p>
+
+<p>While the response is gzipped, I&rsquo;m more interested in the HTTP request. The first thing I tried was a simple curl
+from the command line to reproduce the application:</p>
+
+<pre><code>$ curl http://www.overstock.com/api2/flashdeals/current?offset=0&amp;limit=12
+</code></pre>
+
+<p>In some cases, you may need to use the same HTTP request headers (use the <code>-H "&lt;HEADER_KEY&gt;: &lt;HEADER_VALUE&gt;"</code> command
+line option) to convince the remote HTTP server that the request was made from their application. However, this was not
+needed for the Overstock.com web API. Here is a snippet of the response:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;nextHref&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;currentTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-14T23:37:29.399-06:00&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;items&quot;</span><span class="p">:[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">30905</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;offerType&quot;</span><span class="p">:</span><span class="s2">&quot;FIXED_PRICE&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;startDateTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-14T10:00:00.000-06:00&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;endDateTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-15T10:00:00.000-06:00&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;storeId&quot;</span><span class="p">:</span><span class="mi">43</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;departmentId&quot;</span><span class="p">:</span><span class="mi">454</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;categoryId&quot;</span><span class="p">:</span><span class="mi">4540</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;subCategoryId&quot;</span><span class="p">:</span><span class="mi">1399</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;skus&quot;</span><span class="p">:[</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;fixedPrice&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;product&quot;</span><span class="p">:{</span>
+</span><span class='line'>                  <span class="nt">&quot;productHref&quot;</span><span class="p">:{</span>
+</span><span class='line'>                     <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">10181037</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/product.json?prod_id=10181037&quot;</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nt">&quot;productName&quot;</span><span class="p">:</span><span class="s2">&quot;Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="nt">&quot;images&quot;</span><span class="p">:{</span>
+</span><span class='line'>                     <span class="nt">&quot;thumbnail&quot;</span><span class="p">:</span><span class="s2">&quot;http://ak1.ostkcdn.com/images/products/10181037/T17307668.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;medium&quot;</span><span class="p">:</span><span class="s2">&quot;http://ak1.ostkcdn.com/images/products/10181037/P17307668.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;large&quot;</span><span class="p">:</span><span class="s2">&quot;http://ak1.ostkcdn.com/images/products/10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg&quot;</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nt">&quot;pricing&quot;</span><span class="p">:{</span>
+</span><span class='line'>                     <span class="nt">&quot;compareType&quot;</span><span class="p">:</span><span class="s2">&quot;MSRP&quot;</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;sellingPrice&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;comparePrice&quot;</span><span class="p">:</span><span class="mf">352.00</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;onSale&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;discount&quot;</span><span class="p">:</span><span class="mf">227.01</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;savingsPercent&quot;</span><span class="p">:</span><span class="mi">64</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;maxPrice&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>                     <span class="nt">&quot;minPrice&quot;</span><span class="p">:</span><span class="mf">124.99</span>
+</span><span class='line'>                  <span class="p">},</span>
+</span><span class='line'>                  <span class="nt">&quot;reviewInfo&quot;</span><span class="p">:{</span>
+</span><span class='line'>                     <span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="mi">0</span>
+</span><span class='line'>                  <span class="p">}</span>
+</span><span class='line'>               <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>         <span class="p">]</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="err">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There was a short description, pricing information, image links in three sizes hosted on the CDN and a secondary link:</p>
+
+<pre><code>$ curl http://www.overstock.com/api/product.json?prod_id=10181037
+</code></pre>
+
+<p>Here is the full response:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">10181037</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;meta&quot;</span><span class="p">:{</span>
+</span><span class='line'>      <span class="nt">&quot;apiUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/product.json?prod_id=10181037&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;htmlUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/Bedding-Bath/Jennifer-Taylor-Collection-Red-Moraccan-Cotton-3-piece-Duvet-Cover-Set/10181037/product.html&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;imageBaseUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://ak1.ostkcdn.com/images/products/&quot;</span>
+</span><span class='line'>   <span class="p">},</span>
+</span><span class='line'>   <span class="nt">&quot;sku&quot;</span><span class="p">:</span><span class="s2">&quot;17307668&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;imageThumbnail&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/T17307668.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;imageLarge&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/L17307668.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;imageMedium1&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/P17307668.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;priceSet&quot;</span><span class="p">:[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;MSRP:&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$352.00&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;COMPARISON_PRICE&quot;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$227.01(64%) off&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;DISCOUNTED_AMOUNT&quot;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Sale:&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$124.99&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;CURRENT_PRICE&quot;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>   <span class="p">],</span>
+</span><span class='line'>   <span class="nt">&quot;messages&quot;</span><span class="p">:[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Earn $2.50 (2%) Rewards on this product FREE with Club O Silver&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;messageType&quot;</span><span class="p">:</span><span class="s2">&quot;JOIN_CLUBO_SILVER&quot;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>   <span class="p">],</span>
+</span><span class='line'>   <span class="nt">&quot;oViewerImages&quot;</span><span class="p">:[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;fd47bab9-10f3-49e2-a431-5ae4cf999abf&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;cdnPath&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;originalWidth&quot;</span><span class="p">:</span><span class="mi">1024</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;originalHeight&quot;</span><span class="p">:</span><span class="mi">1024</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;imageSizes&quot;</span><span class="p">:[</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;imagePath&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_320.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="mi">320</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="mi">320</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;imagePath&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_600.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="mi">600</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="mi">600</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;imagePath&quot;</span><span class="p">:</span><span class="s2">&quot;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="mi">1000</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>         <span class="p">]</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>   <span class="p">],</span>
+</span><span class='line'>   <span class="nt">&quot;memberPrice&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;compareAt&quot;</span><span class="p">:</span><span class="mf">250.27</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;categoryId&quot;</span><span class="p">:</span><span class="mi">4540</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;subCategoryId&quot;</span><span class="p">:</span><span class="mi">1399</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;altSubCategoryId&quot;</span><span class="p">:</span><span class="mi">22240</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;shortDescription&quot;</span><span class="p">:</span><span class="s2">&quot;This Moracan Collection duvet set is woven of 100 percent cotton for softness and comfort. Rich blues and oranges in a geometric pattern complete the look. &quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;This reversible duvet cover features a blue and orange geometric design on one side and a solid blue on the other. Crafted of quality cotton, this set is conveniently machine washable.&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Includes: 3-piece Set&lt;/li&gt;&lt;li&gt;Reversible Bedding&lt;/li&gt;&lt;li&gt;Material: Cotton&lt;/li&gt;&lt;li&gt;Pattern: Graphic&lt;/li&gt;&lt;li&gt;Color: Red, Orange, Blue&lt;/li&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Queen-size dimensions:&lt;/b&gt;&lt;li&gt;Duvet: 93 inches x 96 inches&lt;/li&gt;&lt;li&gt;Standard sham: 20 inches x 27 inches&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;&lt;i&gt;The digital images we display have the most accurate color possible. However, due to differences in computer monitors, we cannot be responsible for variations in color between the actual product and your screen.&lt;/i&gt;&lt;br&gt;&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;savingsPercentage&quot;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;basePrice&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;hideMAPProductPrice&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;mediaItem&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;mediaReleaseDate&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;clubODiscount&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;nonClubODiscount&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;preRelease&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;priceLabel&quot;</span><span class="p">:</span><span class="s2">&quot;Sale&quot;</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;online&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>   <span class="nt">&quot;options&quot;</span><span class="p">:[</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>         <span class="nt">&quot;optionId&quot;</span><span class="p">:</span><span class="mi">15463578</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;decription&quot;</span><span class="p">:</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;qtyOnHand&quot;</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;maxQuantityAllowed&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="mf">124.99</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;comparePrice&quot;</span><span class="p">:</span><span class="mf">352.00</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;compareType&quot;</span><span class="p">:</span><span class="s2">&quot;MSRP&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;hideMAPProductPrice&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;savings&quot;</span><span class="p">:</span><span class="mf">227.01</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;savingPercentage&quot;</span><span class="p">:</span><span class="mi">64</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;onSale&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;showAmazonPrice&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;priceSet&quot;</span><span class="p">:[</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;MSRP:&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$352.00&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;COMPARISON_PRICE&quot;</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$227.01(64%) off&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;DISCOUNTED_AMOUNT&quot;</span>
+</span><span class='line'>            <span class="p">},</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>               <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Sale:&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;formattedPrice&quot;</span><span class="p">:</span><span class="s2">&quot;$124.99&quot;</span><span class="p">,</span>
+</span><span class='line'>               <span class="nt">&quot;priceType&quot;</span><span class="p">:</span><span class="s2">&quot;CURRENT_PRICE&quot;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>         <span class="p">]</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>   <span class="p">],</span>
+</span><span class='line'>   <span class="nt">&quot;warranties&quot;</span><span class="p">:[</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">],</span>
+</span><span class='line'>   <span class="nt">&quot;flashDeal&quot;</span><span class="p">:{</span>
+</span><span class='line'>      <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">30905</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api2/flashdeals/30905&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;currentTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-14T23:43:20.413-06:00&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;startDateTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-14T10:00:00.000-06:00&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;endDateTime&quot;</span><span class="p">:</span><span class="s2">&quot;2015-10-15T10:00:00.000-06:00&quot;</span>
+</span><span class='line'>   <span class="p">},</span>
+</span><span class='line'>   <span class="nt">&quot;shipDeliveryEstimates&quot;</span><span class="p">:{</span>
+</span><span class='line'>      <span class="nt">&quot;optionId&quot;</span><span class="p">:</span><span class="mi">15463578</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;productType&quot;</span><span class="p">:</span><span class="s2">&quot;REGULAR&quot;</span>
+</span><span class='line'>   <span class="p">},</span>
+</span><span class='line'>   <span class="nt">&quot;taxonomy&quot;</span><span class="p">:{</span>
+</span><span class='line'>      <span class="nt">&quot;store&quot;</span><span class="p">:{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">43</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Bedding &amp; Bath&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;apiUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/search.json?taxonomy=sto43&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;htmlUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/Bedding-Bath/43/store.html&quot;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nt">&quot;department&quot;</span><span class="p">:{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">454</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Fashion Bedding&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;apiUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/search.json?taxonomy=dep454&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;htmlUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/Bedding-Bath/Fashion-Bedding/454/dept.html&quot;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nt">&quot;category&quot;</span><span class="p">:{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">4540</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Duvet Covers&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;apiUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/search.json?taxonomy=cat4540&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;htmlUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html&quot;</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nt">&quot;subCategory&quot;</span><span class="p">:{</span>
+</span><span class='line'>         <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">1399</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Duvet Covers&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;apiUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/api/search.json?taxonomy=sto1399&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="nt">&quot;htmlUrl&quot;</span><span class="p">:</span><span class="s2">&quot;http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html&quot;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>   <span class="p">},</span>
+</span><span class='line'>   <span class="nt">&quot;originalOptionCount&quot;</span><span class="p">:</span><span class="mi">1</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-15T21:09:30-07:00" pubdate data-updated="true">Oct 15<sup>th</sup>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/learning/'>learning</a>, <a class='category' href='/blog/categories/utilities/'>utilities</a>, <a class='category' href='/blog/categories/web-api/'>web-api</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/06/17/renumber-gem/" title="Previous Post: Renumber Filenames Sequentially">&laquo; Renumber Filenames Sequentially</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/17/renumber-gem/">Renumber Filenames Sequentially</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/13/building-a-custom-machined-raised-bed/">Building a Custom Machined Raised Bed</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/07/rails-engine-api-endpoint-authentication/">Rails Engine API Endpoint Authentication Using Rack Middleware</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/astronomy/'>astronomy (1)</a></li>
+<li class='category'><a href='/blog/categories/cnc/'>cnc (4)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
+<li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (3)</a></li>
+<li class='category'><a href='/blog/categories/gardening/'>gardening (1)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (4)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (6)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (3)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
+<li class='category'><a href='/blog/categories/utilities/'>utilities (2)</a></li>
+<li class='category'><a href='/blog/categories/web-api/'>web-api (1)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (3)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a web developer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails
+development, but also have experience in Java, C# and Microsoft Cloud (Azure). In my spare time, I write code and
+fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
