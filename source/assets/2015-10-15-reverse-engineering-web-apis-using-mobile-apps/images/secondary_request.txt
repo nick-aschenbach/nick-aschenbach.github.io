@@ -1,0 +1,154 @@
+$ curl http://www.overstock.com/api/product.json?prod_id=10181037
+
+{
+   "id":10181037,
+   "name":"Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set",
+   "meta":{
+      "apiUrl":"http://www.overstock.com/api/product.json?prod_id=10181037",
+      "htmlUrl":"http://www.overstock.com/Bedding-Bath/Jennifer-Taylor-Collection-Red-Moraccan-Cotton-3-piece-Duvet-Cover-Set/10181037/product.html",
+      "imageBaseUrl":"http://ak1.ostkcdn.com/images/products/"
+   },
+   "sku":"17307668",
+   "imageThumbnail":"10181037/T17307668.jpg",
+   "imageLarge":"10181037/L17307668.jpg",
+   "imageMedium1":"10181037/P17307668.jpg",
+   "priceSet":[
+      {
+         "label":"MSRP:",
+         "formattedPrice":"$352.00",
+         "priceType":"COMPARISON_PRICE"
+      },
+      {
+         "label":"",
+         "formattedPrice":"$227.01(64%) off",
+         "priceType":"DISCOUNTED_AMOUNT"
+      },
+      {
+         "label":"Sale:",
+         "formattedPrice":"$124.99",
+         "priceType":"CURRENT_PRICE"
+      }
+   ],
+   "messages":[
+      {
+         "message":"Earn $2.50 (2%) Rewards on this product FREE with Club O Silver",
+         "messageType":"JOIN_CLUBO_SILVER"
+      }
+   ],
+   "oViewerImages":[
+      {
+         "id":"fd47bab9-10f3-49e2-a431-5ae4cf999abf",
+         "cdnPath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf.jpg",
+         "originalWidth":1024,
+         "originalHeight":1024,
+         "imageSizes":[
+            {
+               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_320.jpg",
+               "height":320,
+               "width":320
+            },
+            {
+               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_600.jpg",
+               "height":600,
+               "width":600
+            },
+            {
+               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg",
+               "height":1000,
+               "width":1000
+            }
+         ]
+      }
+   ],
+   "memberPrice":124.99,
+   "compareAt":250.27,
+   "categoryId":4540,
+   "subCategoryId":1399,
+   "altSubCategoryId":22240,
+   "shortDescription":"This Moracan Collection duvet set is woven of 100 percent cotton for softness and comfort. Rich blues and oranges in a geometric pattern complete the look. ",
+   "description":"This reversible duvet cover features a blue and orange geometric design on one side and a solid blue on the other. Crafted of quality cotton, this set is conveniently machine washable.<br><br><ul><li>Includes: 3-piece Set</li><li>Reversible Bedding</li><li>Material: Cotton</li><li>Pattern: Graphic</li><li>Color: Red, Orange, Blue</li><br><br><b>Queen-size dimensions:</b><li>Duvet: 93 inches x 96 inches</li><li>Standard sham: 20 inches x 27 inches</li></ul><br><i>The digital images we display have the most accurate color possible. However, due to differences in computer monitors, we cannot be responsible for variations in color between the actual product and your screen.</i><br>",
+   "savingsPercentage":50,
+   "basePrice":124.99,
+   "hideMAPProductPrice":false,
+   "mediaItem":false,
+   "mediaReleaseDate":"",
+   "clubODiscount":false,
+   "nonClubODiscount":true,
+   "preRelease":false,
+   "priceLabel":"Sale",
+   "online":true,
+   "options":[
+      {
+         "optionId":15463578,
+         "decription":"N/A",
+         "qtyOnHand":31,
+         "maxQuantityAllowed":20,
+         "price":124.99,
+         "comparePrice":352.00,
+         "compareType":"MSRP",
+         "hideMAPProductPrice":false,
+         "savings":227.01,
+         "savingPercentage":64,
+         "onSale":true,
+         "showAmazonPrice":false,
+         "priceSet":[
+            {
+               "label":"MSRP:",
+               "formattedPrice":"$352.00",
+               "priceType":"COMPARISON_PRICE"
+            },
+            {
+               "label":"",
+               "formattedPrice":"$227.01(64%) off",
+               "priceType":"DISCOUNTED_AMOUNT"
+            },
+            {
+               "label":"Sale:",
+               "formattedPrice":"$124.99",
+               "priceType":"CURRENT_PRICE"
+            }
+         ]
+      }
+   ],
+   "warranties":[
+
+   ],
+   "flashDeal":{
+      "id":30905,
+      "href":"http://www.overstock.com/api2/flashdeals/30905",
+      "currentTime":"2015-10-14T23:43:20.413-06:00",
+      "startDateTime":"2015-10-14T10:00:00.000-06:00",
+      "endDateTime":"2015-10-15T10:00:00.000-06:00"
+   },
+   "shipDeliveryEstimates":{
+      "optionId":15463578,
+      "productType":"REGULAR"
+   },
+   "taxonomy":{
+      "store":{
+         "id":43,
+         "name":"Bedding & Bath",
+         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=sto43",
+         "htmlUrl":"http://www.overstock.com/Bedding-Bath/43/store.html"
+      },
+      "department":{
+         "id":454,
+         "name":"Fashion Bedding",
+         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=dep454",
+         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Fashion-Bedding/454/dept.html"
+      },
+      "category":{
+         "id":4540,
+         "name":"Duvet Covers",
+         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=cat4540",
+         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html"
+      },
+      "subCategory":{
+         "id":1399,
+         "name":"Duvet Covers",
+         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=sto1399",
+         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html"
+      }
+   },
+   "originalOptionCount":1
+}
