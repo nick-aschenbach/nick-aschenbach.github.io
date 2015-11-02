@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cnc | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/cnc/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-10-15T22:40:53-07:00</updated>
+  <updated>2015-11-01T21:03:15-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Open Source Pirate Swords]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/11/01/pirate-swords/"/>
+    <updated>2015-11-01T20:23:37-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/11/01/pirate-swords</id>
+    <content type="html"><![CDATA[<p>Every year my work has a competition for who can come up with the best Halloween decorations. My team has the good
+fortune of being in a large conference room, which gave us a distinct advantage over the pod layout elsewhere
+in the building. Our team&rsquo;s resident creative genius <a href="https://twitter.com/SheenaEllenburg">Sheena</a> came up with
+the concept of dead pirates / death in the deep. As a companion to our pirate costumes, I created a basic
+pirate sword design with a curved blade:</p>
+
+<p><img src="/assets/2015-11-01-pirate-swords/images/sword-collage.jpg" title="auto auto" ></p>
+
+<p>I cut the swords out of a sheet of &frac12;&#8221; cabinet grade plywood. This is important because it has a flat and smooth
+pre-finished surface, which I found very easy to prime and spray paint. I used silver metallic paint for the blade
+portion and then used a metallic bronze for the hilt. Painters tape was used as masking to provide a sharp line between
+the two colors.</p>
+
+<p><img src="/assets/2015-11-01-pirate-swords/images/final-sword.jpg" title="auto auto" ></p>
+
+<p>As a final touch, I used a hot glue gun to attach 1/8&#8221; leather cord to the handle of the hilt.</p>
+
+<p>Here are the sword designs in various formats, if you want to make your own:</p>
+
+<ul>
+<li><a href="/assets/2015-11-01-pirate-swords/images/sword.3dm">3DM / Rhino</a></li>
+<li><a href="/assets/2015-11-01-pirate-swords/images/sword.ai">AI / Illustrator</a></li>
+<li><a href="/assets/2015-11-01-pirate-swords/images/sword.dxf">DXF</a></li>
+<li><a href="/assets/2015-11-01-pirate-swords/images/sword.dwg">DWG</a></li>
+<li><a href="/assets/2015-11-01-pirate-swords/images/sword.pdf">PDF</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building a Custom Machined Raised Bed]]></title>

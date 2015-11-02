@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2015/11/01/pirate-swords/</loc>
+    <lastmod>2015-11-01T20:23:37-08:00</lastmod>
+  </url>
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/</loc>
     <lastmod>2015-10-15T21:09:30-07:00</lastmod>
   </url>
