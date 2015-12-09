@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Communication | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/communication/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,26 +18,25 @@
     <link href="http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio/"/>
     <updated>2014-07-20T21:01:23-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/20/text-messaging-made-easy-with-twilio</id>
-    <content type="html"><![CDATA[<p>A few months ago I was determined to find out how to send and receive SMS text messages programmatically. After some research, I found that <a href="https://www.twilio.com">Twilio</a> has a range of communication tools for developers for SMS / MMS, voice, mobile and web. They take care of low level details which facilitates the process of focusing on the core app. Their <a href="https://www.twilio.com/docs">documentation</a> is excellent and you can experiment with their tools for free.</p>
+    <content type="html"><![CDATA[A few months ago I was determined to find out how to send and receive SMS text messages programmatically. After some research, I found that [Twilio](https://www.twilio.com) has a range of communication tools for developers for SMS / MMS, voice, mobile and web. They take care of low level details which facilitates the process of focusing on the core app. Their [documentation](https://www.twilio.com/docs) is excellent and you can experiment with their tools for free. 
 
-<p>When using a trial account, you can set up a phone number for free in just a few minutes. To get a number, click on the &lsquo;NUMBERS&rsquo; tab and then click the link &lsquo;Get it now&rsquo;, which should show a page like the following:</p>
+When using a trial account, you can set up a phone number for free in just a few minutes. To get a number, click on the 'NUMBERS' tab and then click the link 'Get it now', which should show a page like the following:
 
-<p><img class="left" src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/get-number.png" title="Get a Twilio number" ></p>
+<img class="left" src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/get-number.png" title="Get a Twilio number" >
 
-<p>Click the &lsquo;Get started&rsquo; button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.</p>
+Click the &#8216;Get started&#8217; button. Note that you will have to enter in a number (e.g. your cell phone number) that you want to communicate with for the trial account to work. A short verification process is required. However, this limitation is removed if you upgrade to a paid account. Try out the test drive page that allows you to send a SMS message to yourself to ensure it is working.
 
 <!-- more -->
 
+Now if you click on the &#8216;NUMBERS&#8217; tab, you should see the number that was set up in the previous step. Note the &#8216;Request URLs&#8217; associated with this phone number. We are going to modify the &#8216;Messaging&#8217; link in a few minutes. This requires that we set up a publically available server on the internet.
 
-<p>Now if you click on the &lsquo;NUMBERS&rsquo; tab, you should see the number that was set up in the previous step. Note the &lsquo;Request URLs&rsquo; associated with this phone number. We are going to modify the &lsquo;Messaging&rsquo; link in a few minutes. This requires that we set up a publically available server on the internet.</p>
+I used [Heroku](https://www.heroku.com/) as a hosting service for this project at no cost. There are several alternatives. I have some experience using [Rackspace](http://www.rackspace.com/), [Microsoft Azure](http://azure.microsoft.com/) and [Amazon Web Services](https://aws.amazon.com/). If you use Heroku, please make sure to install the Heroku Toolbelt command line tools. For the rest of this post, I will assume that you are using Heroku.
 
-<p>I used <a href="https://www.heroku.com/">Heroku</a> as a hosting service for this project at no cost. There are several alternatives. I have some experience using <a href="http://www.rackspace.com/">Rackspace</a>, <a href="http://azure.microsoft.com/">Microsoft Azure</a> and <a href="https://aws.amazon.com/">Amazon Web Services</a>. If you use Heroku, please make sure to install the Heroku Toolbelt command line tools. For the rest of this post, I will assume that you are using Heroku.</p>
+Let&#8217;s start with an application that echos back what is sent in the body of a text message. We are going to write a simple little [Sinatra](http://www.sinatrarb.com/) app for this purpose. There are instructions for how to deploy Sinatra apps to Heroku [here](https://devcenter.heroku.com/articles/rack). Note the URL for the app when running `heroku create`. We&#8217;ll need to configure Twilio to use this URL in a minute.
 
-<p>Let&rsquo;s start with an application that echos back what is sent in the body of a text message. We are going to write a simple little <a href="http://www.sinatrarb.com/">Sinatra</a> app for this purpose. There are instructions for how to deploy Sinatra apps to Heroku <a href="https://devcenter.heroku.com/articles/rack">here</a>. Note the URL for the app when running <code>heroku create</code>. We&rsquo;ll need to configure Twilio to use this URL in a minute.</p>
+Here is a simple echo SMS server:
 
-<p>Here is a simple echo SMS server:</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -53,39 +52,39 @@
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">sinatra</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;sinatra&amp;#8217;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;get &amp;lsquo;/</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="k">do</span>
+</span><span class='line'><span class="n">get</span> <span class="o">&amp;</span><span class="c1">#8216;/&amp;#8217; do</span>
 </span><span class='line'>  <span class="n">body</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:Body</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">content_type</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">text</span><span class="o">/</span><span class="n">xml</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">content_type</span> <span class="o">&amp;</span><span class="c1">#8216;text/xml&amp;#8217;</span>
 </span><span class='line'>  <span class="n">xml</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def xml(message)</span>
-</span><span class='line'><span class="sr">  &amp;lt;&lt;-XML</span>
-</span><span class='line'><span class="sr">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-</span><span class='line'><span class="sr">&lt;Response&gt;</span>
-</span><span class='line'><span class="sr">  &lt;Message&gt;</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="sr">&lt;/</span><span class="no">Message</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/Response&gt;</span>
-</span><span class='line'><span class="sr">  XML</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="k">def</span> <span class="nf">xml</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">&lt;&lt;-</span><span class="no">XML</span>
+</span><span class='line'><span class="sh">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="sh">&lt;Response&gt;</span>
+</span><span class='line'><span class="sh">  &lt;Message&gt;#{message}&lt;/Message&gt;</span>
+</span><span class='line'><span class="sh">&lt;/Response&gt;</span>
+</span><span class='line'><span class="no">  XML</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Note that the app takes a query string parameter &lsquo;Body&rsquo; that comes from Twilio. There are several other query string parameters that are sent by Twilio. These can be viewed via the <code>heroku logs</code> command after a request is made (including &lsquo;From&rsquo; (number), &lsquo;FromZip&rsquo;, &lsquo;FromState&rsquo;, &lsquo;FromCountry&rsquo; and &lsquo;SmsStatus&rsquo;). Now we need to set up Twilio to use our server.</p>
+Note that the app takes a query string parameter &#8216;Body&#8217; that comes from Twilio. There are several other query string parameters that are sent by Twilio. These can be viewed via the `heroku logs` command after a request is made (including &#8216;From&#8217; (number), &#8216;FromZip&#8217;, &#8216;FromState&#8217;, &#8216;FromCountry&#8217; and &#8216;SmsStatus&#8217;). Now we need to set up Twilio to use our server. 
 
-<p>The SMS message triggers Twilio to issue a HTTP request to our server. The response from our Sinatra app is then parsed by Twilio and then sent back to the number that initially sent the text message.</p>
+The SMS message triggers Twilio to issue a HTTP request to our server. The response from our Sinatra app is then parsed by Twilio and then sent back to the number that initially sent the text message. 
 
-<p>Let&rsquo;s configure Twilio by clicking the &lsquo;NUMBERS&rsquo; tab and then clicking on our phone number. Change the request type from a POST to a GET and then enter in the URL displayed when running <code>heroku create</code>. If you did not write it down, you can always open the app via the <code>heroku open</code> command. Note that the Gemfile and config.ru files <strong>must</strong> be present when deploying to heroku.</p>
+Let&#8217;s configure Twilio by clicking the &#8216;NUMBERS&#8217; tab and then clicking on our phone number. Change the request type from a POST to a GET and then enter in the URL displayed when running `heroku create`. If you did not write it down, you can always open the app via the `heroku open` command. Note that the Gemfile and config.ru files <strong>must</strong> be present when deploying to heroku.
 
-<p>Assuming that the app is deployed and Twilio is configured correctly, try to send a message from your phone to the number created in Twilio. Here is a screen shot from my phone showing the results:</p>
+Assuming that the app is deployed and Twilio is configured correctly, try to send a message from your phone to the number created in Twilio. Here is a screen shot from my phone showing the results:
 
-<p><img class="left" src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/hello-world.png" title="Echo message" ></p>
+<img class="left" src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/hello-world.png" title="Echo message" >
 
-<p>This application is trivial, so let&rsquo;s work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some people need a little help finding what words can be created with their letters.</p>
+This application is trivial, so let&#8217;s work on something a little more useful and fun. Word games like Scrabble&reg; or Words with Friends&reg; can be a lot of fun, but some people need a little help finding what words can be created with their letters. 
 
-<p>Let&rsquo;s write a little application that generates all letter permutations and compares these against a dictionary. We will extend the Sinatra app we wrote earlier and add a little helper Permutator class:</p>
+Let&#8217;s write a little application that generates all letter permutations and compares these against a dictionary. We will extend the Sinatra app we wrote earlier and add a little helper Permutator class:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -134,73 +133,68 @@
 <span class='line-number'>47</span>
 <span class='line-number'>48</span>
 <span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">set</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">sinatra</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;set&amp;#8217;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;sinatra&amp;#8217;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class Permutator</span>
-</span><span class='line'><span class="sr">  def self.init</span>
-</span><span class='line'><span class="sr">    @@words = Set.new</span>
-</span><span class='line'><span class="sr">    File.open(&amp;lsquo;dictionary.txt&amp;rsquo;, &amp;lsquo;r&amp;rsquo;) do |f|</span>
-</span><span class='line'><span class="sr">      f.each_line { |word| @@words.add(word.chomp) }</span>
-</span><span class='line'><span class="sr">    end</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Permutator</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">init</span>
+</span><span class='line'>    <span class="vc">@@words</span> <span class="o">=</span> <span class="no">Set</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;dictionary.txt&amp;#8217;, &amp;#8216;r&amp;#8217;) do |f|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">each_line</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="vc">@@words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_words</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_words</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">letter_array</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="n">letters</span><span class="o">.</span><span class="n">each_char</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="n">letter_array</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">letter</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">words_found</span> <span class="o">=</span> <span class="no">Set</span><span class="o">.</span><span class="n">new</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>    <span class="n">letters</span><span class="o">.</span><span class="n">each_char</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="n">letter_array</span> <span class="o">&lt;&lt;</span> <span class="n">letter</span> <span class="p">}</span>
+</span><span class='line'>    <span class="n">words_found</span> <span class="o">=</span> <span class="no">Set</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;(1..letter_array.size).each do |length|</span>
-</span><span class='line'><span class="sr">  letter_array.permutation(length).each do |perm|</span>
-</span><span class='line'><span class="sr">    candidate = perm.join</span>
-</span><span class='line'><span class="sr">    words_found.add(candidate) if @@words.include?(candidate)</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span><span class='line'><span class="sr">words_found.to_a.join(&quot;\n&quot;)</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.letter_array</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">length</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">letter_array</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">perm</span><span class="o">|</span>
+</span><span class='line'>        <span class="n">candidate</span> <span class="o">=</span> <span class="n">perm</span><span class="o">.</span><span class="n">join</span>
+</span><span class='line'>        <span class="n">words_found</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span> <span class="k">if</span> <span class="vc">@@words</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">words_found</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">configure</span> <span class="k">do</span>
+</span><span class='line'><span class="n">configure</span> <span class="k">do</span>
 </span><span class='line'>  <span class="no">Permutator</span><span class="o">::</span><span class="n">init</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;get &amp;lsquo;/</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span> <span class="k">do</span>
+</span><span class='line'><span class="n">get</span> <span class="s1">&#39;/&#39;</span> <span class="k">do</span>
 </span><span class='line'>  <span class="k">begin</span>
-</span><span class='line'>    <span class="n">content_type</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">text</span><span class="o">/</span><span class="n">xml</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">content_type</span> <span class="s1">&#39;text/xml&#39;</span>
 </span><span class='line'>    <span class="n">letters</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:Body</span><span class="o">][</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">7</span><span class="o">].</span><span class="n">downcase</span>
 </span><span class='line'>    <span class="n">results</span> <span class="o">=</span> <span class="no">Permutator</span><span class="o">::</span><span class="n">find_words</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">xml</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Permutations</span> <span class="k">for</span> <span class="c1">#{letters}:\n#{results}&amp;rdquo;)</span>
+</span><span class='line'>    <span class="n">xml</span><span class="p">(</span><span class="s2">&quot;Permutations for </span><span class="si">#{</span><span class="n">letters</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">#{</span><span class="n">results</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span class='line'>  <span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
-</span><span class='line'>    <span class="n">xml</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Could</span> <span class="ow">not</span> <span class="n">process</span> <span class="n">input</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span>
+</span><span class='line'>    <span class="n">xml</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;Could not process input&amp;#8217;)</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def xml(message)</span>
-</span><span class='line'><span class="sr">  &amp;lt;&lt;-XML</span>
-</span><span class='line'><span class="sr">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-</span><span class='line'><span class="sr">&lt;Response&gt;</span>
-</span><span class='line'><span class="sr">  &lt;Message&gt;</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="sr">&lt;/</span><span class="no">Message</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/Response&gt;</span>
-</span><span class='line'><span class="sr">  XML</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="k">def</span> <span class="nf">xml</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'>  <span class="o">&lt;&lt;-</span><span class="no">XML</span>
+</span><span class='line'><span class="sh">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="sh">&lt;Response&gt;</span>
+</span><span class='line'><span class="sh">  &lt;Message&gt;#{message}&lt;/Message&gt;</span>
+</span><span class='line'><span class="sh">&lt;/Response&gt;</span>
+</span><span class='line'><span class="no">  XML</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>This helper will generate all permutations using from one to the number of letters passed into the &lsquo;find_words&rsquo; method. The class method &lsquo;init&rsquo; is just called once when the application fires up. To see the results check the image at the bottom of the post.</p>
+This helper will generate all permutations using from one to the number of letters passed into the &#8216;find_words&#8217; method. The class method &#8216;init&#8217; is just called once when the application fires up. To see the results check the image at the bottom of the post.
 
-<p>I ran into a couple of issues using Twilio. The response message length needs to be kept less than 1600 characters. This limit can be exceeded with the permutator app we wrote. Also Twilio limits sending SMS to one message per second.</p>
+I ran into a couple of issues using Twilio. The response message length needs to be kept less than 1600 characters. This limit can be exceeded with the permutator app we wrote. Also Twilio limits sending SMS to one message per second. 
 
-<p>I found the <a href="https://www.twilio.com/user/account/developer-tools/app-monitor">App monitor</a> to be very useful when diagnosing what went wrong with my application. The &lsquo;Request Inspector&rsquo; keeps track of HTTP request and response details that is helpful for debugging.</p>
+I found the [App monitor](https://www.twilio.com/user/account/developer-tools/app-monitor) to be very useful when diagnosing what went wrong with my application. The &#8216;Request Inspector&#8217; keeps track of HTTP request and response details that is helpful for debugging.
 
-<p>Twilio also supports sending SMS and MMS messages. Twilio supports a &lsquo;twilio-ruby&rsquo; gem that can also be used for messaging. This gem can be used to send the same message to a number of recipients, for example. <a href="https://www.twilio.com/docs/quickstart/ruby/sms/sending-via-rest">Here</a> is a Ruby code example using that gem.</p>
+Twilio also supports sending SMS and MMS messages. Twilio supports a &#8216;twilio-ruby&#8217; gem that can also be used for messaging. This gem can be used to send the same message to a number of recipients, for example. [Here](https://www.twilio.com/docs/quickstart/ruby/sms/sending-via-rest) is a Ruby code example using that gem.
 
-<p>Here are the results when I sent a text message with a body of &lsquo;pots&rsquo; given our little word scramble app:</p>
+Here are the results when I sent a text message with a body of &#8216;pots&#8217; given our little word scramble app:
 
-<p><img src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/permutations.png" title="Permutations" ></p>
-]]></content>
+<img src="/assets/2014-07-20-text-messaging-made-easy-with-twilio/images/permutations.png" title="Permutations" >]]></content>
   </entry>
   
 </feed>

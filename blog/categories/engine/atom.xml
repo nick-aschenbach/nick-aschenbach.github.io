@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Engine | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/engine/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,30 +18,29 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication/"/>
     <updated>2015-04-07T22:28:10-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/04/07/rails-engine-api-endpoint-authentication</id>
-    <content type="html"><![CDATA[<p>At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host
+    <content type="html"><![CDATA[At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host
 application, we require that clients use tokens for API authentication. In a parent class before filter, we call a
 remote web service to validate these tokens. We all agreed that it was a bad idea to copy this code over from the host
-into the engine.</p>
+into the engine.
 
-<p>There were a couple of reasons for this. Not only would the code be duplicated, but we felt like it would be a better
+There were a couple of reasons for this. Not only would the code be duplicated, but we felt like it would be a better
 separation of concerns to keep authentication out of the engine. Another argument is that we would not want
 to impose an authentication system from the gem on the host application. Ryan Bigg expands on this in a
-<a href="http://ryanbigg.com/2012/03/engines-and-authentication/">blog post</a> on Forem.</p>
+[blog post](http://ryanbigg.com/2012/03/engines-and-authentication/) on Forem.
 
 <!-- more -->
 
+We investigated a handful of approaches. The simplest, least invasive approach seemed to be to use Rack middleware.
+First, we register the middleware with an array of endpoints to validate:
 
-<p>We investigated a handful of approaches. The simplest, least invasive approach seemed to be to use Rack middleware.
-First, we register the middleware with an array of endpoints to validate:</p>
-
-<p><figure class='code'><figcaption><span>application.rb </span></figcaption>
+<figure class='code'><figcaption><span>application.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">Middleware</span><span class="o">::</span><span class="no">TokenAuthorizer</span><span class="p">,</span> <span class="o">[&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">api</span><span class="o">/</span><span class="n">accounts</span><span class="o">/&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">Middleware</span><span class="o">::</span><span class="no">TokenAuthorizer</span><span class="p">,</span> <span class="o">[&amp;</span><span class="c1">#8216;api/accounts/&amp;#8217;]</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Then we define the middleware:</p>
+Then we define the middleware:
 
-<p><figure class='code'><figcaption><span>token_authorizer.rb </span></figcaption>
+<figure class='code'><figcaption><span>token_authorizer.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -74,56 +73,48 @@ First, we register the middleware with an array of endpoints to validate:</p>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">module</span> <span class="nn">Middleware</span>
 </span><span class='line'>  <span class="k">class</span> <span class="nc">TokenAuthorizer</span>
 </span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">validation_endpoints</span><span class="p">)</span>
 </span><span class='line'>      <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
 </span><span class='line'>      <span class="vi">@validation_endpoints</span> <span class="o">=</span> <span class="n">validation_endpoints</span>
-</span><span class='line'>    <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;def call(env)</span>
-</span><span class='line'><span class="sr">  return unauthorized if need_to_validate?(env[&#39;PATH_INFO&#39;]) &amp;amp;&amp;amp; invalid_token?(env[&#39;HTTP_AUTHORIZATION&#39;])</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">unauthorized</span> <span class="k">if</span> <span class="n">need_to_validate?</span><span class="p">(</span><span class="n">env</span><span class="o">[&amp;</span><span class="c1">#8216;PATH_INFO&amp;#8217;]) &amp;&amp; invalid_token?(env[&amp;#8216;HTTP_AUTHORIZATION&amp;#8217;])</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">  @app.call(env)</span>
-</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>      <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">private</span>
+</span><span class='line'>    <span class="kp">private</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">def need_to_validate?(request_path)</span>
-</span><span class='line'><span class="sr">  @validation_endpoints.each do |validation_endpoint|</span>
-</span><span class='line'><span class="sr">    return true if request_path.include?(validation_endpoint)</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">  false</span>
-</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">need_to_validate?</span><span class="p">(</span><span class="n">request_path</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@validation_endpoints</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">validation_endpoint</span><span class="o">|</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">request_path</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">validation_endpoint</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">def invalid_token?(token)</span>
-</span><span class='line'><span class="sr">  return true if token.nil?</span>
-</span><span class='line'><span class="sr">  !WebServices::TokenAuth.new(token).is_valid_token?</span>
-</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">invalid_token?</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="o">!</span><span class="no">WebServices</span><span class="o">::</span><span class="no">TokenAuth</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">is_valid_token?</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">def unauthorized</span>
-</span><span class='line'><span class="sr">  [401, {}, [&#39;Unauthorized&#39;]]</span>
-</span><span class='line'><span class="sr">end</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">unauthorized</span>
+</span><span class='line'>      <span class="o">[</span><span class="mi">401</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[&amp;</span><span class="c1">#8216;Unauthorized&amp;#8217;]]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>In most cases, we will just end up executing calling the host application (via <code>@app.call(env)</code>). However if the
-<code>PATH_INFO</code> matches an initialized endpoint and we pass in an invalid token, then we will return a <code>401</code> HTTP status
-code.</p>
+In most cases, we will just end up executing calling the host application (via `@app.call(env)`). However if the
+`PATH_INFO` matches an initialized endpoint and we pass in an invalid token, then we will return a `401` HTTP status
+code.
 
-<p>There are a few drawbacks to this approach:</p>
+There are a few drawbacks to this approach:
 
-<ul>
-<li>We do not take into the HTTP verb into account and may match more endpoints than we intend (e.g. api/accounts/:account_identifier)</li>
-<li>The middleware runs for all requests, even ones where we have a separate authentication mechanism</li>
-</ul>
-
-]]></content>
+- We do not take into the HTTP verb into account and may match more endpoints than we intend (e.g. api/accounts/:account_identifier)
+- The middleware runs for all requests, even ones where we have a separate authentication mechanism]]></content>
   </entry>
   
   <entry>
@@ -131,63 +122,59 @@ code.</p>
     <link href="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/"/>
     <updated>2015-01-29T20:34:04-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem</id>
-    <content type="html"><![CDATA[<p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
-Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
-Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
+    <content type="html"><![CDATA[With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are [closing up shop](https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc) by mid 2015.
+Their plan is to help support the up and coming Wikimedia Foundation's project [Wikidata](http://www.wikidata.org/) by
 assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
-to do a small project using their data sets.</p>
+to do a small project using their data sets.
 
-<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
+I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:
 
-<ul>
-<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
-description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
-<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
-in a Rails project:</li>
-</ul>
+- The `astronomy` gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
+description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.
+- The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
+in a Rails project:
 
-
-<p><a href="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
+[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 
+Add the following to your `config/routes.rb` in your rails app:
 
-<p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
+&#8220;`ruby
+Rails.application.routes.draw do
+  mount AstronomyEngine::App => &#8216;/astronomy&#8217;
+&#8220;`
 
-<pre><code class="ruby">Rails.application.routes.draw do
-  mount AstronomyEngine::App =&gt; '/astronomy'
-</code></pre>
+This adds the web page at the root and adds a few additional routes.
 
-<p>This adds the web page at the root and adds a few additional routes.</p>
+Request the list of categories:
 
-<p>Request the list of categories:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories
-</code></pre>
+Request all topics for a given category:
 
-<p>Request all topics for a given category:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
-</code></pre>
+Search all topic names and descriptions:
 
-<p>Search all topic names and descriptions:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
-</code></pre>
+I have a [sample web app](http://astronomy-engine.herokuapp.com/) on Heroku available if you want to take a look.
+Here are the Github pages for the [astronomy](https://github.com/nick-aschenbach/astronomy) gem and
+[astronomy_engine](https://github.com/nick-aschenbach/astronomy-engine) gem.
 
-<p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
-Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and
-<a href="https://github.com/nick-aschenbach/astronomy-engine">astronomy_engine</a> gem.</p>
+Resources:
 
-<p>Resources:</p>
-
-<ul>
-<li>Amazon makes a handful of <a href="https://aws.amazon.com/search?searchQuery=freebase">Freebase Data Dumps</a> freely available.
-Also they several other <a href="https://aws.amazon.com/datasets/">public data sets</a>.</li>
-<li>Wikidata <a href="http://dumps.wikimedia.org/">data dumps</a> are also available.</li>
-</ul>
-
-]]></content>
+- Amazon makes a handful of [Freebase Data Dumps](https://aws.amazon.com/search?searchQuery=freebase) freely available.
+Also they several other [public data sets](https://aws.amazon.com/datasets/).
+- Wikidata [data dumps](http://dumps.wikimedia.org/) are also available.]]></content>
   </entry>
   
 </feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Terrain | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/terrain/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,41 +18,39 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine/"/>
     <updated>2015-02-25T22:40:30-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine</id>
-    <content type="html"><![CDATA[<p>In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
-of 3D graphics in games.</p>
+    <content type="html"><![CDATA[In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
+of 3D graphics in games.
 
-<p>For years, side-scrolling video games use a projection where the camera is aligned along one of the axes. Many original
+For years, side-scrolling video games use a projection where the camera is aligned along one of the axes. Many original
 game titles like Tetris, Zelda, Super Mario Bros place the camera either above the player looking down along a
 vertical axis or looking directly from the side. Basic techniques like shading and parallax scrolling (where foreground
-images scroll faster than background images) help to provide a sense of depth.</p>
+images scroll faster than background images) help to provide a sense of depth.
 
-<p><img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" ></p>
+<img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" >
 
-<p>An <a href="http://en.wikipedia.org/wiki/Isometric_projection">isometric projection</a> is a popular way of visualizing 3D objects
+An [isometric projection](http://en.wikipedia.org/wiki/Isometric_projection) is a popular way of visualizing 3D objects
 on a 2D screen. This involves rotating the camera 45 degrees to one side and then angling down roughly 30 degrees. This
 approach is used in several role playing and strategy games (Sim City 2000 pictured below). Q*bert, released in 1982,
-was perhaps one of the first games that used isometric graphics.</p>
+was perhaps one of the first games that used isometric graphics.
 
-<p><img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" ></p>
+<img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" >
 
 <!-- more -->
 
+**Drawing the Grid**
 
-<p><strong>Drawing the Grid</strong></p>
-
-<p>A common pattern is to use tiles that are two times wider than they are tall. Also, I find that lines with a slope of 2:1
+A common pattern is to use tiles that are two times wider than they are tall. Also, I find that lines with a slope of 2:1
 (two pixels horizontally : one vertical) look better as pixel art. This ratio makes it relatively easy to calculate
-the screen position of a tile and to find the position of the mouse over a tile.</p>
+the screen position of a tile and to find the position of the mouse over a tile.
 
-<p>Here is a simple example with 128x64 tiles on a HTML5 canvas:</p>
+Here is a simple example with 128x64 tiles on a HTML5 canvas:
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric01/index.html" width="100%" height="375"></iframe>
 
+This snippet describes how to position the diamond / rhombus shapes in a grid
+([full source](/assets/2015-02-25-isometric-tile-engine/isometric01/js/isometric.js)):
 
-<p>This snippet describes how to position the diamond / rhombus shapes in a grid
-(<a href="/assets/2015-02-25-isometric-tile-engine/isometric01/js/isometric.js">full source</a>):</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -70,40 +68,35 @@ the screen position of a tile and to find the position of the mouse over a tile.
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">tileColumnOffset</span><span class="o">:</span> <span class="mi">64</span><span class="p">,</span>
-</span><span class='line'><span class="nx">tileRowOffset</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="nx">tileRowOffset</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="c1">// Draw tile outline</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">// Draw tile outline</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>When we use actual graphical tiles <code>redrawTiles</code>, the draw order will need to be changed so that tiles in the back
-are rendered before ones in the front. Let&rsquo;s extend the work by adding colors, coordinates and some mouse listeners:</p>
+When we use actual graphical tiles `redrawTiles`, the draw order will need to be changed so that tiles in the back
+are rendered before ones in the front. Let&#8217;s extend the work by adding colors, coordinates and some mouse listeners:
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric02/index.html" width="100%" height="375"></iframe>
 
+Here is the salient code that handles canvas drawing
+([full source](/assets/2015-02-25-isometric-tile-engine/isometric02/js/isometric.js)):
 
-<p>Here is the salient code that handles canvas drawing
-(<a href="/assets/2015-02-25-isometric-tile-engine/isometric02/js/isometric.js">full source</a>):</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -141,98 +134,90 @@ are rendered before ones in the front. Let&rsquo;s extend the work by adding col
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">Xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">Xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">8211</span><span class="p">;)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawTile</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">);</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="p">},</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">drawTile</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nx">drawTile</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Draw tile interior</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nx">Xi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileX</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileY</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">yellow</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>  <span class="c1">// Draw tile interior</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nx">Xi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileX</span> <span class="o">&amp;&amp;</span> <span class="nx">Yi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileY</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">green</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Draw tile outline</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="mi">999</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>  <span class="c1">// Draw tile outline</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">showCoordinates</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">orange</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">Xi</span> <span class="o">+</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span> <span class="o">+</span> <span class="nx">Yi</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">showCoordinates</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">Xi</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nx">Yi</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">},</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Determining the location of the mouse over a canvas tile (tileX, tileY) is determined by a few calculations in a
-mouse move listener:</p>
+Determining the location of the mouse over a canvas tile (tileX, tileY) is determined by a few calculations in a
+mouse move listener:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">mousemove</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
 </span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>  <span class="nx">tileX</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">-</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
 </span><span class='line'>  <span class="nx">tileY</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><strong>Graphical Tiles</strong></p>
+**Graphical Tiles**
 
-<p><a href="http://opengameart.org/content/isometric-tiles">Open Game Art</a> has over a hundred free tile sets worth investigating.
-However, <a href="http://www.kenney.nl/assets">Kenny.nl</a> provides a handful of professional looking isometric tile sets. The
+[Open Game Art](http://opengameart.org/content/isometric-tiles) has over a hundred free tile sets worth investigating.
+However, [Kenny.nl](http://www.kenney.nl/assets) provides a handful of professional looking isometric tile sets. The
 quality is just excellent. He provides both individual isometric tiles and sprite sheets. XML metadata is also provided
-that indicates tile location and size in the sprite sheets.</p>
+that indicates tile location and size in the sprite sheets.
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric03/index.html" width="100%" height="400px"></iframe>
 
-
-<p>The code is very similar between the last two examples. A few small tweaks are needed to ensure that
+The code is very similar between the last two examples. A few small tweaks are needed to ensure that
 tile height is consistent. Also, using tile sprite sheets would result in a performance enhancement due to the
 fact that each image is loaded individually with the current implementation. However, the goal here was to keep things
-as simple as possible.</p>
+as simple as possible.
 
-<p>The main Javascript files are:</p>
+The main Javascript files are:
 
-<ul>
-<li><code>isometric.js</code> which initializes the map and handles rendering and event handling</li>
-<li><code>map.js</code> which stores a 2D array of map data and an array of image locations.</li>
-</ul>
+- `isometric.js` which initializes the map and handles rendering and event handling
+- `map.js` which stores a 2D array of map data and an array of image locations.
 
+The source code and images for this are available on
+[Github](https://github.com/nick-aschenbach/simple-isometric-tile-engine).
 
-<p>The source code and images for this are available on
-<a href="https://github.com/nick-aschenbach/simple-isometric-tile-engine">Github</a>.</p>
+**Additional Resources**
 
-<p><strong>Additional Resources</strong></p>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/892811/drawing-isometric-game-worlds">Drawing Isometric Game Worlds</a> has some
-pointers on the math and layout.</li>
-<li><a href="http://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511">Isometric Primer for Game Developers</a>
-provides a good foundation and covers bounds detection, depth sorting and animation</li>
-<li><a href="https://github.com/overviewer/Minecraft-Overviewer">Overviewer</a>, a tool for mapping Minecraft worlds using Google
-Maps has excellent <a href="http://docs.overviewer.org/en/latest/design/designdoc/">design documentation</a> that covers its
-sprite rendering engine.</li>
-</ul>
-
-]]></content>
+- [Drawing Isometric Game Worlds](http://stackoverflow.com/questions/892811/drawing-isometric-game-worlds) has some
+pointers on the math and layout.
+- [Isometric Primer for Game Developers](http://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers&#8211;gamedev-6511)
+provides a good foundation and covers bounds detection, depth sorting and animation
+- [Overviewer](https://github.com/overviewer/Minecraft-Overviewer), a tool for mapping Minecraft worlds using Google
+Maps has excellent [design documentation](http://docs.overviewer.org/en/latest/design/designdoc/) that covers its
+sprite rendering engine.]]></content>
   </entry>
   
   <entry>
@@ -240,38 +225,37 @@ sprite rendering engine.</li>
     <link href="http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds/"/>
     <updated>2015-01-12T21:13:04-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds</id>
-    <content type="html"><![CDATA[<p>For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a side project I am working on, I utilized an excellent rendering engine for natural environments and terrain called <a href="http://planetside.co.uk/products/terragen3">Terragen 3</a> from Planetside Software. Here are a couple of screen shots from their <a href="http://planetside.co.uk/galleries/terragen-gallery">image gallery</a>:</p>
+    <content type="html"><![CDATA[For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a side project I am working on, I utilized an excellent rendering engine for natural environments and terrain called [Terragen 3](http://planetside.co.uk/products/terragen3) from Planetside Software. Here are a couple of screen shots from their [image gallery](http://planetside.co.uk/galleries/terragen-gallery):
 
-<p><a href="/assets/2015-01-12-building-better-worlds/images/lake.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/lake.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/desert.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/desert.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/village.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/village.jpg" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/volcano.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/volcano.jpg" width="300" title="auto" ></a></p>
+[<img src="/assets/2015-01-12-building-better-worlds/images/lake.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/lake.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/desert.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/desert.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/village.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/village.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/volcano.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/volcano.jpg)
 
 <!-- more -->
 
+I found the [free version](http://planetside.co.uk/products/download-tg3) fairly capable. There are some limitations over the pay version of the software that include restricting resolution, render detail and degree to which anti-aliasing is applied. However, what impressed me most is how easy it is to get started (user interface pictured below left).
 
-<p>I found the <a href="http://planetside.co.uk/products/download-tg3">free version</a> fairly capable. There are some limitations over the pay version of the software that include restricting resolution, render detail and degree to which anti-aliasing is applied. However, what impressed me most is how easy it is to get started (user interface pictured below left).</p>
+When you load the program it creates a simple environment for you. To render this basic scene, click the `View->Render` menu. Click `Render` button and wait. On my Macbook Pro, the rendering took approximately 40 seconds (pictured below right). A shortcut for the Render command is ⌘R. There is a rough view in the upper right that shows an approximation of how the rendered scene will appear.
 
-<p>When you load the program it creates a simple environment for you. To render this basic scene, click the <code>View-&gt;Render</code> menu. Click <code>Render</code> button and wait. On my Macbook Pro, the rendering took approximately 40 seconds (pictured below right). A shortcut for the Render command is ⌘R. There is a rough view in the upper right that shows an approximation of how the rendered scene will appear.</p>
+[<img src="/assets/2015-01-12-building-better-worlds/images/ui.png" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/ui.png)
+[<img src="/assets/2015-01-12-building-better-worlds/images/basic.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/basic.jpg)
 
-<p><a href="/assets/2015-01-12-building-better-worlds/images/ui.png"><img src="/assets/2015-01-12-building-better-worlds/images/ui.png" width="300" title="auto" ></a>
-<a href="/assets/2015-01-12-building-better-worlds/images/basic.jpg"><img src="/assets/2015-01-12-building-better-worlds/images/basic.jpg" width="300" title="auto" ></a></p>
+The node network displayed in the lower right part of the interface is a hierarchial display of the scene. This includes Renderers, Cameras and scene elements like clouds, terrain and shaders. Double clicking on the `Render 01` node in the `Renderers` pane brings up the properties (to change the resolution, etc). This is limited to a maximum of 1280x900 in the free version.
 
-<p>The node network displayed in the lower right part of the interface is a hierarchial display of the scene. This includes Renderers, Cameras and scene elements like clouds, terrain and shaders. Double clicking on the <code>Render 01</code> node in the <code>Renderers</code> pane brings up the properties (to change the resolution, etc). This is limited to a maximum of 1280x900 in the free version.</p>
+The same configuration page is also available via the `Renderers` button on the bar at the top of the window. Adding new elements is easy. For example, to add clouds to the scene click `Atmosphere` and then the `Add cloud layer` button. I find the 3D / Volumetric clouds to be more interesting than the 2D ones.
 
-<p>The same configuration page is also available via the <code>Renderers</code> button on the bar at the top of the window. Adding new elements is easy. For example, to add clouds to the scene click <code>Atmosphere</code> and then the <code>Add cloud layer</code> button. I find the 3D / Volumetric clouds to be more interesting than the 2D ones.</p>
+I spent some time following Vladimir Chopine&#8217;s video tutorials on youtube. This was a good starting point for me:
 
-<p>I spent some time following Vladimir Chopine&rsquo;s video tutorials on youtube. This was a good starting point for me:</p>
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/HnRFJ4Vptt8" allowfullscreen></iframe></div>
 
-<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/HnRFJ4Vptt8" allowfullscreen></iframe></div></p>
+I followed along with a couple of videos and with some trial and error created this rendering:
 
-<p>I followed along with a couple of videos and with some trial and error created this rendering:</p>
+[<img class="left" src="/assets/2015-01-12-building-better-worlds/images/mountain.jpg" title="auto auto" >](/assets/2015-01-12-building-better-worlds/images/mountain.jpg)
 
-<p><a href="/assets/2015-01-12-building-better-worlds/images/mountain.jpg"><img class="left" src="/assets/2015-01-12-building-better-worlds/images/mountain.jpg" title="auto auto" ></a></p>
+Here is the Terragen 3 [file](/assets//2015-01-12-building-better-worlds/images/layered_colors3.tgd) I used to generate the above rendering. Mainly I focused on creating shaders for the elements in the scene (grass, snow, sand). I played with the atmospheric, lighting and cloud elements until I found something that I liked. The rendering took about 11 minutes to complete on my laptop.
 
-<p>Here is the Terragen 3 <a href="/assets//2015-01-12-building-better-worlds/images/layered_colors3.tgd">file</a> I used to generate the above rendering. Mainly I focused on creating shaders for the elements in the scene (grass, snow, sand). I played with the atmospheric, lighting and cloud elements until I found something that I liked. The rendering took about 11 minutes to complete on my laptop.</p>
-
-<p>Terragen supports import and export FBX, Wavefront OBJ, Lightwave LWO2 and their own native TGO format. It can also import and export heightfield / DEM formats including real geographical data from GeoTIFFs. This makes it easy to communicate with other modeling packages like Rhino, Maya, 3D Studio Max, Blender and Cinema 4D.</p>
+Terragen supports import and export FBX, Wavefront OBJ, Lightwave LWO2 and their own native TGO format. It can also import and export heightfield / DEM formats including real geographical data from GeoTIFFs. This makes it easy to communicate with other modeling packages like Rhino, Maya, 3D Studio Max, Blender and Cinema 4D.
 ]]></content>
   </entry>
   
@@ -280,14 +264,12 @@ sprite rendering engine.</li>
     <link href="http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet/"/>
     <updated>2014-10-09T07:47:58-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/10/09/time-lapse-at-8600-feet</id>
-    <content type="html"><![CDATA[<p>While on vacation near <a href="https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9">Devil&rsquo;s Thumb Ranch</a> I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a <a href="http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html">Tenderlovemaking post</a> that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX.</p>
+    <content type="html"><![CDATA[While on vacation near [Devil's Thumb Ranch](https://www.google.com/maps/place/Devils+Thumb+Ranch+Resort+%26+Spa/@39.9662913,-105.7840392,17z/data=!3m1!4b1!4m2!3m1!1s0x876a334c90923d2f:0xa2ca7e1ac5aa7ad9) I decided to try some time lapse photography. I wrote a bash script that took pictures on a laptop a few years ago. I ran this script using cron, but was looking for something with finer grained control. I found a [Tenderlovemaking post](http://tenderlovemaking.com/2014/03/26/webcam-photos-with-ruby.html) that shows how to take web cam photos using Ruby with the AVCapture framework. Note that this appears to only work on OSX. 
 
-<p>I modified the script from Tenderlove&rsquo;s <code>av_capture</code> gem&rsquo;s <a href="https://github.com/tenderlove/av_capture">github page</a>:</p>
-
+I modified the script from Tenderlove's `av_capture` gem's [github page](https://github.com/tenderlove/av_capture):
 <!-- more -->
 
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -301,47 +283,49 @@ sprite rendering engine.</li>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">av_capture</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;av_capture&amp;#8217;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;session = AVCapture::Session.new</span>
-</span><span class='line'><span class="sr">dev     = AVCapture.devices.find(&amp;amp;:video?)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">session</span> <span class="o">=</span> <span class="no">AVCapture</span><span class="o">::</span><span class="no">Session</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">dev</span>     <span class="o">=</span> <span class="no">AVCapture</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:video?</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
+</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
 </span><span class='line'>  <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;)</span>
-</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">img_</span><span class="c1">#{counter}.jpg&amp;rdquo;, &amp;lsquo;wb&amp;rsquo;) do |f|</span>
+</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="c1">#8220;0&amp;#8221;)</span>
+</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8220;img_#{counter}.jpg&amp;#8221;, &amp;#8216;wb&amp;#8217;) do |f|</span>
 </span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">connection</span><span class="o">.</span><span class="n">capture</span>
 </span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I left fill with zeros so that the files will be <code>img_0000.jpg</code>, <code>img_0001.jpg</code> &hellip; If you want to increase the number of times we take photos (let&rsquo;s call it N) then change the <code>4</code> on line 8 to be <code>log_10(N).ceil</code>. So if we want to take 15,000 photos:</p>
+I left fill with zeros so that the files will be `img_0000.jpg`, `img_0001.jpg` &#8230; If you want to increase the number of times we take photos (let&#8217;s call it N) then change the `4` on line 8 to be `log_10(N).ceil`. So if we want to take 15,000 photos:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;)</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="c1">#8220;0&amp;#8221;)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.</p>
+Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.
 
-<p>To install it on OSX (requires brew):</p>
+To install it on OSX (requires brew):
 
-<pre><code>brew install ffmpeg
-</code></pre>
+&#8220;`
+brew install ffmpeg
+&#8220;`
 
-<p>Now to turn the photos into a movie:</p>
+Now to turn the photos into a movie:
 
-<pre><code>ffmpeg -r 60 -i img_%04d.jpg output.mp4
-</code></pre>
+&#8220;`
+ffmpeg -r 60 -i img_%04d.jpg output.mp4
+&#8220;`
 
-<p>The <code>-r 60</code> flag sets the video frame rate to 60 frames per second.</p>
+The `-r 60` flag sets the video frame rate to 60 frames per second.
 
-<p>I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&rsquo;s Thumb, a local geological feature. Here is the result:</p>
+I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&#8217;s Thumb, a local geological feature. Here is the result:
 
-<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div></p>
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div>
 
-<p>I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&rsquo;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.</p>
+I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&#8217;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.
 ]]></content>
   </entry>
   
@@ -350,33 +334,31 @@ sprite rendering engine.</li>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
     <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
-    <content type="html"><![CDATA[<p><img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil&rsquo;s Thumb Ranch" ></p>
+    <content type="html"><![CDATA[<img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" >
 
-<p>I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (<a href="https://github.com/hallahan/">https://github.com/hallahan/</a> <a href="http://www.spatialdev.com/#about">http://www.spatialdev.com/#about</a>) to craft a gift for one of the ranch families.</p>
+I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (https://github.com/hallahan/ http://www.spatialdev.com/#about) to craft a gift for one of the ranch families.
 
-<p>The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (<a href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a>) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (<a href="http://co.grand.co.us/170/Digital-Data-Sets">http://co.grand.co.us/170/Digital-Data-Sets</a>). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.</p>
+The project involved quite a bit of GIS modeling and graphic design work. The spatial data was obtained from a variety of sources including the USGS National Map Viewer (http://viewer.nationalmap.gov/viewer/) where we found the contour data. We also obtained some of the road, hydrology, and cadastral (building footprints) data from the Grand County, CO GIS Department (http://co.grand.co.us/170/Digital-Data-Sets). Much of the fine grained details of this data were missing, such as some of the less develped roads and the precision of bends of the rivers and streams. This was achieved by hand digitizing from satellite imagery features that were missing in OpenStreetMap and then importing that final product. This part was a lot of fun, and in turn we got a new feeling and perspective of the geography of the area.
 
 <!-- more -->
 
+<img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" >
 
-<p><img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" ></p>
+Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.
 
-<p>Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.</p>
+Although ArcGIS is well equipped to edit vector data, it focuses on this data in a geographic context, and we needed to specify details in the final, printable vector format. This is where Adobe Illustrator comes in. Here we were able to carefully specify line widths as well as place labels for these lines. The most important part of this process was separating different features into different layers that would be cut (burned) with different settings and intensities by the laser.
 
-<p>Although ArcGIS is well equipped to edit vector data, it focuses on this data in a geographic context, and we needed to specify details in the final, printable vector format. This is where Adobe Illustrator comes in. Here we were able to carefully specify line widths as well as place labels for these lines. The most important part of this process was separating different features into different layers that would be cut (burned) with different settings and intensities by the laser.</p>
+Computer Numerical Controlled (CNC) machine tools are robots that help automate the process of making custom parts. They typically involve the use of computer aided design (CAD) and computer aided manufacturing (CAM) software tools. The main benefit of CNC tools is both that they automate the manufacturing process and are precise. In recent years CNC machines have become much more affordable. For example, small CNC routers that can cut wood, plastics and light metals are commercially available for a few thousand dollars (USD).
 
-<p>Computer Numerical Controlled (CNC) machine tools are robots that help automate the process of making custom parts. They typically involve the use of computer aided design (CAD) and computer aided manufacturing (CAM) software tools. The main benefit of CNC tools is both that they automate the manufacturing process and are precise. In recent years CNC machines have become much more affordable. For example, small CNC routers that can cut wood, plastics and light metals are commercially available for a few thousand dollars (USD).</p>
+Creating the lazy susan involved several steps that included both a CNC router and CNC laser. Carbonized 3/4&#8221; thick three-ply natural bamboo plywood sheet was selected due to its light color and durability. A 17&#8221; diameter circle was cut out on a CNC router. We used ADX Portland (http://www.adxportland.com) for their CNC laser service (they have an 18&#8221; x 24&#8221; table). We were able to index the part on the laser table by first cutting a 17&#8221; diameter disk in a thin piece of cardboard. We could then locate the same-sized bamboo disk into the hole we cut in the cardboard.
 
-<p>Creating the lazy susan involved several steps that included both a CNC router and CNC laser. Carbonized &frac34;&#8221; thick three-ply natural bamboo plywood sheet was selected due to its light color and durability. A 17&#8221; diameter circle was cut out on a CNC router. We used ADX Portland (<a href="http://www.adxportland.com">http://www.adxportland.com</a>) for their CNC laser service (they have an 18&#8221; x 24&#8221; table). We were able to index the part on the laser table by first cutting a 17&#8221; diameter disk in a thin piece of cardboard. We could then locate the same-sized bamboo disk into the hole we cut in the cardboard.</p>
+CNC lasers can be configured to cut in either a vector or raster mode. Vectors cutting is best for lines and arcs that are precisely (aka mathematically) defined. Raster cutting is better for laser engraving and is ideal for filled areas and photographs. Our project required both raster and vector cut modes. The raster mode was used to fill in the lakes and the interiors of the letters. The vector mode was used for the contour lines and letter outlines. 
 
-<p>CNC lasers can be configured to cut in either a vector or raster mode. Vectors cutting is best for lines and arcs that are precisely (aka mathematically) defined. Raster cutting is better for laser engraving and is ideal for filled areas and photographs. Our project required both raster and vector cut modes. The raster mode was used to fill in the lakes and the interiors of the letters. The vector mode was used for the contour lines and letter outlines.</p>
+Map details look best when line weights are taken into consideration. While the laser typically cuts lines the same thickness in vector mode, we found that we could cut wider lines by defocusing the laser. This was achieved by setting the Z-home position roughly 1/8&#8221; or 3/16&#8221; above the part instead of on the part. Without this hack, we would have needed to do the burning in a &#8220;raster&#8221; mode in which the machine burns in a pixel-based mannor similiar to what you would see with an ink jet printer. This would have taken a very long time, and we were charged by the minute.
 
-<p>Map details look best when line weights are taken into consideration. While the laser typically cuts lines the same thickness in vector mode, we found that we could cut wider lines by defocusing the laser. This was achieved by setting the Z-home position roughly 1/8&#8221; or 3/16&#8221; above the part instead of on the part. Without this hack, we would have needed to do the burning in a &ldquo;raster&rdquo; mode in which the machine burns in a pixel-based mannor similiar to what you would see with an ink jet printer. This would have taken a very long time, and we were charged by the minute.</p>
+To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (http://www.tapplastics.com/). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.
 
-<p>To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (<a href="http://www.tapplastics.com/">http://www.tapplastics.com/</a>). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.</p>
-
-<p><img src="/images/lazy-susan-collage.jpg" title="Finished lazy susan" ></p>
-]]></content>
+<img src="/images/lazy-susan-collage.jpg" title="Finished lazy susan" >]]></content>
   </entry>
   
   <entry>
@@ -384,35 +366,31 @@ sprite rendering engine.</li>
     <link href="http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain/"/>
     <updated>2014-07-06T08:26:04-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
-    <content type="html"><![CDATA[<p>A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games.</p>
+    <content type="html"><![CDATA[A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games. 
 
-<p><img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" ></p>
+<img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" >
 
-<p>This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.</p>
+This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.
 
-<p>The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration.</p>
+The blue lines (pictured right) indicate the location and amount of displacement from the previous iteration. 
 
-<p>Here is an outline of the algorithm:</p>
+Here is an outline of the algorithm:
 
-<ol>
-<li>Find the midpoint for the line segment</li>
-<li>Assign the midpoint to the average of the endpoints (L + R) / 2</li>
-<li>Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.</li>
-<li>Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)</li>
-<li>Repeat previous until fractal is sufficiently detailed</li>
-</ol>
-
+0. Find the midpoint for the line segment
+0. Assign the midpoint to the average of the endpoints (L + R) / 2
+0. Generate a random number between -1 to 1 and multiply by the displacement value. Add this to the midpoint value.
+0. Recursively subdivide this line and reduce the displacement value by a fixed amount (a roughness parameter)
+0. Repeat previous until fractal is sufficiently detailed
 
 <!-- more -->
 
+Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.
 
-<p>Note that the roughness parameter needs to greater than zero and less than one. Higher values result in rougher terrain and lower values result in smoother terrain. Typical values may range between 0.5 to 0.75 and depend on depth of recursion.</p>
+Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2^N + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.
 
-<p>Also, note that you will have to determine what sufficiently detailed means. Arrays sized 2<sup>N</sup> + 1 are typically used to represent terrain height values. A good stopping point is when all array indicies are populated with values.</p>
+Let&#8217;s take a look at a Javascript implementation of the algorithm above. 
 
-<p>Let&rsquo;s take a look at a Javascript implementation of the algorithm above.</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -426,21 +404,21 @@ sprite rendering engine.</li>
 </span><span class='line'>  <span class="k">if</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">midIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">change</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">displacement</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
 </span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">midIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
 </span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">midIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
 </span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.</p>
+The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.
 
-<p>Here is the code in action:</p>
+Here is the code in action:
 
-<p><canvas id="canvas"></canvas></p>
+<canvas id="canvas"></canvas>
 
-<p>I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.</p>
+I added animation to show how easy it is to adapt this algorithm for side scrolling action. The code is available on <a href="https://github.com/nick-aschenbach/2d-fractal-terrain">github</a>.    
 
 <script>
   var array_size = Math.pow(2, 9) + 1;
@@ -506,7 +484,6 @@ sprite rendering engine.</li>
     setTimeout(drawTerrain, 30);
   }
 </script>
-
 ]]></content>
   </entry>
   

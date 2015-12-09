@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Let It Snow With the Accuweather Gem - Aschenblog</title>
+  <meta name="author" content="Nick Aschenbach">
+
+  
+  <meta name="description" content="AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching rubygems.org and I thought it would be &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Aschenblog" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><div style="color: white">Aschenblog: Thoughts on Code and Fabrication</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Let It Snow With the Accuweather Gem</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-08T22:09:29-08:00" pubdate data-updated="true">Dec 8<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching <a href="https://rubygems.org">rubygems.org</a> and I thought it would be fun to write one after spending a little time
+reverse engineering the web API (<a href="/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">related post</a>).</p>
+
+<p><img class="left" src="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" ></p>
+
+<p>First, find a location via the city search API:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This returns a list of locations that match the input. Each location provides several pieces of information including
+a city identifier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &#39;cityId:53286&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &#39;Vancouver&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &#39;Canada (British Columbia)&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &#39;49.2448&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &#39;123.1154&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The gem caches over 175K cities around the world. If the location <code>name</code> is not in the cache, the gem will
+make a HTTP request to AccuWeather to try and find it.</p>
+
+<p>The location identifier is used to get more information about current weather conditions:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &#39;41&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &#39;Partly Sunny&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &#39;30.35&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &#39;43%&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &#39;40%&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A week of day and nighttime forecasts are available:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &quot;12/3/2015&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &quot;Thursday&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &quot;7:49 AM&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &quot;4:16 PM&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&quot;11/27/2015&quot;, &quot;11/28/2015&quot;, &quot;11/29/2015&quot;, &quot;11/30/2015&quot;, &quot;12/1/2015&quot;, &quot;12/2/2015&quot;, &quot;12/3/2015&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&quot;45&quot;, &quot;45&quot;, &quot;47&quot;, &quot;44&quot;, &quot;44&quot;, &quot;48&quot;, &quot;48&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&quot;27&quot;, &quot;28&quot;, &quot;31&quot;, &quot;32&quot;, &quot;40&quot;, &quot;42&quot;, &quot;36&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The API returns a <code>weather_icon</code> number for the current weather and forecast. This number appears to correspond to PNG
+file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
+looking weather webfonts out there (links below).</p>
+
+<p>Related resources:</p>
+
+<ul>
+<li>Full accuweather icon set (<a href="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather_icons.zip">download ZIP</a>)</li>
+<li><a href="https://erikflowers.github.io/weather-icons/">Weather Icons</a></li>
+<li><a href="http://www.alessioatzeni.com/meteocons/">Meteocons</a></li>
+</ul>
+
+
+<p>Accuweather gem links:</p>
+
+<ul>
+<li><a href="https://github.com/nick-aschenbach/accuweather">Source code</a></li>
+<li><a href="https://rubygems.org/gems/accuweather">RubyGems.org Link</a></li>
+</ul>
+
+
+<p>Stay warm out there and have fun!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Nick Aschenbach</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-08T22:09:29-08:00" pubdate data-updated="true">Dec 8<sup>th</sup>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/utilities/'>utilities</a>, <a class='category' href='/blog/categories/web-api/'>web-api</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/" data-via="" data-counturl="http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/11/01/pirate-swords/" title="Previous Post: Open Source Pirate Swords">&laquo; Open Source Pirate Swords</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/08/let-it-snow-with-accuweather-gem/">Let It Snow With the Accuweather Gem</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/01/pirate-swords/">Open Source Pirate Swords</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/17/renumber-gem/">Renumber Filenames Sequentially</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/astronomy/'>astronomy (1)</a></li>
+<li class='category'><a href='/blog/categories/cnc/'>cnc (5)</a></li>
+<li class='category'><a href='/blog/categories/communication/'>communication (1)</a></li>
+<li class='category'><a href='/blog/categories/data-structures/'>data-structures (2)</a></li>
+<li class='category'><a href='/blog/categories/dsl/'>dsl (1)</a></li>
+<li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
+<li class='category'><a href='/blog/categories/games/'>games (3)</a></li>
+<li class='category'><a href='/blog/categories/gardening/'>gardening (1)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (5)</a></li>
+<li class='category'><a href='/blog/categories/graphics/'>graphics (6)</a></li>
+<li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
+<li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
+<li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (3)</a></li>
+<li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
+<li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
+<li class='category'><a href='/blog/categories/utilities/'>utilities (3)</a></li>
+<li class='category'><a href='/blog/categories/web-api/'>web-api (2)</a></li>
+<li class='category'><a href='/blog/categories/wood/'>wood (4)</a></li>
+
+  </ul>
+</section><strong>About the Author</strong>
+<p></p>
+I am a web developer at Hewlett-Packard working on the Instant Ink team. Primarily I do server-side Ruby on Rails
+development, but also have experience in Java, C# and Microsoft Cloud (Azure). In my spare time, I write code and
+fabricate parts on my CNC router.
+<p></p>
+Any views or opinions presented in this blog are my own and do not necessarily represent those of the company. 
+<p></p>
+<em>Nick Aschenbach</em>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Nick Aschenbach -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nick-aschenbach';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/';
+        var disqus_url = 'http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

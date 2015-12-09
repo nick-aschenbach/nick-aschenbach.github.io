@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Games | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/games/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,34 +18,33 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/04/27/arkanoid-game-levels/"/>
     <updated>2015-04-27T19:12:09-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/04/27/arkanoid-game-levels</id>
-    <content type="html"><![CDATA[<p><img class="left" src="/assets/2015-04-27-arkanoid-game-levels/images/arkanoid_arcadeflyer.png" title="auto auto" > I loved playing
-Arkanoid when I was a kid. I spent hours playing the game over at my friend&rsquo;s house when I was growing up on
-the original Nintendo Entertainment System. It was rated as one of the top games after its release in 1986.</p>
+    <content type="html"><![CDATA[<img class="left" src="/assets/2015-04-27-arkanoid-game-levels/images/arkanoid_arcadeflyer.png" title="auto auto" > I loved playing
+Arkanoid when I was a kid. I spent hours playing the game over at my friend&#8217;s house when I was growing up on
+the original Nintendo Entertainment System. It was rated as one of the top games after its release in 1986.
 
-<p>I found a great Arkanoid background map set on <a href="http://www.nesmaps.com/">NES maps</a> by Rick Bruns (see below). Each
+I found a great Arkanoid background map set on [NES maps](http://www.nesmaps.com/) by Rick Bruns (see below). Each
 level was perfectly aligned at 192 pixels wide by 232 pixels tall. The top, left and right edges were 8 pixels. Each
 brick was 16 pixels wide by 8 pixels tall. With a little math (and confirming in Photoshop), I found that the
-background could support exactly 11 brick tiles wide by 28 tall.</p>
+background could support exactly 11 brick tiles wide by 28 tall.
 
-<p>This made the map set the perfect asset for image parsing. My plan was to take the image as input and generate
-source code with level data as output. Finally, I used a 3D graphics library to render the levels in browser.</p>
+This made the map set the perfect asset for image parsing. My plan was to take the image as input and generate
+source code with level data as output. Finally, I used a 3D graphics library to render the levels in browser.
 
-<p><strong>Image Parsing</strong></p>
+**Image Parsing**
 
-<p>I wanted to use the <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> and
-<a href="https://github.com/wvanbergen/oily_png">Oily PNG</a> gems for image parsing. The former is a 100% Ruby implementation
+I wanted to use the [Chunky PNG](https://github.com/wvanbergen/chunky_png) and
+[Oily PNG](https://github.com/wvanbergen/oily_png) gems for image parsing. The former is a 100% Ruby implementation
 for encoding and decoding PNG images with read / write access at the pixel level. The latter gem uses native C
-extensions to improve encoding and decoding speed for Chunky. I used these gems on other projects with good success.</p>
+extensions to improve encoding and decoding speed for Chunky. I used these gems on other projects with good success.
 
-<p><img src="/assets/2015-04-27-arkanoid-game-levels/images/arkanoid.png" title="auto auto" ></p>
+<img src="/assets/2015-04-27-arkanoid-game-levels/images/arkanoid.png" title="auto auto" >
 
 <!-- more -->
 
+The brick colors were consistent among all of the levels. Rick created a legend with all of the colors on one page for
+convenience. I created a hash in Ruby to associate R, G, B values with a color index using Photoshop and my IDE:
 
-<p>The brick colors were consistent among all of the levels. Rick created a legend with all of the colors on one page for
-convenience. I created a hash in Ruby to associate R, G, B values with a color index using Photoshop and my IDE:</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -58,27 +57,27 @@ convenience. I created a hash in Ruby to associate R, G, B values with a color i
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="no">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">252</span><span class="p">,</span><span class="mi">252</span><span class="p">,</span><span class="mi">252</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># white</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">252</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">96</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># orange</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">60</span><span class="p">,</span><span class="mi">188</span><span class="p">,</span><span class="mi">252</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># light blue</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">128</span><span class="p">,</span><span class="mi">208</span><span class="p">,</span><span class="mi">16</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="c1"># green</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">216</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="c1"># red</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">0</span><span class="p">,</span><span class="mi">112</span><span class="p">,</span><span class="mi">236</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">6</span><span class="p">,</span> <span class="c1"># blue</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">252</span><span class="p">,</span><span class="mi">116</span><span class="p">,</span><span class="mi">180</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span> <span class="c1"># pink</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">252</span><span class="p">,</span><span class="mi">152</span><span class="p">,</span><span class="mi">56</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="c1"># yellow</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">188</span><span class="p">,</span><span class="mi">188</span><span class="p">,</span><span class="mi">188</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">9</span><span class="p">,</span> <span class="c1"># silver</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="mi">240</span><span class="p">,</span><span class="mi">188</span><span class="p">,</span><span class="mi">60</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=&gt;</span> <span class="mi">10</span> <span class="c1"># gold</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,252,252&amp;#8221; =&gt; 1, # white</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,116,96&amp;#8221; =&gt; 2, # orange</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;60,188,252&amp;#8221; =&gt; 3, # light blue</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;128,208,16&amp;#8221; =&gt; 4, # green</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;216,40,0&amp;#8221; =&gt; 5, # red</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;0,112,236&amp;#8221; =&gt; 6, # blue</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,116,180&amp;#8221; =&gt; 7, # pink</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,152,56&amp;#8221; =&gt; 8, # yellow</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;188,188,188&amp;#8221; =&gt; 9, # silver</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;240,188,60&amp;#8221; =&gt; 10 # gold</span>
 </span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I mentioned earlier that bricks were 16 pixels x 8 pixels, however some tiles had a drop shadow of one or two pixels.
+I mentioned earlier that bricks were 16 pixels x 8 pixels, however some tiles had a drop shadow of one or two pixels.
 I decided to scan images for blocks of color that matched one of the keys in the hash above. I made this decision
-because I needed to be able to differentiate between the background (which often had long runs of pixels) and bricks.</p>
+because I needed to be able to differentiate between the background (which often had long runs of pixels) and bricks.
 
-<p>I stored the color of the pixel in the upper left corner of a block and checked each color against this. If a
-sufficiently large block of color was found, I determined that it was a brick and returned <code>nil</code> otherwise:</p>
+I stored the color of the pixel in the upper left corner of a block and checked each color against this. If a
+sufficiently large block of color was found, I determined that it was a brick and returned `nil` otherwise:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -95,36 +94,32 @@ sufficiently large block of color was found, I determined that it was a brick an
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">r_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">g_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">b_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="n">b_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  (0&amp;hellip;14).each do |x_offset|</span>
-</span><span class='line'><span class="sr">    (0&amp;hellip;6).each do |y_offset|</span>
-</span><span class='line'><span class="sr">      r = ChunkyPNG::Color.r(image[x + x_offset, y + y_offset])</span>
-</span><span class='line'><span class="sr">      g = ChunkyPNG::Color.g(image[x + x_offset, y + y_offset])</span>
-</span><span class='line'><span class="sr">      b = ChunkyPNG::Color.b(image[x + x_offset, y + y_offset])&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;14).each do |x_offset|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;6).each do |y_offset|</span>
+</span><span class='line'>      <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">r_initial</span> <span class="o">||</span> <span class="n">g</span> <span class="o">!=</span> <span class="n">g_initial</span> <span class="o">||</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">b_initial</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">r_initial</span> <span class="o">||</span> <span class="n">g</span> <span class="o">!=</span> <span class="n">g_initial</span> <span class="o">||</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">b_initial</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">r_initial</span><span class="p">,</span> <span class="n">g_initial</span><span class="p">,</span> <span class="n">b_initial</span>
 </span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  return r_initial, g_initial, b_initial</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>My plan was to scan the 11 tile x 28 tile grid for bricks using the <code>get_brick_color</code> method. Finally,
+My plan was to scan the 11 tile x 28 tile grid for bricks using the `get_brick_color` method. Finally,
 I wrote a little code to generate Javascript code by printing to standard output. I decided to output two digit numbers
-so that the grid index colors would line up because the color indexes went up to 10.</p>
+so that the grid index colors would line up because the color indexes went up to 10.
 
-<p>Here is the full source for the image parsing code:</p>
+Here is the full source for the image parsing code:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -218,131 +213,105 @@ so that the grid index colors would line up because the color indexes went up to
 <span class='line-number'>92</span>
 <span class='line-number'>93</span>
 <span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">oily_png</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">awesome_print</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;oily_png&amp;#8217;</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;awesome_print&amp;#8217;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;COLOR_MAP = {</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;252,252,252&amp;rdquo; =&gt; 1, # white</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;252,116,96&amp;rdquo; =&gt; 2, # orange</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;60,188,252&amp;rdquo; =&gt; 3, # light blue</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;128,208,16&amp;rdquo; =&gt; 4, # green</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;216,40,0&amp;rdquo; =&gt; 5, # red</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;0,112,236&amp;rdquo; =&gt; 6, # blue</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;252,116,180&amp;rdquo; =&gt; 7, # pink</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;252,152,56&amp;rdquo; =&gt; 8, # yellow</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;188,188,188&amp;rdquo; =&gt; 9, # silver</span>
-</span><span class='line'><span class="sr">  &amp;ldquo;240,188,60&amp;rdquo; =&gt; 10 # gold</span>
-</span><span class='line'><span class="sr">}&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="no">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,252,252&amp;#8221; =&gt; 1, # white</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,116,96&amp;#8221; =&gt; 2, # orange</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;60,188,252&amp;#8221; =&gt; 3, # light blue</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;128,208,16&amp;#8221; =&gt; 4, # green</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;216,40,0&amp;#8221; =&gt; 5, # red</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;0,112,236&amp;#8221; =&gt; 6, # blue</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,116,180&amp;#8221; =&gt; 7, # pink</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;252,152,56&amp;#8221; =&gt; 8, # yellow</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;188,188,188&amp;#8221; =&gt; 9, # silver</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8220;240,188,60&amp;#8221; =&gt; 10 # gold</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="ss">Notes</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;8 pixel border left, top and right&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">brick</span> <span class="ss">size</span><span class="p">:</span> <span class="mi">16</span> <span class="n">wide</span> <span class="n">x</span> <span class="mi">8</span> <span class="n">tall</span> <span class="p">(</span><span class="n">including</span> <span class="mi">1</span> <span class="n">px</span> <span class="n">shadow</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;Each sub image size is 192, 232&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">scan_grid_location</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sheet_grid_x</span><span class="p">,</span> <span class="n">sheet_grid_y</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># Notes:</span>
+</span><span class='line'><span class="c1"># 8 pixel border left, top and right</span>
+</span><span class='line'><span class="c1"># brick size: 16 wide x 8 tall (including 1 px shadow)</span>
+</span><span class='line'><span class="c1"># Each sub image size is 192, 232</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">scan_grid_location</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sheet_grid_x</span><span class="p">,</span> <span class="n">sheet_grid_y</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">startx</span> <span class="o">=</span> <span class="n">sheet_grid_x</span> <span class="o">*</span> <span class="mi">192</span>
-</span><span class='line'>  <span class="n">starty</span> <span class="o">=</span> <span class="n">sheet_grid_y</span> <span class="o">*</span> <span class="mi">232</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="n">starty</span> <span class="o">=</span> <span class="n">sheet_grid_y</span> <span class="o">*</span> <span class="mi">232</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  array = initialize_array</span>
-</span><span class='line'><span class="sr">  # 11 columns wide x 28 rows tall</span>
-</span><span class='line'><span class="sr">  (0..11).each do |brick_x|</span>
-</span><span class='line'><span class="sr">    (0..28).each do |brick_y|</span>
-</span><span class='line'><span class="sr">      color = get_brick_color(image, startx + brick_x * 16 + 8, starty + brick_y * 8 + 8)</span>
-</span><span class='line'><span class="sr">      next if color.nil?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="n">array</span> <span class="o">=</span> <span class="n">initialize_array</span>
+</span><span class='line'>  <span class="c1"># 11 columns wide x 28 rows tall</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_x</span><span class="o">|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_y</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">color</span> <span class="o">=</span> <span class="n">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">startx</span> <span class="o">+</span> <span class="n">brick_x</span> <span class="o">*</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="n">starty</span> <span class="o">+</span> <span class="n">brick_y</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">next</span> <span class="k">if</span> <span class="n">color</span><span class="o">.</span><span class="n">nil?</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">color</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>  <span class="n">color_index</span> <span class="o">=</span> <span class="no">COLOR_MAP</span><span class="o">[</span><span class="n">color</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">raise</span> <span class="no">StandardError</span> <span class="k">if</span> <span class="n">color_index</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="n">color</span> <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;#{color[0]},#{color[1]},#{color[2]}&amp;#8221;</span>
+</span><span class='line'>      <span class="n">color_index</span> <span class="o">=</span> <span class="no">COLOR_MAP</span><span class="o">[</span><span class="n">color</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="no">StandardError</span> <span class="k">if</span> <span class="n">color_index</span><span class="o">.</span><span class="n">nil?</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">array</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">]</span> <span class="o">=</span> <span class="n">color_index</span>
+</span><span class='line'>      <span class="n">array</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">]</span> <span class="o">=</span> <span class="n">color_index</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">array</span>
 </span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="c1"># Zero out the brick array</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">initialize_array</span>
+</span><span class='line'>  <span class="n">array</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>  <span class="mi">11</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">inner_array</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="mi">28</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">inner_array</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">array</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">inner_array</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">array</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  array</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="c1"># Scan to ensure block is a brick</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">get_brick_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">r_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">g_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">b_initial</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Zero</span> <span class="n">out</span> <span class="n">the</span> <span class="n">brick</span> <span class="n">array</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def initialize_array</span>
-</span><span class='line'><span class="sr">  array = []</span>
-</span><span class='line'><span class="sr">  11.times do</span>
-</span><span class='line'><span class="sr">    inner_array = []</span>
-</span><span class='line'><span class="sr">    28.times do</span>
-</span><span class='line'><span class="sr">      inner_array.push(0)</span>
-</span><span class='line'><span class="sr">    end</span>
-</span><span class='line'><span class="sr">    array.push(inner_array)</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">  array</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Scan</span> <span class="n">to</span> <span class="k">ensure</span> <span class="n">block</span> <span class="n">is</span> <span class="n">a</span> <span class="n">brick</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;def get_brick_color(image, x, y)</span>
-</span><span class='line'><span class="sr">  r_initial = ChunkyPNG::Color.r(image[x, y])</span>
-</span><span class='line'><span class="sr">  g_initial = ChunkyPNG::Color.g(image[x, y])</span>
-</span><span class='line'><span class="sr">  b_initial = ChunkyPNG::Color.b(image[x, y])&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="mi">14</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x_offset</span><span class="o">|</span>
-</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y_offset</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;14).each do |x_offset|</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;6).each do |y_offset|</span>
 </span><span class='line'>      <span class="n">r</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>      <span class="n">g</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">g</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>      <span class="n">b</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="n">image</span><span class="o">[</span><span class="n">x</span> <span class="o">+</span> <span class="n">x_offset</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">y_offset</span><span class="o">]</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;  return nil if r != r_initial || g != g_initial || b != b_initial</span>
-</span><span class='line'><span class="sr">end</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">return</span> <span class="n">r_initial</span><span class="p">,</span> <span class="n">g_initial</span><span class="p">,</span> <span class="n">b_initial</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;arkanoid = ChunkyPNG::Image.from_file(&amp;lsquo;arkanoid.png&amp;rsquo;)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Emit</span> <span class="n">javascript</span> <span class="n">code</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;puts &amp;lsquo;[&amp;rsquo;</span>
-</span><span class='line'><span class="sr">(0..6).each do |y|</span>
-</span><span class='line'><span class="sr">  (0..4).each do |x|</span>
-</span><span class='line'><span class="sr">    level = scan_grid_location(arkanoid, x, y)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s1">&#39;[&#39;</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_y</span><span class="o">|</span>
-</span><span class='line'>  <span class="nb">print</span> <span class="s1">&#39;[&#39;</span>
-</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="mi">11</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">brick_x</span><span class="o">|</span>
-</span><span class='line'>    <span class="nb">print</span> <span class="n">level</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">].</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">nil</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">r_initial</span> <span class="o">||</span> <span class="n">g</span> <span class="o">!=</span> <span class="n">g_initial</span> <span class="o">||</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">b_initial</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;],&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="nb">puts</span> <span class="s1">&#39;],&#39;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">r_initial</span><span class="p">,</span> <span class="n">g_initial</span><span class="p">,</span> <span class="n">b_initial</span>
 </span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="nb">puts</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">]</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'>
+</span><span class='line'><span class="n">arkanoid</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;arkanoid.png&amp;#8217;)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Emit javascript code</span>
+</span><span class='line'><span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8216;[&amp;#8217;</span>
+</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|</span>
+</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">level</span> <span class="o">=</span> <span class="n">scan_grid_location</span><span class="p">(</span><span class="n">arkanoid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8216;[&amp;#8217;</span>
+</span><span class='line'>    <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;28).each do |brick_y|</span>
+</span><span class='line'>      <span class="nb">print</span> <span class="o">&amp;</span><span class="c1">#8216;[&amp;#8217;</span>
+</span><span class='line'>      <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;11).each do |brick_x|</span>
+</span><span class='line'>        <span class="nb">print</span> <span class="n">level</span><span class="o">[</span><span class="n">brick_x</span><span class="o">][</span><span class="n">brick_y</span><span class="o">].</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="c1">#8216;0&amp;#8217;) + &amp;#8216;, &amp;#8217;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8216;],&amp;#8217;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8216;],&amp;#8217;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8216;];&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Here is sample output from the second map file:</p>
+Here is sample output from the second map file:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -402,16 +371,16 @@ so that the grid index colors would line up because the color indexes went up to
 </span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
 </span><span class='line'>  <span class="p">[</span><span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">,</span> <span class="mi">00</span><span class="p">],</span>
 </span><span class='line'><span class="p">],</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><strong> Visualization </strong></p>
+** Visualization **
 
-<p>I use the <a href="http://threejs.org/">Three.js</a> Javascript library for in browser 3D graphics projects. It abstracts
-some of the low level details of WebGL and provides some nice primitives.</p>
+I use the [Three.js](http://threejs.org/) Javascript library for in browser 3D graphics projects. It abstracts
+some of the low level details of WebGL and provides some nice primitives.
 
-<p>I started with some boilerplate code which I modified from Three.js:</p>
+I started with some boilerplate code which I modified from Three.js:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -431,29 +400,30 @@ some of the low level details of WebGL and provides some nice primitives.</p>
 </span><span class='line'><span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
 </span><span class='line'><span class="kd">var</span> <span class="nx">camera</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
 </span><span class='line'><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">({</span><span class="nx">antialias</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">({</span><span class="nx">antialias</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">);</span>
-</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">);</span>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">// Render frames in a tight loop</span>
+</span><span class='line'><span class="c1">// Render frames in a tight loop</span>
 </span><span class='line'><span class="kd">var</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 </span><span class='line'>  <span class="nx">requestAnimationFrame</span><span class="p">(</span><span class="nx">render</span><span class="p">);</span>
 </span><span class='line'>  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">render</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="nx">render</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I defined some of the basics: a <code>scene</code>, <code>camera</code> and a <code>renderer</code>. The <code>render</code> function creates a loop that
-triggers the scene to be redrawn at 60 frames per second.</p>
 
-<p>I divided the drawing elements into three parts: drawing the level, drawing a wireframe box to enclose the level and
-lights that provide some nice effects.</p>
+I defined some of the basics: a `scene`, `camera` and a `renderer`. The `render` function creates a loop that
+triggers the scene to be redrawn at 60 frames per second.
 
-<p>Here is the source code that describes drawing the level:</p>
+I divided the drawing elements into three parts: drawing the level, drawing a wireframe box to enclose the level and
+lights that provide some nice effects.
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+Here is the source code that describes drawing the level:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -478,45 +448,41 @@ lights that provide some nice effects.</p>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// Draw bricks (defined in levels.js)</span>
 </span><span class='line'><span class="kd">var</span> <span class="nx">draw_level</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scene</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="mi">28</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="mi">11</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">28</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">11</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="kd">var</span> <span class="nx">color_index</span> <span class="o">=</span> <span class="nx">level_data</span><span class="p">[</span><span class="nx">level</span><span class="p">][</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span><span class="o">=</span> <span class="mi">9</span><span class="p">)</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span> <span class="c1">// Gold and silver</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">color_index</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">)</span> <span class="nx">shininess</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span> <span class="c1">// Gold and silver</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">material</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshPhongMaterial</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">color</span><span class="o">:</span> <span class="nx">color_data</span><span class="p">[</span><span class="nx">color_index</span><span class="p">],</span>
-</span><span class='line'>    <span class="nx">specular</span><span class="o">:</span> <span class="mh">0x232322</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">shininess</span><span class="o">:</span> <span class="mi">50</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">BoxGeometry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">mesh</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">j</span> <span class="o">*</span> <span class="mf">2.2</span> <span class="o">-</span> <span class="mi">12</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">i</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.2</span> <span class="o">+</span> <span class="mi">18</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">object_list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">material</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshPhongMaterial</span><span class="p">({</span>
+</span><span class='line'>        <span class="nx">color</span><span class="o">:</span> <span class="nx">color_data</span><span class="p">[</span><span class="nx">color_index</span><span class="p">],</span>
+</span><span class='line'>        <span class="nx">specular</span><span class="o">:</span> <span class="mh">0x232322</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">shininess</span><span class="o">:</span> <span class="mi">50</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">BoxGeometry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">mesh</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">j</span> <span class="o">*</span> <span class="mf">2.2</span> <span class="o">-</span> <span class="mi">12</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">mesh</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="nx">i</span> <span class="o">*</span> <span class="o">-</span><span class="mf">1.2</span> <span class="o">+</span> <span class="mi">18</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">object_list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I defined a <code>level_data</code> array (see <code>level.js</code> below). This code was the output from the Ruby image parser described
-earlier in the post. We look up the <code>color_index</code> based on where are are in the loop. If the index is zero, then we skip
+I defined a `level_data` array (see `level.js` below). This code was the output from the Ruby image parser described
+earlier in the post. We look up the `color_index` based on where are are in the loop. If the index is zero, then we skip
 that element. Otherwise, we create a new box that is twice is wide as it is tall (proportional to the 16 pixel x 8
-pixel blocks from the original image).</p>
+pixel blocks from the original image).
 
-<p>We assign a material using Phong shading and the color defined in a <code>color_data</code> array:</p>
+We assign a material using Phong shading and the color defined in a `color_data` array:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -542,25 +508,20 @@ pixel blocks from the original image).</p>
 </span><span class='line'>  <span class="mh">0xbcbcbc</span><span class="p">,</span>
 </span><span class='line'>  <span class="mh">0xf0bc3c</span>
 </span><span class='line'><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>The index of the array corresponds to the value in the <code>level_data</code> array. We use black <code>0x000000</code> as a placeholder
-color. Finally we define a mesh with the <code>geometry</code> and <code>material</code> variables. The brick position is defined by
-its (i, j) position.</p>
+The index of the array corresponds to the value in the `level_data` array. We use black `0x000000` as a placeholder
+color. Finally we define a mesh with the `geometry` and `material` variables. The brick position is defined by
+its (i, j) position.
 
-<p>Here is the demo for the code (<a href="/assets/2015-04-27-arkanoid-game-levels/demo/index.html">fullscreen</a>):</p>
+Here is the demo for the code ([fullscreen](/assets/2015-04-27-arkanoid-game-levels/demo/index.html)):
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-04-27-arkanoid-game-levels/demo/index.html" width="700" height="600"></iframe>
 
+These are the relevant full source files:
 
-<p>These are the relevant full source files:</p>
-
-<ul>
-<li><a href="/assets/2015-04-27-arkanoid-game-levels/demo/js/3d.js">3d.js</a> - Event handling and rendering code</li>
-<li><a href="/assets/2015-04-27-arkanoid-game-levels/demo/js/levels.js">levels.js</a> - Level and color data</li>
-</ul>
-
-]]></content>
+- [3d.js](/assets/2015-04-27-arkanoid-game-levels/demo/js/3d.js) - Event handling and rendering code
+- [levels.js](/assets/2015-04-27-arkanoid-game-levels/demo/js/levels.js) - Level and color data]]></content>
   </entry>
   
   <entry>
@@ -568,41 +529,39 @@ its (i, j) position.</p>
     <link href="http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine/"/>
     <updated>2015-02-25T22:40:30-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/02/25/isometric-tile-engine</id>
-    <content type="html"><![CDATA[<p>In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
-of 3D graphics in games.</p>
+    <content type="html"><![CDATA[In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion
+of 3D graphics in games.
 
-<p>For years, side-scrolling video games use a projection where the camera is aligned along one of the axes. Many original
+For years, side-scrolling video games use a projection where the camera is aligned along one of the axes. Many original
 game titles like Tetris, Zelda, Super Mario Bros place the camera either above the player looking down along a
 vertical axis or looking directly from the side. Basic techniques like shading and parallax scrolling (where foreground
-images scroll faster than background images) help to provide a sense of depth.</p>
+images scroll faster than background images) help to provide a sense of depth.
 
-<p><img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" ></p>
+<img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" >
 
-<p>An <a href="http://en.wikipedia.org/wiki/Isometric_projection">isometric projection</a> is a popular way of visualizing 3D objects
+An [isometric projection](http://en.wikipedia.org/wiki/Isometric_projection) is a popular way of visualizing 3D objects
 on a 2D screen. This involves rotating the camera 45 degrees to one side and then angling down roughly 30 degrees. This
 approach is used in several role playing and strategy games (Sim City 2000 pictured below). Q*bert, released in 1982,
-was perhaps one of the first games that used isometric graphics.</p>
+was perhaps one of the first games that used isometric graphics.
 
-<p><img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" ></p>
+<img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" >
 
 <!-- more -->
 
+**Drawing the Grid**
 
-<p><strong>Drawing the Grid</strong></p>
-
-<p>A common pattern is to use tiles that are two times wider than they are tall. Also, I find that lines with a slope of 2:1
+A common pattern is to use tiles that are two times wider than they are tall. Also, I find that lines with a slope of 2:1
 (two pixels horizontally : one vertical) look better as pixel art. This ratio makes it relatively easy to calculate
-the screen position of a tile and to find the position of the mouse over a tile.</p>
+the screen position of a tile and to find the position of the mouse over a tile.
 
-<p>Here is a simple example with 128x64 tiles on a HTML5 canvas:</p>
+Here is a simple example with 128x64 tiles on a HTML5 canvas:
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric01/index.html" width="100%" height="375"></iframe>
 
+This snippet describes how to position the diamond / rhombus shapes in a grid
+([full source](/assets/2015-02-25-isometric-tile-engine/isometric01/js/isometric.js)):
 
-<p>This snippet describes how to position the diamond / rhombus shapes in a grid
-(<a href="/assets/2015-02-25-isometric-tile-engine/isometric01/js/isometric.js">full source</a>):</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -620,40 +579,35 @@ the screen position of a tile and to find the position of the mouse over a tile.
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">tileColumnOffset</span><span class="o">:</span> <span class="mi">64</span><span class="p">,</span>
-</span><span class='line'><span class="nx">tileRowOffset</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="nx">tileRowOffset</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="c1">// Draw tile outline</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">// Draw tile outline</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>When we use actual graphical tiles <code>redrawTiles</code>, the draw order will need to be changed so that tiles in the back
-are rendered before ones in the front. Let&rsquo;s extend the work by adding colors, coordinates and some mouse listeners:</p>
+When we use actual graphical tiles `redrawTiles`, the draw order will need to be changed so that tiles in the back
+are rendered before ones in the front. Let&#8217;s extend the work by adding colors, coordinates and some mouse listeners:
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric02/index.html" width="100%" height="375"></iframe>
 
+Here is the salient code that handles canvas drawing
+([full source](/assets/2015-02-25-isometric-tile-engine/isometric02/js/isometric.js)):
 
-<p>Here is the salient code that handles canvas drawing
-(<a href="/assets/2015-02-25-isometric-tile-engine/isometric02/js/isometric.js">full source</a>):</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -691,98 +645,90 @@ are rendered before ones in the front. Let&rsquo;s extend the work by adding col
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">Xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">&amp;</span><span class="nx">ndash</span><span class="p">;)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">Xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">8211</span><span class="p">;)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawTile</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">);</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'><span class="p">},</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">drawTile</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="nx">drawTile</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Draw tile interior</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nx">Xi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileX</span> <span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="nx">amp</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileY</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">yellow</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>  <span class="c1">// Draw tile interior</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nx">Xi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileX</span> <span class="o">&amp;&amp;</span> <span class="nx">Yi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileY</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">green</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// Draw tile outline</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="err">#</span><span class="mi">999</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
+</span><span class='line'>  <span class="c1">// Draw tile outline</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">showCoordinates</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">orange</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;;</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">Xi</span> <span class="o">+</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span> <span class="o">+</span> <span class="nx">Yi</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">showCoordinates</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">Xi</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nx">Yi</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">},</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Determining the location of the mouse over a canvas tile (tileX, tileY) is determined by a few calculations in a
-mouse move listener:</p>
+Determining the location of the mouse over a canvas tile (tileX, tileY) is determined by a few calculations in a
+mouse move listener:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">lsquo</span><span class="p">;</span><span class="nx">mousemove</span><span class="o">&amp;</span><span class="nx">rsquo</span><span class="p">;,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
 </span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
 </span><span class='line'>  <span class="nx">tileX</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">-</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
 </span><span class='line'>  <span class="nx">tileY</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p><strong>Graphical Tiles</strong></p>
+**Graphical Tiles**
 
-<p><a href="http://opengameart.org/content/isometric-tiles">Open Game Art</a> has over a hundred free tile sets worth investigating.
-However, <a href="http://www.kenney.nl/assets">Kenny.nl</a> provides a handful of professional looking isometric tile sets. The
+[Open Game Art](http://opengameart.org/content/isometric-tiles) has over a hundred free tile sets worth investigating.
+However, [Kenny.nl](http://www.kenney.nl/assets) provides a handful of professional looking isometric tile sets. The
 quality is just excellent. He provides both individual isometric tiles and sprite sheets. XML metadata is also provided
-that indicates tile location and size in the sprite sheets.</p>
+that indicates tile location and size in the sprite sheets.
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric03/index.html" width="100%" height="400px"></iframe>
 
-
-<p>The code is very similar between the last two examples. A few small tweaks are needed to ensure that
+The code is very similar between the last two examples. A few small tweaks are needed to ensure that
 tile height is consistent. Also, using tile sprite sheets would result in a performance enhancement due to the
 fact that each image is loaded individually with the current implementation. However, the goal here was to keep things
-as simple as possible.</p>
+as simple as possible.
 
-<p>The main Javascript files are:</p>
+The main Javascript files are:
 
-<ul>
-<li><code>isometric.js</code> which initializes the map and handles rendering and event handling</li>
-<li><code>map.js</code> which stores a 2D array of map data and an array of image locations.</li>
-</ul>
+- `isometric.js` which initializes the map and handles rendering and event handling
+- `map.js` which stores a 2D array of map data and an array of image locations.
 
+The source code and images for this are available on
+[Github](https://github.com/nick-aschenbach/simple-isometric-tile-engine).
 
-<p>The source code and images for this are available on
-<a href="https://github.com/nick-aschenbach/simple-isometric-tile-engine">Github</a>.</p>
+**Additional Resources**
 
-<p><strong>Additional Resources</strong></p>
-
-<ul>
-<li><a href="http://stackoverflow.com/questions/892811/drawing-isometric-game-worlds">Drawing Isometric Game Worlds</a> has some
-pointers on the math and layout.</li>
-<li><a href="http://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511">Isometric Primer for Game Developers</a>
-provides a good foundation and covers bounds detection, depth sorting and animation</li>
-<li><a href="https://github.com/overviewer/Minecraft-Overviewer">Overviewer</a>, a tool for mapping Minecraft worlds using Google
-Maps has excellent <a href="http://docs.overviewer.org/en/latest/design/designdoc/">design documentation</a> that covers its
-sprite rendering engine.</li>
-</ul>
-
-]]></content>
+- [Drawing Isometric Game Worlds](http://stackoverflow.com/questions/892811/drawing-isometric-game-worlds) has some
+pointers on the math and layout.
+- [Isometric Primer for Game Developers](http://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers&#8211;gamedev-6511)
+provides a good foundation and covers bounds detection, depth sorting and animation
+- [Overviewer](https://github.com/overviewer/Minecraft-Overviewer), a tool for mapping Minecraft worlds using Google
+Maps has excellent [design documentation](http://docs.overviewer.org/en/latest/design/designdoc/) that covers its
+sprite rendering engine.]]></content>
   </entry>
   
   <entry>
@@ -790,65 +736,71 @@ sprite rendering engine.</li>
     <link href="http://nick-aschenbach.github.io/blog/2014/11/26/game-time/"/>
     <updated>2014-11-26T11:09:34-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/11/26/game-time</id>
-    <content type="html"><![CDATA[<p>My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including <code>Pizza Gazebo</code> instead of <code>Pizza Hut</code>). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the <a href="https://www.thegamegal.com/word-generator/">Game Gal&rsquo;s word generator</a>.</p>
-
-<p>I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome&rsquo;s POSTman tool to issue GET requests to the following URL:</p>
+    <content type="html"><![CDATA[My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including `Pizza Gazebo` instead of `Pizza Hut`). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the [Game Gal's word generator](https://www.thegamegal.com/word-generator/).
+ 
+I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome's POSTman tool to issue GET requests to the following URL:
 
 <!-- more -->
 
+&#8220;`
+https://www.thegamegal.com/wordgenerator/generator.php?game=2&category=6
+&#8220;`
 
-<pre><code>https://www.thegamegal.com/wordgenerator/generator.php?game=2&amp;category=6
-</code></pre>
+The `2` is pictionary and `6` is for the easy category. See the `generator.js` file or look at the word generator DOM for more details. 
 
-<p>The <code>2</code> is pictionary and <code>6</code> is for the easy category. See the <code>generator.js</code> file or look at the word generator DOM for more details.</p>
+I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born ([Github](https://github.com/nick-aschenbach/game-words), [RubyGems](http://rubygems.org/gems/game_words)). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:
 
-<p>I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born (<a href="https://github.com/nick-aschenbach/game-words">Github</a>, <a href="http://rubygems.org/gems/game_words">RubyGems</a>). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:</p>
+To install the GameWords gem (which requires Ruby) from a terminal:
 
-<p>To install the GameWords gem (which requires Ruby) from a terminal:</p>
+&#8220;`
+$ gem install game_words
+&#8220;`
 
-<pre><code>$ gem install game_words
-</code></pre>
+Running the command with no options will show the help:
 
-<p>Running the command with no options will show the help:</p>
-
-<pre><code>$ gamewords
+&#8220;`
+$ gamewords
 Usage: gamewords [options] game [category]
-    -l, --list                       List games
-    -c, --categories GAME            List categories for a GAME
-    -r, --random                     Show one random word or phrase for a GAME [CATEGORY]
-    -v, --version                    Show the version
-    -h, --help                       Display help screen
-</code></pre>
+    -l, &#8211;list                       List games
+    -c, &#8211;categories GAME            List categories for a GAME
+    -r, &#8211;random                     Show one random word or phrase for a GAME [CATEGORY]
+    -v, &#8211;version                    Show the version
+    -h, &#8211;help                       Display help screen
+&#8220;`
 
-<p>To find a Pictionary word for all categories:</p>
+To find a Pictionary word for all categories:
 
-<pre><code>$ gamewords pictionary
-</code></pre>
+&#8220;`
+$ gamewords pictionary
+&#8220;`
 
-<p>Show all words for a specific game category:</p>
+Show all words for a specific game category:
 
-<pre><code>$ gamewords catchphrase people
-</code></pre>
+&#8220;`
+$ gamewords catchphrase people
+&#8220;`
 
-<p>Show a list of games with the <code>-l</code> option:</p>
+Show a list of games with the `-l` option:
 
-<pre><code>$ gamewords -l
-</code></pre>
+&#8220;`
+$ gamewords -l
+&#8220;`
 
-<p>Show a list of categories for a game via the <code>-c</code> option:</p>
+Show a list of categories for a game via the `-c` option:
 
-<pre><code>$ gamewords -c pictionary
-</code></pre>
+&#8220;`
+$ gamewords -c pictionary
+&#8220;`
 
-<p>Show a single random word or phrase use the <code>-r</code> option:</p>
+Show a single random word or phrase use the `-r` option:
 
-<pre><code>$ gamewords -r charades actions
-</code></pre>
+&#8220;`
+$ gamewords -r charades actions
+&#8220;`
 
-<p>The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.</p>
+The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.
 
-<p>Happy Holidays!</p>
-]]></content>
+Happy Holidays!]]></content>
   </entry>
   
 </feed>

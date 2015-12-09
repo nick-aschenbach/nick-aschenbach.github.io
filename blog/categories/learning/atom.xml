@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Learning | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/learning/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,248 +18,247 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/"/>
     <updated>2015-10-15T21:09:30-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps</id>
-    <content type="html"><![CDATA[<p>Recently I have been having fun using a packet sniffer running on my Android phone to explore non-public APIs. I will
+    <content type="html"><![CDATA[Recently I have been having fun using a packet sniffer running on my Android phone to explore non-public APIs. I will
 provide a small example using the overstock.com app to look into current Flash Deals. This technique can be used to
 monitor a large variety of network traffic running on the phone. The app I used also decrypts SSL packets, which is
-useful for viewing HTTPS traffic.</p>
+useful for viewing HTTPS traffic.
 
-<p><img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png" width="250" title="auto" >
 <img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png" width="250" title="auto" ></p>
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png" width="250" title="auto" >
 
-<p>First, I installed <a href="https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture&amp;hl=en">Packet Capture</a> for
-Android. The application requires permission to monitor network traffic when you press the <code>Play</code> button. Please do
+First, I installed [Packet Capture](https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture&hl=en) for
+Android. The application requires permission to monitor network traffic when you press the `Play` button. Please do
 so at your own risk. Also, this captures a large amount of data, so you might want to limit the length of time it is
-running.</p>
+running.
 
-<p><img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png" width="250" title="auto" >
 <img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png" width="250" title="auto" ></p>
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png" width="250" title="auto" >
 
-<p>I downloaded the <a href="https://play.google.com/store/apps/details?id=com.overstock&amp;hl=en">Overstock.com</a> Android application,
-started it and then started the packet capture. I tapped <code>FLASH DEALS</code> and then stopped the packet capture. The last
+I downloaded the [Overstock.com](https://play.google.com/store/apps/details?id=com.overstock&hl=en) Android application,
+started it and then started the packet capture. I tapped `FLASH DEALS` and then stopped the packet capture. The last
 image (above right) shows the HTTP request and response that corresponded to my interaction with the application. You may
-have to look through a large number of packets to identify the one of interest.</p>
+have to look through a large number of packets to identify the one of interest.
 
-<p>While the response is gzipped, I&rsquo;m more interested in the HTTP request. The first thing I tried was a simple curl
-from the command line to reproduce the application:</p>
+While the response is gzipped, I&#8217;m more interested in the HTTP request. The first thing I tried was a simple curl
+from the command line to reproduce the application:
 
-<pre><code>$ curl http://www.overstock.com/api2/flashdeals/current?offset=0&amp;limit=12
-</code></pre>
+    $ curl http://www.overstock.com/api2/flashdeals/current?offset=0&limit=12
 
-<p>In some cases, you may need to use the same HTTP request headers (use the <code>-H "&lt;HEADER_KEY&gt;: &lt;HEADER_VALUE&gt;"</code> command
+In some cases, you may need to use the same HTTP request headers (use the `-H &#8221;<HEADER_KEY>: <HEADER_VALUE>&#8221;` command
 line option) to convince the remote HTTP server that the request was made from their application. However, this was not
-needed for the Overstock.com web API. Here is a snippet of the response:</p>
+needed for the Overstock.com web API. Here is a snippet of the response:
 
-<pre><code class="json">{
-   "nextHref":"",
-   "currentTime":"2015-10-14T23:37:29.399-06:00",
-   "items":[
+&#8220;`json
+{
+   &#8220;nextHref&#8221;:&#8221;&#8220;,
+   &#8220;currentTime&#8221;:&#8221;2015-10-14T23:37:29.399-06:00&#8221;,
+   &#8220;items&#8221;:[
       {
-         "id":30905,
-         "offerType":"FIXED_PRICE",
-         "startDateTime":"2015-10-14T10:00:00.000-06:00",
-         "endDateTime":"2015-10-15T10:00:00.000-06:00",
-         "storeId":43,
-         "departmentId":454,
-         "categoryId":4540,
-         "subCategoryId":1399,
-         "priority":1,
-         "skus":[
+         &#8220;id&#8221;:30905,
+         &#8220;offerType&#8221;:&#8221;FIXED_PRICE&#8221;,
+         &#8220;startDateTime&#8221;:&#8221;2015-10-14T10:00:00.000-06:00&#8221;,
+         &#8220;endDateTime&#8221;:&#8221;2015-10-15T10:00:00.000-06:00&#8221;,
+         &#8220;storeId&#8221;:43,
+         &#8220;departmentId&#8221;:454,
+         &#8220;categoryId&#8221;:4540,
+         &#8220;subCategoryId&#8221;:1399,
+         &#8220;priority&#8221;:1,
+         &#8220;skus&#8221;:[
             {
-               "fixedPrice":124.99,
-               "product":{
-                  "productHref":{
-                     "id":10181037,
-                     "href":"http://www.overstock.com/api/product.json?prod_id=10181037"
+               &#8220;fixedPrice&#8221;:124.99,
+               &#8220;product&#8221;:{
+                  &#8220;productHref&#8221;:{
+                     &#8220;id&#8221;:10181037,
+                     &#8220;href&#8221;:&#8221;http://www.overstock.com/api/product.json?prod_id=10181037&#8221;
                   },
-                  "productName":"Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set",
-                  "images":{
-                     "thumbnail":"http://ak1.ostkcdn.com/images/products/10181037/T17307668.jpg",
-                     "medium":"http://ak1.ostkcdn.com/images/products/10181037/P17307668.jpg",
-                     "large":"http://ak1.ostkcdn.com/images/products/10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg"
+                  &#8220;productName&#8221;:&#8221;Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set&#8221;,
+                  &#8220;images&#8221;:{
+                     &#8220;thumbnail&#8221;:&#8221;http://ak1.ostkcdn.com/images/products/10181037/T17307668.jpg&#8221;,
+                     &#8220;medium&#8221;:&#8221;http://ak1.ostkcdn.com/images/products/10181037/P17307668.jpg&#8221;,
+                     &#8220;large&#8221;:&#8221;http://ak1.ostkcdn.com/images/products/10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg&#8221;
                   },
-                  "pricing":{
-                     "compareType":"MSRP",
-                     "sellingPrice":124.99,
-                     "comparePrice":352.00,
-                     "onSale":true,
-                     "discount":227.01,
-                     "savingsPercent":64,
-                     "maxPrice":124.99,
-                     "minPrice":124.99
+                  &#8220;pricing&#8221;:{
+                     &#8220;compareType&#8221;:&#8221;MSRP&#8221;,
+                     &#8220;sellingPrice&#8221;:124.99,
+                     &#8220;comparePrice&#8221;:352.00,
+                     &#8220;onSale&#8221;:true,
+                     &#8220;discount&#8221;:227.01,
+                     &#8220;savingsPercent&#8221;:64,
+                     &#8220;maxPrice&#8221;:124.99,
+                     &#8220;minPrice&#8221;:124.99
                   },
-                  "reviewInfo":{
-                     "count":0
+                  &#8220;reviewInfo&#8221;:{
+                     &#8220;count&#8221;:0
                   }
                }
             }
          ]
       },
-      ...
-</code></pre>
+      &#8230;
+&#8220;`
 
-<p>There was a short description, pricing information, image links in three sizes hosted on the CDN and a secondary link:</p>
+There was a short description, pricing information, image links in three sizes hosted on the CDN and a secondary link:
 
-<pre><code>$ curl http://www.overstock.com/api/product.json?prod_id=10181037
-</code></pre>
+    $ curl http://www.overstock.com/api/product.json?prod_id=10181037
 
-<p>Here is the full response:</p>
+Here is the full response:
 
-<pre><code class="json">{
-   "id":10181037,
-   "name":"Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set",
-   "meta":{
-      "apiUrl":"http://www.overstock.com/api/product.json?prod_id=10181037",
-      "htmlUrl":"http://www.overstock.com/Bedding-Bath/Jennifer-Taylor-Collection-Red-Moraccan-Cotton-3-piece-Duvet-Cover-Set/10181037/product.html",
-      "imageBaseUrl":"http://ak1.ostkcdn.com/images/products/"
+&#8220;`json
+{
+   &#8220;id&#8221;:10181037,
+   &#8220;name&#8221;:&#8221;Jennifer Taylor Collection Red Moraccan Cotton 3-piece Duvet Cover Set&#8221;,
+   &#8220;meta&#8221;:{
+      &#8220;apiUrl&#8221;:&#8221;http://www.overstock.com/api/product.json?prod_id=10181037&#8221;,
+      &#8220;htmlUrl&#8221;:&#8221;http://www.overstock.com/Bedding-Bath/Jennifer-Taylor-Collection-Red-Moraccan-Cotton-3-piece-Duvet-Cover-Set/10181037/product.html&#8221;,
+      &#8220;imageBaseUrl&#8221;:&#8221;http://ak1.ostkcdn.com/images/products/&#8221;
    },
-   "sku":"17307668",
-   "imageThumbnail":"10181037/T17307668.jpg",
-   "imageLarge":"10181037/L17307668.jpg",
-   "imageMedium1":"10181037/P17307668.jpg",
-   "priceSet":[
+   &#8220;sku&#8221;:&#8221;17307668&#8221;,
+   &#8220;imageThumbnail&#8221;:&#8221;10181037/T17307668.jpg&#8221;,
+   &#8220;imageLarge&#8221;:&#8221;10181037/L17307668.jpg&#8221;,
+   &#8220;imageMedium1&#8221;:&#8221;10181037/P17307668.jpg&#8221;,
+   &#8220;priceSet&#8221;:[
       {
-         "label":"MSRP:",
-         "formattedPrice":"$352.00",
-         "priceType":"COMPARISON_PRICE"
+         &#8220;label&#8221;:&#8221;MSRP:&#8221;,
+         &#8220;formattedPrice&#8221;:&#8221;$352.00&#8221;,
+         &#8220;priceType&#8221;:&#8221;COMPARISON_PRICE&#8221;
       },
       {
-         "label":"",
-         "formattedPrice":"$227.01(64%) off",
-         "priceType":"DISCOUNTED_AMOUNT"
+         &#8220;label&#8221;:&#8221;&#8220;,
+         &#8220;formattedPrice&#8221;:&#8221;$227.01(64%) off&#8221;,
+         &#8220;priceType&#8221;:&#8221;DISCOUNTED_AMOUNT&#8221;
       },
       {
-         "label":"Sale:",
-         "formattedPrice":"$124.99",
-         "priceType":"CURRENT_PRICE"
+         &#8220;label&#8221;:&#8221;Sale:&#8221;,
+         &#8220;formattedPrice&#8221;:&#8221;$124.99&#8221;,
+         &#8220;priceType&#8221;:&#8221;CURRENT_PRICE&#8221;
       }
    ],
-   "messages":[
+   &#8220;messages&#8221;:[
       {
-         "message":"Earn $2.50 (2%) Rewards on this product FREE with Club O Silver",
-         "messageType":"JOIN_CLUBO_SILVER"
+         &#8220;message&#8221;:&#8221;Earn $2.50 (2%) Rewards on this product FREE with Club O Silver&#8221;,
+         &#8220;messageType&#8221;:&#8221;JOIN_CLUBO_SILVER&#8221;
       }
    ],
-   "oViewerImages":[
+   &#8220;oViewerImages&#8221;:[
       {
-         "id":"fd47bab9-10f3-49e2-a431-5ae4cf999abf",
-         "cdnPath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf.jpg",
-         "originalWidth":1024,
-         "originalHeight":1024,
-         "imageSizes":[
+         &#8220;id&#8221;:&#8221;fd47bab9-10f3-49e2-a431-5ae4cf999abf&#8221;,
+         &#8220;cdnPath&#8221;:&#8221;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf.jpg&#8221;,
+         &#8220;originalWidth&#8221;:1024,
+         &#8220;originalHeight&#8221;:1024,
+         &#8220;imageSizes&#8221;:[
             {
-               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_320.jpg",
-               "height":320,
-               "width":320
+               &#8220;imagePath&#8221;:&#8221;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_320.jpg&#8221;,
+               &#8220;height&#8221;:320,
+               &#8220;width&#8221;:320
             },
             {
-               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_600.jpg",
-               "height":600,
-               "width":600
+               &#8220;imagePath&#8221;:&#8221;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_600.jpg&#8221;,
+               &#8220;height&#8221;:600,
+               &#8220;width&#8221;:600
             },
             {
-               "imagePath":"10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg",
-               "height":1000,
-               "width":1000
+               &#8220;imagePath&#8221;:&#8221;10181037/Moracan-Collection-3-piece-Cotton-Duvet-Cover-Set-fd47bab9-10f3-49e2-a431-5ae4cf999abf_1000.jpg&#8221;,
+               &#8220;height&#8221;:1000,
+               &#8220;width&#8221;:1000
             }
          ]
       }
    ],
-   "memberPrice":124.99,
-   "compareAt":250.27,
-   "categoryId":4540,
-   "subCategoryId":1399,
-   "altSubCategoryId":22240,
-   "shortDescription":"This Moracan Collection duvet set is woven of 100 percent cotton for softness and comfort. Rich blues and oranges in a geometric pattern complete the look. ",
-   "description":"This reversible duvet cover features a blue and orange geometric design on one side and a solid blue on the other. Crafted of quality cotton, this set is conveniently machine washable.&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Includes: 3-piece Set&lt;/li&gt;&lt;li&gt;Reversible Bedding&lt;/li&gt;&lt;li&gt;Material: Cotton&lt;/li&gt;&lt;li&gt;Pattern: Graphic&lt;/li&gt;&lt;li&gt;Color: Red, Orange, Blue&lt;/li&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Queen-size dimensions:&lt;/b&gt;&lt;li&gt;Duvet: 93 inches x 96 inches&lt;/li&gt;&lt;li&gt;Standard sham: 20 inches x 27 inches&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;&lt;i&gt;The digital images we display have the most accurate color possible. However, due to differences in computer monitors, we cannot be responsible for variations in color between the actual product and your screen.&lt;/i&gt;&lt;br&gt;",
-   "savingsPercentage":50,
-   "basePrice":124.99,
-   "hideMAPProductPrice":false,
-   "mediaItem":false,
-   "mediaReleaseDate":"",
-   "clubODiscount":false,
-   "nonClubODiscount":true,
-   "preRelease":false,
-   "priceLabel":"Sale",
-   "online":true,
-   "options":[
+   &#8220;memberPrice&#8221;:124.99,
+   &#8220;compareAt&#8221;:250.27,
+   &#8220;categoryId&#8221;:4540,
+   &#8220;subCategoryId&#8221;:1399,
+   &#8220;altSubCategoryId&#8221;:22240,
+   &#8220;shortDescription&#8221;:&#8221;This Moracan Collection duvet set is woven of 100 percent cotton for softness and comfort. Rich blues and oranges in a geometric pattern complete the look. &#8220;,
+   &#8220;description&#8221;:&#8221;This reversible duvet cover features a blue and orange geometric design on one side and a solid blue on the other. Crafted of quality cotton, this set is conveniently machine washable.<br><br><ul><li>Includes: 3-piece Set</li><li>Reversible Bedding</li><li>Material: Cotton</li><li>Pattern: Graphic</li><li>Color: Red, Orange, Blue</li><br><br><b>Queen-size dimensions:</b><li>Duvet: 93 inches x 96 inches</li><li>Standard sham: 20 inches x 27 inches</li></ul><br><i>The digital images we display have the most accurate color possible. However, due to differences in computer monitors, we cannot be responsible for variations in color between the actual product and your screen.</i><br>&#8221;,
+   &#8220;savingsPercentage&#8221;:50,
+   &#8220;basePrice&#8221;:124.99,
+   &#8220;hideMAPProductPrice&#8221;:false,
+   &#8220;mediaItem&#8221;:false,
+   &#8220;mediaReleaseDate&#8221;:&#8221;&#8220;,
+   &#8220;clubODiscount&#8221;:false,
+   &#8220;nonClubODiscount&#8221;:true,
+   &#8220;preRelease&#8221;:false,
+   &#8220;priceLabel&#8221;:&#8221;Sale&#8221;,
+   &#8220;online&#8221;:true,
+   &#8220;options&#8221;:[
       {
-         "optionId":15463578,
-         "decription":"N/A",
-         "qtyOnHand":31,
-         "maxQuantityAllowed":20,
-         "price":124.99,
-         "comparePrice":352.00,
-         "compareType":"MSRP",
-         "hideMAPProductPrice":false,
-         "savings":227.01,
-         "savingPercentage":64,
-         "onSale":true,
-         "showAmazonPrice":false,
-         "priceSet":[
+         &#8220;optionId&#8221;:15463578,
+         &#8220;decription&#8221;:&#8221;N/A&#8221;,
+         &#8220;qtyOnHand&#8221;:31,
+         &#8220;maxQuantityAllowed&#8221;:20,
+         &#8220;price&#8221;:124.99,
+         &#8220;comparePrice&#8221;:352.00,
+         &#8220;compareType&#8221;:&#8221;MSRP&#8221;,
+         &#8220;hideMAPProductPrice&#8221;:false,
+         &#8220;savings&#8221;:227.01,
+         &#8220;savingPercentage&#8221;:64,
+         &#8220;onSale&#8221;:true,
+         &#8220;showAmazonPrice&#8221;:false,
+         &#8220;priceSet&#8221;:[
             {
-               "label":"MSRP:",
-               "formattedPrice":"$352.00",
-               "priceType":"COMPARISON_PRICE"
+               &#8220;label&#8221;:&#8221;MSRP:&#8221;,
+               &#8220;formattedPrice&#8221;:&#8221;$352.00&#8221;,
+               &#8220;priceType&#8221;:&#8221;COMPARISON_PRICE&#8221;
             },
             {
-               "label":"",
-               "formattedPrice":"$227.01(64%) off",
-               "priceType":"DISCOUNTED_AMOUNT"
+               &#8220;label&#8221;:&#8221;&#8220;,
+               &#8220;formattedPrice&#8221;:&#8221;$227.01(64%) off&#8221;,
+               &#8220;priceType&#8221;:&#8221;DISCOUNTED_AMOUNT&#8221;
             },
             {
-               "label":"Sale:",
-               "formattedPrice":"$124.99",
-               "priceType":"CURRENT_PRICE"
+               &#8220;label&#8221;:&#8221;Sale:&#8221;,
+               &#8220;formattedPrice&#8221;:&#8221;$124.99&#8221;,
+               &#8220;priceType&#8221;:&#8221;CURRENT_PRICE&#8221;
             }
          ]
       }
    ],
-   "warranties":[
+   &#8220;warranties&#8221;:[
 
    ],
-   "flashDeal":{
-      "id":30905,
-      "href":"http://www.overstock.com/api2/flashdeals/30905",
-      "currentTime":"2015-10-14T23:43:20.413-06:00",
-      "startDateTime":"2015-10-14T10:00:00.000-06:00",
-      "endDateTime":"2015-10-15T10:00:00.000-06:00"
+   &#8220;flashDeal&#8221;:{
+      &#8220;id&#8221;:30905,
+      &#8220;href&#8221;:&#8221;http://www.overstock.com/api2/flashdeals/30905&#8221;,
+      &#8220;currentTime&#8221;:&#8221;2015-10-14T23:43:20.413-06:00&#8221;,
+      &#8220;startDateTime&#8221;:&#8221;2015-10-14T10:00:00.000-06:00&#8221;,
+      &#8220;endDateTime&#8221;:&#8221;2015-10-15T10:00:00.000-06:00&#8221;
    },
-   "shipDeliveryEstimates":{
-      "optionId":15463578,
-      "productType":"REGULAR"
+   &#8220;shipDeliveryEstimates&#8221;:{
+      &#8220;optionId&#8221;:15463578,
+      &#8220;productType&#8221;:&#8221;REGULAR&#8221;
    },
-   "taxonomy":{
-      "store":{
-         "id":43,
-         "name":"Bedding &amp; Bath",
-         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=sto43",
-         "htmlUrl":"http://www.overstock.com/Bedding-Bath/43/store.html"
+   &#8220;taxonomy&#8221;:{
+      &#8220;store&#8221;:{
+         &#8220;id&#8221;:43,
+         &#8220;name&#8221;:&#8221;Bedding & Bath&#8221;,
+         &#8220;apiUrl&#8221;:&#8221;http://www.overstock.com/api/search.json?taxonomy=sto43&#8221;,
+         &#8220;htmlUrl&#8221;:&#8221;http://www.overstock.com/Bedding-Bath/43/store.html&#8221;
       },
-      "department":{
-         "id":454,
-         "name":"Fashion Bedding",
-         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=dep454",
-         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Fashion-Bedding/454/dept.html"
+      &#8220;department&#8221;:{
+         &#8220;id&#8221;:454,
+         &#8220;name&#8221;:&#8221;Fashion Bedding&#8221;,
+         &#8220;apiUrl&#8221;:&#8221;http://www.overstock.com/api/search.json?taxonomy=dep454&#8221;,
+         &#8220;htmlUrl&#8221;:&#8221;http://www.overstock.com/Bedding-Bath/Fashion-Bedding/454/dept.html&#8221;
       },
-      "category":{
-         "id":4540,
-         "name":"Duvet Covers",
-         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=cat4540",
-         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html"
+      &#8220;category&#8221;:{
+         &#8220;id&#8221;:4540,
+         &#8220;name&#8221;:&#8221;Duvet Covers&#8221;,
+         &#8220;apiUrl&#8221;:&#8221;http://www.overstock.com/api/search.json?taxonomy=cat4540&#8221;,
+         &#8220;htmlUrl&#8221;:&#8221;http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html&#8221;
       },
-      "subCategory":{
-         "id":1399,
-         "name":"Duvet Covers",
-         "apiUrl":"http://www.overstock.com/api/search.json?taxonomy=sto1399",
-         "htmlUrl":"http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html"
+      &#8220;subCategory&#8221;:{
+         &#8220;id&#8221;:1399,
+         &#8220;name&#8221;:&#8221;Duvet Covers&#8221;,
+         &#8220;apiUrl&#8221;:&#8221;http://www.overstock.com/api/search.json?taxonomy=sto1399&#8221;,
+         &#8220;htmlUrl&#8221;:&#8221;http://www.overstock.com/Bedding-Bath/Duvet-Covers/4540/cat.html&#8221;
       }
    },
-   "originalOptionCount":1
+   &#8220;originalOptionCount&#8221;:1
 }
-</code></pre>
-]]></content>
+&#8220;`]]></content>
   </entry>
   
   <entry>
@@ -267,63 +266,59 @@ needed for the Overstock.com web API. Here is a snippet of the response:</p>
     <link href="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/"/>
     <updated>2015-01-29T20:34:04-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem</id>
-    <content type="html"><![CDATA[<p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
-Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
-Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
+    <content type="html"><![CDATA[With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are [closing up shop](https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc) by mid 2015.
+Their plan is to help support the up and coming Wikimedia Foundation's project [Wikidata](http://www.wikidata.org/) by
 assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
-to do a small project using their data sets.</p>
+to do a small project using their data sets.
 
-<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
+I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:
 
-<ul>
-<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
-description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
-<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
-in a Rails project:</li>
-</ul>
+- The `astronomy` gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
+description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.
+- The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
+in a Rails project:
 
-
-<p><a href="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
+[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 
+Add the following to your `config/routes.rb` in your rails app:
 
-<p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
+&#8220;`ruby
+Rails.application.routes.draw do
+  mount AstronomyEngine::App => &#8216;/astronomy&#8217;
+&#8220;`
 
-<pre><code class="ruby">Rails.application.routes.draw do
-  mount AstronomyEngine::App =&gt; '/astronomy'
-</code></pre>
+This adds the web page at the root and adds a few additional routes.
 
-<p>This adds the web page at the root and adds a few additional routes.</p>
+Request the list of categories:
 
-<p>Request the list of categories:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories
-</code></pre>
+Request all topics for a given category:
 
-<p>Request all topics for a given category:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
-</code></pre>
+Search all topic names and descriptions:
 
-<p>Search all topic names and descriptions:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
-</code></pre>
+I have a [sample web app](http://astronomy-engine.herokuapp.com/) on Heroku available if you want to take a look.
+Here are the Github pages for the [astronomy](https://github.com/nick-aschenbach/astronomy) gem and
+[astronomy_engine](https://github.com/nick-aschenbach/astronomy-engine) gem.
 
-<p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
-Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and
-<a href="https://github.com/nick-aschenbach/astronomy-engine">astronomy_engine</a> gem.</p>
+Resources:
 
-<p>Resources:</p>
-
-<ul>
-<li>Amazon makes a handful of <a href="https://aws.amazon.com/search?searchQuery=freebase">Freebase Data Dumps</a> freely available.
-Also they several other <a href="https://aws.amazon.com/datasets/">public data sets</a>.</li>
-<li>Wikidata <a href="http://dumps.wikimedia.org/">data dumps</a> are also available.</li>
-</ul>
-
-]]></content>
+- Amazon makes a handful of [Freebase Data Dumps](https://aws.amazon.com/search?searchQuery=freebase) freely available.
+Also they several other [public data sets](https://aws.amazon.com/datasets/).
+- Wikidata [data dumps](http://dumps.wikimedia.org/) are also available.]]></content>
   </entry>
   
   <entry>
@@ -331,11 +326,11 @@ Also they several other <a href="https://aws.amazon.com/datasets/">public data s
     <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
     <updated>2014-07-30T08:29:53-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
-    <content type="html"><![CDATA[<p>I listen to the <a href="http://rubyrogues.com/">Ruby Rogues</a> Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the <a href="http://rubyquiz.com/">Ruby Quiz</a>.</p>
+    <content type="html"><![CDATA[I listen to the [Ruby Rogues](http://rubyrogues.com/) Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the [Ruby Quiz](http://rubyquiz.com/).
 
-<p>At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by Ruby Rogue James Edward Gray II (<a href="https://twitter.com/JEG2">Twitter</a>, <a href="https://github.com/JEG2">Github</a>, <a href="http://graysoftinc.com/">Blog</a>). While the book is out of print, I found a digital copy available on <a href="http://it-ebooks-search.info/search?q=ruby%20quiz">IT Books</a>.</p>
+At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by Ruby Rogue James Edward Gray II ([Twitter](https://twitter.com/JEG2), [Github](https://github.com/JEG2), [Blog](http://graysoftinc.com/)). While the book is out of print, I found a digital copy available on [IT Books](http://it-ebooks-search.info/search?q=ruby%20quiz).
 
-<p>Happy hacking!</p>
+Happy hacking!
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jruby | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/jruby/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,75 +18,66 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/03/14/getting-started-with-jruby/"/>
     <updated>2015-03-14T09:09:13-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/03/14/getting-started-with-jruby</id>
-    <content type="html"><![CDATA[<p>After hearing about jRuby on several Ruby Rogues podcasts and reading posts about it online, I wanted to give it a shot.</p>
+    <content type="html"><![CDATA[After hearing about jRuby on several Ruby Rogues podcasts and reading posts about it online, I wanted to give it a shot.
 
-<p>Installation is super easy if you use <a href="https://rvm.io/">rvm</a>:</p>
+Installation is super easy if you use [rvm](https://rvm.io/):
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">rvm</span> <span class="nx">install</span> <span class="nx">jruby</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>This will install several dependencies (like the patch, gawk, g++ and the JDK if you do not already have them
+This will install several dependencies (like the patch, gawk, g++ and the JDK if you do not already have them
 installed). The installation and setup took about seven minutes on a clean Ubuntu 12.04 Vagrant box I spun up for
-testing purposes.</p>
+testing purposes.
 
-<p>Let&rsquo;s say hello in irb:</p>
+Let&#8217;s say hello in irb:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span> <span class="o">&amp;</span><span class="c1">#8216;Hello World!&amp;#8217;</span>
+</span><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+Specifying the package is a little cumbersome. Importing the `java.lang.System` makes things a little easier:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;java.lang.System.out.println &amp;lsquo;Hello World!&amp;rsquo;</span>
-</span><span class='line'><span class="sr">Hello World!</span>
-</span></code></pre></td></tr></table></div></figure></p></blockquote>
-
-<p>Specifying the package is a little cumbersome. Importing the <code>java.lang.System</code> makes things a little easier:</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;import java.lang.System</span>
-</span><span class='line'><span class="sr">System.out.println &amp;lsquo;Hello World!&amp;rsquo;</span>
-</span><span class='line'><span class="sr">Hello World!</span>
-</span></code></pre></td></tr></table></div></figure></p></blockquote>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">System</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span> <span class="o">&amp;</span><span class="c1">#8216;Hello World!&amp;#8217;</span>
+</span><span class='line'><span class="no">Hello</span> <span class="no">World</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <!-- more -->
 
-
-<p>jRuby provides access to Java&rsquo;s rich API and large number of open source packages. The runtime performance is
+jRuby provides access to Java&#8217;s rich API and large number of open source packages. The runtime performance is
 approximately the same, however the memory consumption appears to be higher for jRuby programs according to a
-<a href="http://benchmarksgame.alioth.debian.org/u64q/benchmark.php?test=all&amp;lang=jruby&amp;lang2=yarv&amp;data=u64q">2014 survey</a>.
+[2014 survey](http://benchmarksgame.alioth.debian.org/u64q/benchmark.php?test=all&lang=jruby&lang2=yarv&data=u64q).
 It should be noted that the JVM startup time is excluded in these benchmarks so as not to bias the results. However,
 it is not inconsequential. I understand that JVM start time for some test suites can take several seconds for larger
-projects, which can be painful when running regression tests.</p>
+projects, which can be painful when running regression tests.
 
-<p>One of the main drawbacks to concurrent programming in MRI Ruby is that threads cannot run in parallel. These are
+One of the main drawbacks to concurrent programming in MRI Ruby is that threads cannot run in parallel. These are
 are useful when blocking on input and output, for example. However, gems that use native C code can provide
 multi-threading facilities (e.g. by using POSIX threads). Another issue with MRI Ruby is that a number of data
-structures are not thread safe (with the exception of the <code>Queue</code> class).</p>
+structures are not thread safe (with the exception of the `Queue` class).
 
-<p>jRuby provides access to <code>java.lang.Thread</code> which enables running multiple threads of execution concurrently
+jRuby provides access to `java.lang.Thread` which enables running multiple threads of execution concurrently
 on multiple cores. There appear to be some notable drawbacks in jRuby. Because the code runs on the JVM, we are
 precluded from using gems with native code. These gems need to be swapped out with
-<a href="https://github.com/jruby/jruby/wiki/C-Extension-Alternatives">alternatives</a>. Another issue is that jRuby is several
-versions behind MRI Ruby. The latest jRuby release at the time this was written is <code>1.7.19</code>, which was to shore up
-compatibility with MRI Ruby version <code>1.9.3</code>.</p>
+[alternatives](https://github.com/jruby/jruby/wiki/C-Extension-Alternatives). Another issue is that jRuby is several
+versions behind MRI Ruby. The latest jRuby release at the time this was written is `1.7.19`, which was to shore up
+compatibility with MRI Ruby version `1.9.3`.
 
-<p>Threads are much cheaper to spin up than processes. Access to native threads in jRuby may help developers to scale
+Threads are much cheaper to spin up than processes. Access to native threads in jRuby may help developers to scale
 applications by better utilizing the hardware. Use of multiple threads of execution is a natural fit for web servers,
-which need to handle multiple client connections concurrently.</p>
+which need to handle multiple client connections concurrently.
 
-<p><strong>Test Drive</strong></p>
+**Test Drive**
 
-<p>Let&rsquo;s take jRuby out for a spin with a hello world example that utilizes <code>JFrame</code>:</p>
+Let&#8217;s take jRuby out for a spin with a hello world example that utilizes `JFrame`:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -111,67 +102,63 @@ which need to handle multiple client connections concurrently.</p>
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JButton</span>
-</span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JFrame</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JFrame</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class HelloFrame &amp;lt; JFrame</span>
-</span><span class='line'><span class="sr">  def initialize</span>
-</span><span class='line'><span class="sr">    super(&amp;lsquo;Hello&amp;rsquo;)</span>
-</span><span class='line'><span class="sr">    self.setup_interface</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">HelloFrame</span> <span class="o">&lt;</span> <span class="no">JFrame</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="k">super</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setup_interface</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">setup_interface</span>
-</span><span class='line'>    <span class="n">button</span> <span class="o">=</span> <span class="no">JButton</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Hello</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;)</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">setup_interface</span>
+</span><span class='line'>    <span class="n">button</span> <span class="o">=</span> <span class="no">JButton</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
 </span><span class='line'>    <span class="n">button</span><span class="o">.</span><span class="n">addActionListener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
-</span><span class='line'>      <span class="nb">puts</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="no">Hello</span> <span class="no">World</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>      <span class="nb">puts</span> <span class="s1">&#39;Hello World&#39;</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;self.add(button)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">self.setDefaultCloseOperation(JFrame::EXIT_ON_CLOSE)</span>
-</span><span class='line'><span class="sr">self.setSize(300, 200)</span>
-</span><span class='line'><span class="sr">self.setLocationRelativeTo(nil)</span>
-</span><span class='line'><span class="sr">self.setVisible(true)</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setDefaultCloseOperation</span><span class="p">(</span><span class="no">JFrame</span><span class="o">::</span><span class="no">EXIT_ON_CLOSE</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setLocationRelativeTo</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">HelloFrame</span><span class="o">.</span><span class="n">new</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="no">HelloFrame</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>If you save this as a file called <code>hello.rb</code> then it can be run from the command line by:</p>
+If you save this as a file called `hello.rb` then it can be run from the command line by:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby hello.rb
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Here is the app in action:</p>
+Here is the app in action:
 
-<p><img src="/assets/2015-03-14-getting-started-with-jruby/images/hello.png" width="300" height="200"></p>
+<img src="/assets/2015-03-14-getting-started-with-jruby/images/hello.png" width="300" height="200">
 
-<p>The action listener <code>do ... end</code> Ruby syntax is quite a bit cleaner than the Java alternative using an anonymous inner
-class:</p>
+The action listener `do &#8230; end` Ruby syntax is quite a bit cleaner than the Java alternative using an anonymous inner
+class:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">button</span><span class="o">.</span><span class="na">addActionListener</span><span class="o">(</span><span class="k">new</span> <span class="nf">ActionListener</span><span class="o">()</span> <span class="o">{</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">button</span><span class="o">.</span><span class="na">addActionListener</span><span class="o">(</span><span class="k">new</span> <span class="n">ActionListener</span><span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">actionPerformed</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Hello</span> <span class="n">World</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
 </span><span class='line'>  <span class="o">}</span>
 </span><span class='line'><span class="o">});</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Taking what I learned and hungry for more, I decided to write a minimal web browser using jRuby. The interface is
-comprised of a <code>JTextField</code> to input the URI and a <code>JEditorPane</code> to render the HTML. In addition, I use <code>BorderLayout</code>
-as the layout manager for the <code>JFrame</code>:</p>
+Taking what I learned and hungry for more, I decided to write a minimal web browser using jRuby. The interface is
+comprised of a `JTextField` to input the URI and a `JEditorPane` to render the HTML. In addition, I use `BorderLayout`
+as the layout manager for the `JFrame`:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -203,49 +190,44 @@ as the layout manager for the <code>JFrame</code>:</p>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JScrollPane</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JTextField</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JEditorPane</span>
 </span><span class='line'><span class="n">import</span> <span class="n">javax</span><span class="o">.</span><span class="n">swing</span><span class="o">.</span><span class="n">JFrame</span>
-</span><span class='line'><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">awt</span><span class="o">.</span><span class="n">BorderLayout</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'><span class="n">import</span> <span class="n">java</span><span class="o">.</span><span class="n">awt</span><span class="o">.</span><span class="n">BorderLayout</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class Browser &amp;lt; JFrame</span>
-</span><span class='line'><span class="sr">  def initialize</span>
-</span><span class='line'><span class="sr">    super(&amp;lsquo;jRuby Browser&amp;rsquo;)</span>
-</span><span class='line'><span class="sr">    self.initialize_interface</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Browser</span> <span class="o">&lt;</span> <span class="no">JFrame</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="k">super</span><span class="p">(</span><span class="s1">&#39;jRuby Browser&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">initialize_interface</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">initialize_interface</span>
-</span><span class='line'>    <span class="n">response_body</span> <span class="o">=</span> <span class="no">JEditorPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">text</span><span class="o">/</span><span class="n">html</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="kp">nil</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize_interface</span>
+</span><span class='line'>    <span class="n">response_body</span> <span class="o">=</span> <span class="no">JEditorPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;text/html&#39;</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;uri_input = JTextField.new(&#39;http:/</span><span class="o">/</span><span class="err">&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">uri_input</span><span class="o">.</span><span class="n">add_action_listener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">response_body</span><span class="o">.</span><span class="n">setPage</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">getActionCommand</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">uri_input</span> <span class="o">=</span> <span class="no">JTextField</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;http://&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">uri_input</span><span class="o">.</span><span class="n">add_action_listener</span> <span class="k">do</span> <span class="o">|</span><span class="n">e</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">response_body</span><span class="o">.</span><span class="n">setPage</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">getActionCommand</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="no">BorderLayout</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">uri_input</span><span class="p">,</span> <span class="no">BorderLayout</span><span class="o">::</span><span class="no">NORTH</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="no">JScrollPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">response_body</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setLocationRelativeTo</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setDefaultCloseOperation</span><span class="p">(</span><span class="no">JFrame</span><span class="o">::</span><span class="no">EXIT_ON_CLOSE</span><span class="p">)</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="no">BorderLayout</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">uri_input</span><span class="p">,</span> <span class="no">BorderLayout</span><span class="o">::</span><span class="no">NORTH</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="no">JScrollPane</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">response_body</span><span class="p">))</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setLocationRelativeTo</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setDefaultCloseOperation</span><span class="p">(</span><span class="no">JFrame</span><span class="o">::</span><span class="no">EXIT_ON_CLOSE</span><span class="p">)</span>
-</span><span class='line'><span class="nb">self</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;Browser.new</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="no">Browser</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>While <code>JEditorPane</code> HTML support is very limited, we are able to display the webpage data for <code>example.com</code>. I resized
-the window here to show the scrollbars:</p>
+While `JEditorPane` HTML support is very limited, we are able to display the webpage data for `example.com`. I resized
+the window here to show the scrollbars:
 
-<p><img src="/assets/2015-03-14-getting-started-with-jruby/images/browser.png" width="800" height="300"></p>
-]]></content>
+<img src="/assets/2015-03-14-getting-started-with-jruby/images/browser.png" width="800" height="300">]]></content>
   </entry>
   
 </feed>

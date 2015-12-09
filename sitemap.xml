@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/</loc>
+    <lastmod>2015-12-08T22:09:29-08:00</lastmod>
+  </url>
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2015/11/01/pirate-swords/</loc>
     <lastmod>2015-11-01T20:23:37-08:00</lastmod>
   </url>
@@ -161,12 +165,6 @@
   </url>
   <url>
     <loc>http://nick-aschenbach.github.io/blog/categories/web-api/</loc>
-  </url>
-  <url>
-    <loc>http://nick-aschenbach.github.io/posts/2/</loc>
-  </url>
-  <url>
-    <loc>http://nick-aschenbach.github.io/posts/3/</loc>
   </url>
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>

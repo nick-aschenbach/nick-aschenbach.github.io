@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Let It Snow With the Accuweather Gem]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/"/>
+    <updated>2015-12-08T22:09:29-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem</id>
+    <content type="html"><![CDATA[<p>AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching <a href="https://rubygems.org">rubygems.org</a> and I thought it would be fun to write one after spending a little time
+reverse engineering the web API (<a href="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">related post</a>).</p>
+
+<p><img class="left" src="http://nick-aschenbach.github.io/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" ></p>
+
+<p>First, find a location via the city search API:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This returns a list of locations that match the input. Each location provides several pieces of information including
+a city identifier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &#39;cityId:53286&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &#39;Vancouver&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &#39;Canada (British Columbia)&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &#39;49.2448&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &#39;123.1154&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The gem caches over 175K cities around the world. If the location <code>name</code> is not in the cache, the gem will
+make a HTTP request to AccuWeather to try and find it.</p>
+
+<p>The location identifier is used to get more information about current weather conditions:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &#39;41&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &#39;Partly Sunny&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &#39;30.35&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &#39;43%&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &#39;40%&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A week of day and nighttime forecasts are available:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &quot;12/3/2015&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &quot;Thursday&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &quot;7:49 AM&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &quot;4:16 PM&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&quot;11/27/2015&quot;, &quot;11/28/2015&quot;, &quot;11/29/2015&quot;, &quot;11/30/2015&quot;, &quot;12/1/2015&quot;, &quot;12/2/2015&quot;, &quot;12/3/2015&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&quot;45&quot;, &quot;45&quot;, &quot;47&quot;, &quot;44&quot;, &quot;44&quot;, &quot;48&quot;, &quot;48&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&quot;27&quot;, &quot;28&quot;, &quot;31&quot;, &quot;32&quot;, &quot;40&quot;, &quot;42&quot;, &quot;36&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The API returns a <code>weather_icon</code> number for the current weather and forecast. This number appears to correspond to PNG
+file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
+looking weather webfonts out there (links below).</p>
+
+<p>Related resources:</p>
+
+<ul>
+<li>Full accuweather icon set (<a href="http://nick-aschenbach.github.io/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather_icons.zip">download ZIP</a>)</li>
+<li><a href="https://erikflowers.github.io/weather-icons/">Weather Icons</a></li>
+<li><a href="http://www.alessioatzeni.com/meteocons/">Meteocons</a></li>
+</ul>
+
+
+<p>Accuweather gem links:</p>
+
+<ul>
+<li><a href="https://github.com/nick-aschenbach/accuweather">Source code</a></li>
+<li><a href="https://rubygems.org/gems/accuweather">RubyGems.org Link</a></li>
+</ul>
+
+
+<p>Stay warm out there and have fun!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Open Source Pirate Swords]]></title>
@@ -3414,162 +3528,6 @@ JavaScript  | 676,383        | 15,664,918,541  | 23,160
 <p>At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by Ruby Rogue James Edward Gray II (<a href="https://twitter.com/JEG2">Twitter</a>, <a href="https://github.com/JEG2">Github</a>, <a href="http://graysoftinc.com/">Blog</a>). While the book is out of print, I found a digital copy available on <a href="http://it-ebooks-search.info/search?q=ruby%20quiz">IT Books</a>.</p>
 
 <p>Happy hacking!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Something to Show at the End of the Day]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams/"/>
-    <updated>2014-07-26T09:43:50-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams</id>
-    <content type="html"><![CDATA[<p>Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.</p>
-
-<p><img class="left" src="http://nick-aschenbach.github.io/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/voronoi.png" width="300" title="auto Voronoi Diagram" ></p>
-
-<p>I find that projects that engage both the analytical and creative parts of my brain are especially fun. Last summer I started making some custom wooden parts based on Voronoi Diagrams (at left).</p>
-
-<p>First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.</p>
-
-<p>First, we will create a small helper class that will encapsulate a point&rsquo;s position and help us calculate the distance to a given pixel.</p>
-
-<!-- more -->
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Point</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:x</span><span class="p">,</span> <span class="ss">:y</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@x</span> <span class="o">=</span> <span class="n">x</span>
-</span><span class='line'>    <span class="vi">@y</span> <span class="o">=</span> <span class="n">y</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">distanceTo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">deltaX</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="vi">@x</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-</span><span class='line'>    <span class="n">deltaY</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="vi">@y</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-</span><span class='line'>    <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">deltaX</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">deltaY</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># Euclidean distance</span>
-</span><span class='line'>    <span class="c1"># deltaX + deltaY # Manhattan distance</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">random</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">Point</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">max_x</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">max_y</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>I&rsquo;ve added a class factory method that returns new random Points. This will help us later when we generate seed points.</p>
-
-<p>Let&rsquo;s take a look at the main part of the Voronoi Diagram generation algorithm:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;chunky_png&#39;</span>
-</span><span class='line'><span class="n">require_relative</span> <span class="s1">&#39;point&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Image size and voronoi seed sites</span>
-</span><span class='line'><span class="n">width</span> <span class="o">=</span> <span class="mi">512</span>
-</span><span class='line'><span class="n">height</span> <span class="o">=</span> <span class="mi">512</span>
-</span><span class='line'><span class="n">sites</span> <span class="o">=</span> <span class="mi">20</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Create seed points and associated colors</span>
-</span><span class='line'><span class="n">seed_points</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">Point</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'><span class="n">seed_region_colors</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">rgb</span><span class="p">(</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Initialize a new image</span>
-</span><span class='line'><span class="n">png</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">TRANSPARENT</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Iterate over all pixels in the image</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">width</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
-</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">height</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">y</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">closest_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>    <span class="n">closest_distance</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="c1"># Determine the closest seed point</span>
-</span><span class='line'>    <span class="n">seed_points</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">point</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">distance</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">closest_distance</span>
-</span><span class='line'>        <span class="n">closest_distance</span> <span class="o">=</span> <span class="n">distance</span>
-</span><span class='line'>        <span class="n">closest_index</span> <span class="o">=</span> <span class="n">index</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="n">png</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span> <span class="o">=</span> <span class="n">seed_region_colors</span><span class="o">[</span><span class="n">closest_index</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Show seed points</span>
-</span><span class='line'><span class="n">seed_points</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">point</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">png</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">BLACK</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">BLACK</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>width</code>, <code>height</code> and <code>sites</code> are parameters to the Voronoi diagram. They determine the width and height of the image as well as the number of seed points.</p>
-
-<p>It should be noted that this code is particularly inefficient; it is written more for clarity than for speed. Several efficient algorithms exist. One of the best known is <a href="http://en.wikipedia.org/wiki/Fortune%27s_algorithm">Fortune&rsquo;s algorithm</a> and runs in O(n log n) time. Several open source implementations are available online.</p>
-
-<p>We use <a href="https://github.com/wvanbergen/chunky_png">Chunky PNG</a> to help us create the PNG output file.</p>
-
-<p><strong>Fabricated Wooden Boards</strong></p>
-
-<p><img class="right" src="http://nick-aschenbach.github.io/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/wall-hanging.jpg" title="Voronoi Wall Hanging" >
-The first wall art piece is fabricated from &frac12;&#8221; thick cherry and paduak</p>
-
-<p>Vector files are required to import designs into my CAD / CAM software. I used Raymond Hill&rsquo;s <a href="https://github.com/gorhill/Javascript-Voronoi">Javascript Voronoi</a> library, <a href="http://raphaeljs.com">Raphaël</a> and <a href="https://github.com/ElbertF/Raphael.Export">Raphaël Export</a> to generate SVG files. Two software tools were used to massage the geometry into something that could be machined: Autodesk&rsquo;s <a href="http://www.autodesk.com/products/autocad/">AutoCAD</a>&reg; and Vectric&rsquo;s <a href="http://www.vectric.com/products/aspire.html">Aspire</a>&reg;. The parts had to be machined precisely on a CNC router so that they could be nested and glued together as portrayed in the images below.</p>
-
-<p><img src="http://nick-aschenbach.github.io/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/cutting-board.jpg" title="Voronoi Cutting Board" >
-The second cutting board is fabricated from &frac12;&#8221; thick cherry and carbonized bamboo plywood</p>
 ]]></content>
   </entry>
   

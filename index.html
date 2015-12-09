@@ -9,8 +9,8 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="Every year my work has a competition for who can come up with the best Halloween decorations. My team has the good
-fortune of being in a large &hellip;">
+  <meta name="description" content="AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching rubygems.org and I thought it would be &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -54,6 +54,147 @@ fortune of being in a large &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/08/let-it-snow-with-accuweather-gem/">Let It Snow With the Accuweather Gem</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-08T22:09:29-08:00" pubdate data-updated="true">Dec 8<sup>th</sup>, 2015</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching <a href="https://rubygems.org">rubygems.org</a> and I thought it would be fun to write one after spending a little time
+reverse engineering the web API (<a href="/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">related post</a>).</p>
+
+<p><img class="left" src="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" ></p>
+
+<p>First, find a location via the city search API:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This returns a list of locations that match the input. Each location provides several pieces of information including
+a city identifier:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &#39;cityId:53286&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &#39;Vancouver&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &#39;Canada (British Columbia)&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &#39;49.2448&#39;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &#39;123.1154&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The gem caches over 175K cities around the world. If the location <code>name</code> is not in the cache, the gem will
+make a HTTP request to AccuWeather to try and find it.</p>
+
+<p>The location identifier is used to get more information about current weather conditions:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &#39;41&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &#39;Partly Sunny&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &#39;30.35&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &#39;43%&#39;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &#39;40%&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A week of day and nighttime forecasts are available:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="s1">&#39;cityId:53286&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">forecast</span>
+</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &quot;12/3/2015&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &quot;Thursday&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &quot;7:49 AM&quot;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &quot;4:16 PM&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&quot;11/27/2015&quot;, &quot;11/28/2015&quot;, &quot;11/29/2015&quot;, &quot;11/30/2015&quot;, &quot;12/1/2015&quot;, &quot;12/2/2015&quot;, &quot;12/3/2015&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&quot;45&quot;, &quot;45&quot;, &quot;47&quot;, &quot;44&quot;, &quot;44&quot;, &quot;48&quot;, &quot;48&quot;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&quot;27&quot;, &quot;28&quot;, &quot;31&quot;, &quot;32&quot;, &quot;40&quot;, &quot;42&quot;, &quot;36&quot;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The API returns a <code>weather_icon</code> number for the current weather and forecast. This number appears to correspond to PNG
+file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
+looking weather webfonts out there (links below).</p>
+
+<p>Related resources:</p>
+
+<ul>
+<li>Full accuweather icon set (<a href="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather_icons.zip">download ZIP</a>)</li>
+<li><a href="https://erikflowers.github.io/weather-icons/">Weather Icons</a></li>
+<li><a href="http://www.alessioatzeni.com/meteocons/">Meteocons</a></li>
+</ul>
+
+
+<p>Accuweather gem links:</p>
+
+<ul>
+<li><a href="https://github.com/nick-aschenbach/accuweather">Source code</a></li>
+<li><a href="https://rubygems.org/gems/accuweather">RubyGems.org Link</a></li>
+</ul>
+
+
+<p>Stay warm out there and have fun!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1042,63 +1183,6 @@ element is the response body, which must respond to the <code>each</code> method
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/29/freebase-astronomy-gem/">Freebase Astronomy Gems</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-01-29T20:34:04-08:00" pubdate data-updated="true">Jan 29<sup>th</sup>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
-Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
-Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
-assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
-to do a small project using their data sets.</p>
-
-<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
-
-<ul>
-<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
-description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
-<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
-in a Rails project:</li>
-</ul>
-
-
-<p><a href="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/01/29/freebase-astronomy-gem/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1112,6 +1196,10 @@ in a Rails project:</li>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/08/let-it-snow-with-accuweather-gem/">Let It Snow With the Accuweather Gem</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/11/01/pirate-swords/">Open Source Pirate Swords</a>
@@ -1129,10 +1217,6 @@ in a Rails project:</li>
         <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/04/13/building-a-custom-machined-raised-bed/">Building a Custom Machined Raised Bed</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -1146,7 +1230,7 @@ in a Rails project:</li>
 <li class='category'><a href='/blog/categories/engine/'>engine (2)</a></li>
 <li class='category'><a href='/blog/categories/games/'>games (3)</a></li>
 <li class='category'><a href='/blog/categories/gardening/'>gardening (1)</a></li>
-<li class='category'><a href='/blog/categories/gems/'>gems (4)</a></li>
+<li class='category'><a href='/blog/categories/gems/'>gems (5)</a></li>
 <li class='category'><a href='/blog/categories/graphics/'>graphics (6)</a></li>
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
@@ -1155,8 +1239,8 @@ in a Rails project:</li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
 <li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
-<li class='category'><a href='/blog/categories/utilities/'>utilities (2)</a></li>
-<li class='category'><a href='/blog/categories/web-api/'>web-api (1)</a></li>
+<li class='category'><a href='/blog/categories/utilities/'>utilities (3)</a></li>
+<li class='category'><a href='/blog/categories/web-api/'>web-api (2)</a></li>
 <li class='category'><a href='/blog/categories/wood/'>wood (4)</a></li>
 
   </ul>

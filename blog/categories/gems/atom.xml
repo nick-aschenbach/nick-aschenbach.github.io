@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gems | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/gems/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -14,110 +14,210 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Let It Snow With the Accuweather Gem]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem/"/>
+    <updated>2015-12-08T22:09:29-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem</id>
+    <content type="html"><![CDATA[AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
+searching [rubygems.org](https://rubygems.org) and I thought it would be fun to write one after spending a little time
+reverse engineering the web API ([related post](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/)).
+
+<img class="left" src="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" >
+
+First, find a location via the city search API:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+This returns a list of locations that match the input. Each location provides several pieces of information including
+a city identifier:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &amp;#8216;cityId:53286&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &amp;#8216;Vancouver&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &amp;#8216;Canada (British Columbia)&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &amp;#8216;49.2448&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &amp;#8216;123.1154&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The gem caches over 175K cities around the world. If the location `name` is not in the cache, the gem will
+make a HTTP request to AccuWeather to try and find it.
+
+The location identifier is used to get more information about current weather conditions:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).current</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &amp;#8216;41&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &amp;#8216;Partly Sunny&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &amp;#8216;30.35&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &amp;#8216;43%&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &amp;#8216;40%&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+A week of day and nighttime forecasts are available:
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).forecast</span>
+</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &amp;#8220;12/3/2015&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &amp;#8220;Thursday&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &amp;#8220;7:49 AM&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &amp;#8220;4:16 PM&amp;#8221;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&amp;#8220;11/27/2015&amp;#8221;, &amp;#8220;11/28/2015&amp;#8221;, &amp;#8220;11/29/2015&amp;#8221;, &amp;#8220;11/30/2015&amp;#8221;, &amp;#8220;12/1/2015&amp;#8221;, &amp;#8220;12/2/2015&amp;#8221;, &amp;#8220;12/3/2015&amp;#8221;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&amp;#8220;45&amp;#8221;, &amp;#8220;45&amp;#8221;, &amp;#8220;47&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;48&amp;#8221;, &amp;#8220;48&amp;#8221;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&amp;#8220;27&amp;#8221;, &amp;#8220;28&amp;#8221;, &amp;#8220;31&amp;#8221;, &amp;#8220;32&amp;#8221;, &amp;#8220;40&amp;#8221;, &amp;#8220;42&amp;#8221;, &amp;#8220;36&amp;#8221;]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+The API returns a `weather_icon` number for the current weather and forecast. This number appears to correspond to PNG
+file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
+looking weather webfonts out there (links below).
+
+Related resources:
+
+- Full accuweather icon set ([download ZIP](/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather_icons.zip))
+- [Weather Icons](https://erikflowers.github.io/weather-icons/)
+- [Meteocons](http://www.alessioatzeni.com/meteocons/)
+
+Accuweather gem links:
+
+- [Source code](https://github.com/nick-aschenbach/accuweather)
+- [RubyGems.org Link](https://rubygems.org/gems/accuweather)
+
+Stay warm out there and have fun!]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Renumber Filenames Sequentially]]></title>
     <link href="http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem/"/>
     <updated>2015-06-17T20:07:04-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/06/17/renumber-gem</id>
-    <content type="html"><![CDATA[<p><code>renumber</code> is a small command line utility that renames files in a single directory. Files are sorted in
+    <content type="html"><![CDATA[`renumber` is a small command line utility that renames files in a single directory. Files are sorted in
 lexicographic order and then renamed with sequential numbers. It is possible to specify a prefix and suffix - these are
-optional parameters. There are a couple of examples of usage below.</p>
+optional parameters. There are a couple of examples of usage below.
 
-<p>The code is open source and available on <a href="https://github.com/nick-aschenbach/renumber">GitHub</a>.</p>
+The code is open source and available on [GitHub](https://github.com/nick-aschenbach/renumber).
 
-<p><strong>Command Line Usage</strong></p>
+**Command Line Usage**
 
-<pre><code>$ renumber &lt;directory&gt; &lt;prefix&gt; &lt;suffix&gt;
-</code></pre>
+    $ renumber <directory> <prefix> <suffix>
 
 <!-- more -->
 
+**Installation**
 
-<p><strong>Installation</strong></p>
+The tool requires that Ruby is installed. If so, install `renumber` with the following command:
 
-<p>The tool requires that Ruby is installed. If so, install <code>renumber</code> with the following command:</p>
+    $ gem install renumber
 
-<pre><code>$ gem install renumber
-</code></pre>
+**Use case**
 
-<p><strong>Use case</strong></p>
+I developed `renumber` so that I could renumber thousands images from a digital camera for use in a time lapse movie.
+The tool I used to stitch these images together into a movie (called [ffmpeg](https://www.ffmpeg.org/)) died if the file
+names had a gap (e.g. &#8230;, IMG2047, IMG2049, IMG2050, &#8230;).
 
-<p>I developed <code>renumber</code> so that I could renumber thousands images from a digital camera for use in a time lapse movie.
-The tool I used to stitch these images together into a movie (called <a href="https://www.ffmpeg.org/">ffmpeg</a>) died if the file
-names had a gap (e.g. &hellip;, IMG2047, IMG2049, IMG2050, &hellip;).</p>
+The `renumber` tool solved this problem by renumbering the files to not have gaps.
 
-<p>The <code>renumber</code> tool solved this problem by renumbering the files to not have gaps.</p>
+**Simple Usage**
 
-<p><strong>Simple Usage</strong></p>
+Let&#8217;s take a directory with several non-sequential files:
 
-<p>Let&rsquo;s take a directory with several non-sequential files:</p>
+&#8220;`
+drwxr-xr-x  15 troy  staff  510 Jun 17 20:12 .
+drwx&#8212;&#8212;+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 03.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 04.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 07.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 09.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 10.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 11.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 13.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 15.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 17.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 19.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 20.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 22.txt
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 99.txt
+&#8220;`
 
-<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:12 .
-drwx------+  7 troy  staff  238 Jun 17 20:06 ..
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 03.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 04.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 07.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 09.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 10.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 11.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 13.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 15.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 17.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 19.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 20.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 22.txt
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 99.txt
-</code></pre>
+Let&#8217;s change to that directory and run the following:
 
-<p>Let&rsquo;s change to that directory and run the following:</p>
+    $ renumber .
 
-<pre><code>$ renumber .
-</code></pre>
+Here&#8217;s the directory listing after running the command:
 
-<p>Here&rsquo;s the directory listing after running the command:</p>
+&#8220;`
+drwxr-xr-x  15 troy  staff  510 Jun 17 20:14 .
+drwx&#8212;&#8212;+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 00
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 01
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 02
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 03
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 04
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 05
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 06
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 07
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 08
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 09
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 10
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 11
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:12 12
+&#8220;`
 
-<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:14 .
-drwx------+  7 troy  staff  238 Jun 17 20:06 ..
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 00
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 01
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 02
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 03
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 04
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 05
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 06
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 07
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 08
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 09
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 10
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 11
--rw-r--r--   1 troy  staff    3 Jun 17 20:12 12
-</code></pre>
+**Prefix and Suffix**
 
-<p><strong>Prefix and Suffix</strong></p>
+Let&#8217;s take the same initial file list as the above example. Let&#8217;s add a prefix and suffix:
 
-<p>Let&rsquo;s take the same initial file list as the above example. Let&rsquo;s add a prefix and suffix:</p>
+    $ renumber . foo .text
 
-<pre><code>$ renumber . foo .text
-</code></pre>
+Here&#8217;s the directory listing after running the command:
 
-<p>Here&rsquo;s the directory listing after running the command:</p>
-
-<pre><code>drwxr-xr-x  15 troy  staff  510 Jun 17 20:17 .
-drwx------+  7 troy  staff  238 Jun 17 20:06 ..
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo00.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo01.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo02.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo03.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo04.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo05.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo06.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo07.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo08.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo09.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo10.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo11.text
--rw-r--r--   1 troy  staff    3 Jun 17 20:16 foo12.text
-</code></pre>
-]]></content>
+&#8220;`
+drwxr-xr-x  15 troy  staff  510 Jun 17 20:17 .
+drwx&#8212;&#8212;+  7 troy  staff  238 Jun 17 20:06 ..
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo00.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo01.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo02.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo03.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo04.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo05.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo06.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo07.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo08.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo09.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo10.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo11.text
+-rw-r&#8211;r&#8211;   1 troy  staff    3 Jun 17 20:16 foo12.text
+&#8220;`]]></content>
   </entry>
   
   <entry>
@@ -125,63 +225,59 @@ drwx------+  7 troy  staff  238 Jun 17 20:06 ..
     <link href="http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem/"/>
     <updated>2015-01-29T20:34:04-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/01/29/freebase-astronomy-gem</id>
-    <content type="html"><![CDATA[<p>With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
-Unfortunately, they are <a href="https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc">closing up shop</a> by mid 2015.
-Their plan is to help support the up and coming Wikimedia Foundation&rsquo;s project <a href="http://www.wikidata.org/">Wikidata</a> by
+    <content type="html"><![CDATA[With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.
+Unfortunately, they are [closing up shop](https://plus.google.com/109936836907132434202/posts/bu3z2wVqcQc) by mid 2015.
+Their plan is to help support the up and coming Wikimedia Foundation's project [Wikidata](http://www.wikidata.org/) by
 assisting in transferring their data to this project. Given the short amount of time they are online, I wanted
-to do a small project using their data sets.</p>
+to do a small project using their data sets.
 
-<p>I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:</p>
+I am interested in astronomy, but found the Freebase JSON data a little unwieldy. I decided to write a pair gems:
 
-<ul>
-<li>The <code>astronomy</code> gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
-description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.</li>
-<li>The <code>astronomy_engine</code> wraps the <code>astronomy</code> gem and has a web interface and can easily be included
-in a Rails project:</li>
-</ul>
+- The `astronomy` gem facilitates browsing and search of astronomical phenomena. Each topic includes a name,
+description, an array of image URLs and a link to the original detailed Freebase data via Google APIs.
+- The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
+in a Rails project:
 
-
-<p><a href="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg"><img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" ></a></p>
+[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 
+Add the following to your `config/routes.rb` in your rails app:
 
-<p>Add the following to your <code>config/routes.rb</code> in your rails app:</p>
+&#8220;`ruby
+Rails.application.routes.draw do
+  mount AstronomyEngine::App => &#8216;/astronomy&#8217;
+&#8220;`
 
-<pre><code class="ruby">Rails.application.routes.draw do
-  mount AstronomyEngine::App =&gt; '/astronomy'
-</code></pre>
+This adds the web page at the root and adds a few additional routes.
 
-<p>This adds the web page at the root and adds a few additional routes.</p>
+Request the list of categories:
 
-<p>Request the list of categories:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories
-</code></pre>
+Request all topics for a given category:
 
-<p>Request all topics for a given category:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/categories/Star/topics
-</code></pre>
+Search all topic names and descriptions:
 
-<p>Search all topic names and descriptions:</p>
+&#8220;`bash
+curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
+&#8220;`
 
-<pre><code class="bash">curl {APPLICATION_ROOT}/astronomy/topics?q=cluster
-</code></pre>
+I have a [sample web app](http://astronomy-engine.herokuapp.com/) on Heroku available if you want to take a look.
+Here are the Github pages for the [astronomy](https://github.com/nick-aschenbach/astronomy) gem and
+[astronomy_engine](https://github.com/nick-aschenbach/astronomy-engine) gem.
 
-<p>I have a <a href="http://astronomy-engine.herokuapp.com/">sample web app</a> on Heroku available if you want to take a look.
-Here are the Github pages for the <a href="https://github.com/nick-aschenbach/astronomy">astronomy</a> gem and
-<a href="https://github.com/nick-aschenbach/astronomy-engine">astronomy_engine</a> gem.</p>
+Resources:
 
-<p>Resources:</p>
-
-<ul>
-<li>Amazon makes a handful of <a href="https://aws.amazon.com/search?searchQuery=freebase">Freebase Data Dumps</a> freely available.
-Also they several other <a href="https://aws.amazon.com/datasets/">public data sets</a>.</li>
-<li>Wikidata <a href="http://dumps.wikimedia.org/">data dumps</a> are also available.</li>
-</ul>
-
-]]></content>
+- Amazon makes a handful of [Freebase Data Dumps](https://aws.amazon.com/search?searchQuery=freebase) freely available.
+Also they several other [public data sets](https://aws.amazon.com/datasets/).
+- Wikidata [data dumps](http://dumps.wikimedia.org/) are also available.]]></content>
   </entry>
   
   <entry>
@@ -189,65 +285,71 @@ Also they several other <a href="https://aws.amazon.com/datasets/">public data s
     <link href="http://nick-aschenbach.github.io/blog/2014/11/26/game-time/"/>
     <updated>2014-11-26T11:09:34-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/11/26/game-time</id>
-    <content type="html"><![CDATA[<p>My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including <code>Pizza Gazebo</code> instead of <code>Pizza Hut</code>). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the <a href="https://www.thegamegal.com/word-generator/">Game Gal&rsquo;s word generator</a>.</p>
-
-<p>I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome&rsquo;s POSTman tool to issue GET requests to the following URL:</p>
+    <content type="html"><![CDATA[My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including `Pizza Gazebo` instead of `Pizza Hut`). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the [Game Gal's word generator](https://www.thegamegal.com/word-generator/).
+ 
+I love words and decided to look at the word generator implementation to see if I could see if I could use their API to get categorized word lists. I used Chrome's POSTman tool to issue GET requests to the following URL:
 
 <!-- more -->
 
+&#8220;`
+https://www.thegamegal.com/wordgenerator/generator.php?game=2&category=6
+&#8220;`
 
-<pre><code>https://www.thegamegal.com/wordgenerator/generator.php?game=2&amp;category=6
-</code></pre>
+The `2` is pictionary and `6` is for the easy category. See the `generator.js` file or look at the word generator DOM for more details. 
 
-<p>The <code>2</code> is pictionary and <code>6</code> is for the easy category. See the <code>generator.js</code> file or look at the word generator DOM for more details.</p>
+I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born ([Github](https://github.com/nick-aschenbach/game-words), [RubyGems](http://rubygems.org/gems/game_words)). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:
 
-<p>I decided to compile a complete list of all words, phrases, actions, characters, movies, songs, etc from the site into a tool that others can use. The GameWords gem was born (<a href="https://github.com/nick-aschenbach/game-words">Github</a>, <a href="http://rubygems.org/gems/game_words">RubyGems</a>). This tool is both a Ruby library and has a command line interface. Below we will investigate the command line tool options:</p>
+To install the GameWords gem (which requires Ruby) from a terminal:
 
-<p>To install the GameWords gem (which requires Ruby) from a terminal:</p>
+&#8220;`
+$ gem install game_words
+&#8220;`
 
-<pre><code>$ gem install game_words
-</code></pre>
+Running the command with no options will show the help:
 
-<p>Running the command with no options will show the help:</p>
-
-<pre><code>$ gamewords
+&#8220;`
+$ gamewords
 Usage: gamewords [options] game [category]
-    -l, --list                       List games
-    -c, --categories GAME            List categories for a GAME
-    -r, --random                     Show one random word or phrase for a GAME [CATEGORY]
-    -v, --version                    Show the version
-    -h, --help                       Display help screen
-</code></pre>
+    -l, &#8211;list                       List games
+    -c, &#8211;categories GAME            List categories for a GAME
+    -r, &#8211;random                     Show one random word or phrase for a GAME [CATEGORY]
+    -v, &#8211;version                    Show the version
+    -h, &#8211;help                       Display help screen
+&#8220;`
 
-<p>To find a Pictionary word for all categories:</p>
+To find a Pictionary word for all categories:
 
-<pre><code>$ gamewords pictionary
-</code></pre>
+&#8220;`
+$ gamewords pictionary
+&#8220;`
 
-<p>Show all words for a specific game category:</p>
+Show all words for a specific game category:
 
-<pre><code>$ gamewords catchphrase people
-</code></pre>
+&#8220;`
+$ gamewords catchphrase people
+&#8220;`
 
-<p>Show a list of games with the <code>-l</code> option:</p>
+Show a list of games with the `-l` option:
 
-<pre><code>$ gamewords -l
-</code></pre>
+&#8220;`
+$ gamewords -l
+&#8220;`
 
-<p>Show a list of categories for a game via the <code>-c</code> option:</p>
+Show a list of categories for a game via the `-c` option:
 
-<pre><code>$ gamewords -c pictionary
-</code></pre>
+&#8220;`
+$ gamewords -c pictionary
+&#8220;`
 
-<p>Show a single random word or phrase use the <code>-r</code> option:</p>
+Show a single random word or phrase use the `-r` option:
 
-<pre><code>$ gamewords -r charades actions
-</code></pre>
+&#8220;`
+$ gamewords -r charades actions
+&#8220;`
 
-<p>The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.</p>
+The holidays are a great chance to catch up with family and close friends. If you like word games perhaps this library can provide some incentive to either play or write your own word games. There are almost 5,000 words, phrases, songs, movies, characters, actions and sayings.
 
-<p>Happy Holidays!</p>
-]]></content>
+Happy Holidays!]]></content>
   </entry>
   
   <entry>
@@ -255,19 +357,20 @@ Usage: gamewords [options] game [category]
     <link href="http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org/"/>
     <updated>2014-09-29T18:49:06-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/09/29/building-a-gem-for-rubygems-dot-org</id>
-    <content type="html"><![CDATA[<p>We are going through some large code refactors at work and are building <a href="http://guides.rubyonrails.org/engines.html">rails engines</a>. This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to <a href="http://rubygems.org/">RubyGems</a>. I took some previous work on a <a href="/blog/2014/07/20/text-messaging-made-easy-with-twilio/">SMS Scrabble cheater app</a> to help motivate the project.</p>
+    <content type="html"><![CDATA[We are going through some large code refactors at work and are building [rails engines](http://guides.rubyonrails.org/engines.html). This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to [RubyGems](http://rubygems.org/). I took some previous work on a [SMS Scrabble cheater app](/blog/2014/07/20/text-messaging-made-easy-with-twilio/) to help motivate the project. 
 
-<p>Developing the skeleton for a gem is extremely easy:</p>
+Developing the skeleton for a gem is extremely easy:
 
 <!-- more -->
 
+&#8220;`
+bundle gem foobar
+&#8220;`
 
-<pre><code>bundle gem foobar
-</code></pre>
+Several files are created:
 
-<p>Several files are created:</p>
-
-<pre><code>create  foobar/Rakefile
+&#8220;`
+create  foobar/Rakefile
 create  foobar/LICENSE.txt
 create  foobar/README.md
 create  foobar/.gitignore
@@ -275,11 +378,11 @@ create  foobar/foobar.gemspec
 create  foobar/lib/foobar.rb
 create  foobar/lib/foobar/version.rb
 Initializing git repo in /Users/sela/workspace/foobar
-</code></pre>
+&#8220;`
 
-<p>Let&rsquo;s take a look at the gemspec file:</p>
+Let&#8217;s take a look at the gemspec file:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -302,46 +405,41 @@ Initializing git repo in /Users/sela/workspace/foobar
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># coding: utf-8</span>
+</span><span class='line'><span class="n">lib</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;../lib&amp;#8217;, __FILE__)</span>
+</span><span class='line'><span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span>
+</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;foobar/version&amp;#8217;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;coding: utf-8&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">lib</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="n">lib</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="no">FILE</span><span class="o">&lt;</span><span class="sr">/strong&gt;)</span>
-</span><span class='line'><span class="sr">$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)</span>
-</span><span class='line'><span class="sr">require &amp;lsquo;foobar/</span><span class="n">version</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;Gem::Specification.new do |spec|</span>
-</span><span class='line'><span class="sr">  spec.name          = &amp;ldquo;foobar&amp;rdquo;</span>
-</span><span class='line'><span class="sr">  spec.version       = Foobar::VERSION</span>
-</span><span class='line'><span class="sr">  spec.authors       = [&amp;ldquo;Nick Aschenbach&amp;rdquo;]</span>
-</span><span class='line'><span class="sr">  spec.email         = [&amp;ldquo;&lt;a href=&quot;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#x74;&amp;#111;&amp;#x3a;&amp;#110;&amp;#x69;&amp;#x63;&amp;#107;&amp;#46;&amp;#x61;&amp;#115;&amp;#x63;&amp;#104;&amp;#101;&amp;#x6e;&amp;#x62;&amp;#x61;&amp;#99;&amp;#x68;&amp;#x40;&amp;#x67;&amp;#x6d;&amp;#x61;&amp;#x69;&amp;#108;&amp;#46;&amp;#99;&amp;#x6f;&amp;#109;&quot;&gt;&amp;#x6e;&amp;#x69;&amp;#99;&amp;#107;&amp;#x2e;&amp;#x61;&amp;#115;&amp;#x63;&amp;#x68;&amp;#x65;&amp;#x6e;&amp;#98;&amp;#x61;&amp;#99;&amp;#104;&amp;#64;&amp;#x67;&amp;#x6d;&amp;#x61;&amp;#105;&amp;#x6c;&amp;#46;&amp;#x63;&amp;#111;&amp;#109;&lt;/</span><span class="n">a</span><span class="o">&gt;&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]</span>
+</span><span class='line'><span class="no">Gem</span><span class="o">::</span><span class="no">Specification</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">spec</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">name</span>          <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;foobar&amp;#8221;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">version</span>       <span class="o">=</span> <span class="no">Foobar</span><span class="o">::</span><span class="no">VERSION</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">authors</span>       <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;Nick Aschenbach&amp;#8221;]</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">email</span>         <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;nick.aschenbach@gmail.com&amp;#8221;]</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">license</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">MIT</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;&amp;#8221;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">license</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;MIT&amp;#8221;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  spec.files         = &lt;code&gt;git ls-files -z&lt;/</span><span class="n">code</span><span class="o">&gt;.</span><span class="n">split</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;\</span><span class="n">x0</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;)</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">files</span>         <span class="o">=</span> <span class="sb">`git ls-files -z`</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8220;\x0&amp;#8221;)</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">executables</span>   <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^bin/}</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">}</span>
 </span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">test_files</span>    <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^(test|spec|features)/}</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">require_paths</span> <span class="o">=</span> <span class="o">[&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">lib</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">require_paths</span> <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;lib&amp;#8221;]</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  spec.add_development_dependency &amp;ldquo;bundler&amp;rdquo;, &amp;ldquo;~&gt; 1.6&amp;rdquo;</span>
-</span><span class='line'><span class="sr">  spec.add_development_dependency &amp;ldquo;rake&amp;rdquo;</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;bundler&amp;#8221;, &amp;#8220;~&gt; 1.6&amp;#8221;</span>
+</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;rake&amp;#8221;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Also a handy <code>README.md</code> file is created that shows users how to install the gem using bundler.</p>
+Also a handy `README.md` file is created that shows users how to install the gem using bundler. 
 
-<pre><code>TODO: Write a gem description
+&#8220;`
+TODO: Write a gem description
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application&#8217;s Gemfile:
 
-    gem 'foobar'
+    gem &#8216;foobar&#8217;
 
 And then execute:
 
@@ -359,14 +457,15 @@ TODO: Write usage instructions here
 
 1. Fork it ( https://github.com/[my-github-username]/foobar/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
+3. Commit your changes (`git commit -am &#8216;Add some feature&#8217;`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-</code></pre>
+&#8220;`
 
-<p>I used this template for my <code>scrabble_score</code> gem. The full source code is available on <a href="https://github.com/nick-aschenbach/scrabble-score">Github</a>. The project is extremely simple and has the following structure:</p>
+I used this template for my `scrabble_score` gem. The full source code is available on [Github](https://github.com/nick-aschenbach/scrabble-score). The project is extremely simple and has the following structure:
 
-<pre><code>.
+&#8220;`
+.
 ├── Gemfile
 ├── Gemfile.lock
 ├── LICENSE.txt
@@ -392,69 +491,76 @@ TODO: Write usage instructions here
     └── spec_helper.rb
 
 7 directories, 16 files
-</code></pre>
+&#8220;`
 
-<p>After getting my specs green and playing around with the code a bit, I went to generate the gem. First, let&rsquo;s upgrade to the latest RubyGems version:</p>
+After getting my specs green and playing around with the code a bit, I went to generate the gem. First, let&#8217;s upgrade to the latest RubyGems version:
 
-<pre><code>gem update --system
-</code></pre>
+&#8220;`
+gem update &#8211;system
+&#8220;`
 
-<p>Now, let&rsquo;s build the gem:</p>
+Now, let&#8217;s build the gem:
 
-<pre><code>gem build scrabble_score.gemspec
-</code></pre>
+&#8220;`
+gem build scrabble_score.gemspec
+&#8220;`
 
-<p>The first time I ran this tool I received a handful of warnings:</p>
+The first time I ran this tool I received a handful of warnings:
 
-<pre><code>WARNING:  no homepage specified
-WARNING:  open-ended dependency on rspec (&gt;= 0, development) is not recommended
+&#8220;`
+WARNING:  no homepage specified
+WARNING:  open-ended dependency on rspec (>= 0, development) is not recommended
   if rspec is semantically versioned, use:
-    add_development_dependency 'rspec', '~&gt; 0'
-WARNING:  open-ended dependency on simplecov (&gt;= 0, development) is not recommended
+    add_development_dependency &#8216;rspec&#8217;, &#8216;~> 0&#8217;
+WARNING:  open-ended dependency on simplecov (>= 0, development) is not recommended
   if simplecov is semantically versioned, use:
-    add_development_dependency 'simplecov', '~&gt; 0'
+    add_development_dependency &#8216;simplecov&#8217;, &#8216;~> 0&#8217;
 WARNING:  See http://guides.rubygems.org/specification-reference/ for help
   Successfully built RubyGem
   Name: scrabble_score
   Version: 0.1.0
   File: scrabble_score-0.1.0.gem
-</code></pre>
+&#8220;`
 
-<p>For the homepage I used the project&rsquo;s Github repository. I also added versions to the development dependencies:</p>
+For the homepage I used the project&#8217;s Github repository. I also added versions to the development dependencies:
 
-<pre><code>spec.add_development_dependency 'bundler', '~&gt; 1.6'
-spec.add_development_dependency 'rspec', '3.0.0'
-spec.add_development_dependency 'simplecov', '0.9.1'
-</code></pre>
+&#8220;`
+spec.add_development_dependency &#8216;bundler&#8217;, &#8216;~> 1.6&#8217;
+spec.add_development_dependency &#8216;rspec&#8217;, &#8216;3.0.0&#8217;
+spec.add_development_dependency &#8216;simplecov&#8217;, &#8216;0.9.1&#8217;
+&#8220;`
 
-<p>I deleted the <code>scrabble_score-0.1.0.gem</code> file and ran the <code>gem build</code> command again. Here is the output:</p>
+I deleted the `scrabble_score-0.1.0.gem` file and ran the `gem build` command again. Here is the output:
 
-<pre><code>  Successfully built RubyGem
+&#8220;`
+  Successfully built RubyGem
   Name: scrabble_score
   Version: 0.1.0
   File: scrabble_score-0.1.0.gem
-</code></pre>
+&#8220;`
 
-<p>Everything looks good, so I proceeded with the last step by running:</p>
+Everything looks good, so I proceeded with the last step by running:
 
-<pre><code>gem push scrabble_score-0.1.0.gem 
-</code></pre>
+&#8220;`
+gem push scrabble_score-0.1.0.gem 
+&#8220;`
 
-<p>Which created the following output:</p>
+Which created the following output:
 
-<pre><code>Enter your RubyGems.org credentials.
-Don't have an account yet? Create one at https://rubygems.org/sign_up
+&#8220;`
+Enter your RubyGems.org credentials.
+Don&#8217;t have an account yet? Create one at https://rubygems.org/sign_up
    Email:   nick.aschenbach@gmail.com
 Password:   
 
 Signed in.
-Pushing gem to https://rubygems.org...
+Pushing gem to https://rubygems.org&#8230;
 Successfully registered gem: scrabble_score (0.1.0)
-</code></pre>
+&#8220;`
 
-<p>My experience creating a gem for RubyGems was a pleasant one. Please do a quick search to ensure that your gem name is unique before you get started. There are many guides out there for how to write gems. It is a good idea to take a look at one or two of these before getting started.</p>
+My experience creating a gem for RubyGems was a pleasant one. Please do a quick search to ensure that your gem name is unique before you get started. There are many guides out there for how to write gems. It is a good idea to take a look at one or two of these before getting started.
 
-<p>Happy gem cutting!</p>
+Happy gem cutting!
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Inheritance | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/inheritance/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,9 +18,9 @@
     <link href="http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private/"/>
     <updated>2014-08-30T09:01:20-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private</id>
-    <content type="html"><![CDATA[<p>During a recent code review at work, I was surprised by how Ruby handles <code>private</code> and <code>protected</code> method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:</p>
+    <content type="html"><![CDATA[During a recent code review at work, I was surprised by how Ruby handles `private` and `protected` method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -34,64 +34,55 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
-</span><span class='line'>  <span class="kp">private</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="kp">private</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def foo</span>
-</span><span class='line'><span class="sr">    puts &amp;ldquo;foobar&amp;rdquo;</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobar&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">B</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">A</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
 </span><span class='line'>    <span class="n">foo</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I did some experimentation in the irb console. As expected, one may not call the <code>private</code> method foo on an instance of A:</p>
+I did some experimentation in the irb console. As expected, one may not call the `private` method foo on an instance of A:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;A.new.foo</span>
-</span><span class='line'><span class="sr">NoMethodError: private method &lt;code&gt;foo&#39; called for #&amp;lt;A:0x00000102a0b498&amp;gt;</span>
-</span><span class='line'><span class="sr">  from (irb):7</span>
-</span><span class='line'><span class="sr">  from /</span><span class="no">Users</span><span class="o">/</span><span class="n">sela</span><span class="o">/.</span><span class="n">rvm</span><span class="o">/</span><span class="n">rubies</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">11</span><span class="ss">:in</span><span class="o">&lt;</span><span class="sr">/code&gt;&lt;main&gt;&amp;lsquo;</span>
-</span></code></pre></td></tr></table></div></figure></p></blockquote>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo</span>
+</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&amp;#8217; called for #&lt;A:0x00000102a0b498&gt;</span>
+</span><span class='line'><span class="sb">  from (irb):7</span>
+</span><span class='line'><span class="sb">  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `</span><span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;&amp;</span><span class="c1">#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>What surprised me is that in the child class <code>B</code> that we can call <code>foo</code> on the parent class. Again, back to irb:</p>
+What surprised me is that in the child class `B` that we can call `foo` on the parent class. Again, back to irb:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;B.new.bar</span>
-</span><span class='line'><span class="sr">foobar</span>
-</span><span class='line'><span class="sr"> =&gt; nil</span>
-</span></code></pre></td></tr></table></div></figure></p></blockquote>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
+</span><span class='line'><span class="n">foobar</span>
+</span><span class='line'> <span class="o">=&gt;</span> <span class="kp">nil</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <!-- more -->
 
+Class B is calling a private method on class A, which seems to break with my expectations about encapsulation.
 
-<p>Class B is calling a private method on class A, which seems to break with my expectations about encapsulation.</p>
+Time for some digging. I read through a couple of articles and found a draft of the Ruby language specification. Section 13.3.5 discusses method visibility. While not an official spec, here is what it says about private methods:
 
-<p>Time for some digging. I read through a couple of articles and found a draft of the Ruby language specification. Section 13.3.5 discusses method visibility. While not an official spec, here is what it says about private methods:</p>
+<blockquote><p>A private method cannot be invoked with an explicit receiver, i.e., a private method cannot be invoked if a primary-expression or a chained-method-invocation occurs at the position which corresponds to the method receiver in the method invocation, except for a method invocation of any of the following forms where the primary-expression is a self-expression.</p><p>- single-method-assignment<br/>- abbreviated-method-assignment<br/>- single-indexing-assignment<br/>- abbreviated-indexing-assignment</p><footer><strong>IPA Ruby Standardization WG Draft</strong> <cite>Programming Languages - Ruby</cite></footer></blockquote>
 
-<p><blockquote><p>A private method cannot be invoked with an explicit receiver, i.e., a private method cannot be invoked if a primary-expression or a chained-method-invocation occurs at the position which corresponds to the method receiver in the method invocation, except for a method invocation of any of the following forms where the primary-expression is a self-expression.</p></p><p><p>- single-method-assignment<br/>- abbreviated-method-assignment<br/>- single-indexing-assignment<br/>- abbreviated-indexing-assignment</p><footer><strong>IPA Ruby Standardization WG Draft</strong> <cite>Programming Languages - Ruby</cite></footer></blockquote></p>
+The way I interpret the spec is that a private method can be called with an implicit receiver (read object). This is why calling `foo` from method `bar` above is allowable. Invoking a method with an explicit receiver is not allowed. This is why `A.new.foo` results in a `NoMethodError`.
 
-<p>The way I interpret the spec is that a private method can be called with an implicit receiver (read object). This is why calling <code>foo</code> from method <code>bar</code> above is allowable. Invoking a method with an explicit receiver is not allowed. This is why <code>A.new.foo</code> results in a <code>NoMethodError</code>.</p>
+The following code may clarify the difference between calling a method with an implicit vs. explicit receiver:
 
-<p>The following code may clarify the difference between calling a method with an implicit vs. explicit receiver:</p>
-
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -116,40 +107,36 @@
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
 </pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
-</span><span class='line'>  <span class="kp">protected</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="kp">protected</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def baz</span>
-</span><span class='line'><span class="sr">    puts &amp;ldquo;foobaz&amp;rdquo;</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">baz</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8220;foobaz&amp;#8221;</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">private</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="kp">private</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def foo</span>
-</span><span class='line'><span class="sr">    puts &amp;ldquo;foobar&amp;rdquo;</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8220;foobar&amp;#8221;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">class</span> <span class="nc">B</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">A</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
 </span><span class='line'>    <span class="c1"># Implicit</span>
 </span><span class='line'>    <span class="n">baz</span>
-</span><span class='line'>    <span class="n">foo</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>    <span class="n">foo</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;# Explicit</span>
-</span><span class='line'><span class="sr">self.baz</span>
-</span><span class='line'><span class="sr">self.foo    # Results in NoMethodError</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'>    <span class="c1"># Explicit</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">baz</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">foo</span>    <span class="c1"># Results in NoMethodError</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Note that now we see that the <code>protected</code> method can be called explicitly, while the <code>private</code> method cannot. Let&rsquo;s exercise the above code in irb:</p>
+Note that now we see that the `protected` method can be called explicitly, while the `private` method cannot. Let&#8217;s exercise the above code in irb:
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -157,28 +144,20 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;B.new.bar</span>
-</span><span class='line'><span class="sr">foobaz</span>
-</span><span class='line'><span class="sr">foobar</span>
-</span><span class='line'><span class="sr">foobaz</span>
-</span><span class='line'><span class="sr">NoMethodError: private method &lt;code&gt;foo&#39; called for #&amp;lt;B:0x000001019b3460&amp;gt;</span>
-</span><span class='line'><span class="sr">  from (irb):23:in&lt;/</span><span class="n">code</span><span class="o">&gt;</span><span class="n">bar</span><span class="o">&amp;</span><span class="c1">#8217;</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
+</span><span class='line'><span class="n">foobaz</span>
+</span><span class='line'><span class="n">foobar</span>
+</span><span class='line'><span class="n">foobaz</span>
+</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&amp;#8217; called for #&lt;B:0x000001019b3460&gt;</span>
+</span><span class='line'><span class="sb">  from (irb):23:in `</span><span class="n">bar</span><span class="o">&amp;</span><span class="c1">#8217;</span>
 </span><span class='line'>  <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">26</span>
-</span><span class='line'>  <span class="n">from</span> <span class="sr">/Users/se</span><span class="n">la</span><span class="o">/.</span><span class="n">rvm</span><span class="o">/</span><span class="n">rubies</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">11</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&amp;lsquo;</span>
-</span></code></pre></td></tr></table></div></figure></p></blockquote>
+</span><span class='line'>  <span class="n">from</span> <span class="sr">/Users/se</span><span class="n">la</span><span class="o">/.</span><span class="n">rvm</span><span class="o">/</span><span class="n">rubies</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">11</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>References:</p>
+References:
 
-<ul>
-<li><a href="https://www.ipa.go.jp/osc/english/ruby/">Ruby Draft Specification</a></li>
-<li><a href="http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html">Tenderlovemaking blog</a></li>
-</ul>
-
-]]></content>
+- [Ruby Draft Specification](https://www.ipa.go.jp/osc/english/ruby/)
+- [Tenderlovemaking blog](http://tenderlovemaking.com/2012/09/07/protected-methods-and-ruby-2-0.html)]]></content>
   </entry>
   
 </feed>

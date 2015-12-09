@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gardening | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/gardening/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-11-01T21:03:15-08:00</updated>
+  <updated>2015-12-08T23:57:43-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,111 +18,109 @@
     <link href="http://nick-aschenbach.github.io/blog/2015/04/13/building-a-custom-machined-raised-bed/"/>
     <updated>2015-04-13T20:42:10-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2015/04/13/building-a-custom-machined-raised-bed</id>
-    <content type="html"><![CDATA[<p>Looking forward to sunshine and warmer temperatures, I decided to take on a project over the weekend to build
+    <content type="html"><![CDATA[Looking forward to sunshine and warmer temperatures, I decided to take on a project over the weekend to build
 a small raised bed so we could try planting some peppers and herbs this spring. My wife asked that the bed be
-around 18&#8221; tall. I went to work in my project notebook and came up with the following hand sketch:</p>
+around 18" tall. I went to work in my project notebook and came up with the following hand sketch:
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/hand-sketch.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/hand-sketch.jpg" title="auto auto" >
 
-<p>I wanted to use 4&#8221; x 4&#8221; posts for the corners and 2&#8221; x 6&#8221; boards for the walls of the planter box. There were a
+I wanted to use 4&#8221; x 4&#8221; posts for the corners and 2&#8221; x 6&#8221; boards for the walls of the planter box. There were a
 couple of design elements that I wanted to incorporate. First, I wanted the 2&#8221; x 6&#8221; boards to be recessed into
 the post. Also, I wanted to put a 45 degree chamfer on the top of each 4&#8221; x 4&#8221; for decoration. I decided
 that the overall dimensions should be around 36&#8221; x 60&#8221; so I could maximize utilization of the 8 foot lengths
-of the 2&#8221; x 6&#8221; stock board size.</p>
+of the 2&#8221; x 6&#8221; stock board size.
 
-<p><strong>Materials</strong></p>
+**Materials**
 
 <!-- more -->
 
-
-<p>I went to Home Depot to source the lumber. I found all of the boards to be quite wet as if they had just been brought
+I went to Home Depot to source the lumber. I found all of the boards to be quite wet as if they had just been brought
 in from outside and tried to find boards that were relatively straight. Turning the boards vertically and looking down
-the edge makes it easy to identify which ones were straighter.</p>
+the edge makes it easy to identify which ones were straighter.
 
-<p>The boards were cut to the following dimensions and quantities:</p>
+The boards were cut to the following dimensions and quantities:
 
-<pre><code>1 @ 4" x 4" x 96" (around $9 / each) cut to 4 pieces @ 18" long
-6 @ 2" x 6" x 96" (around $8 / each) split into 6 pieces @ 36" long and 6 pieces @ 60" long
-</code></pre>
 
-<p>I asked that the sawyer cut the pieces the same size. I did not care that the pieces were exactly 36&#8221; or 60&#8221;, but
+    1 @ 4&#8221; x 4&#8221; x 96&#8221; (around $9 / each) cut to 4 pieces @ 18&#8221; long
+    6 @ 2&#8221; x 6&#8221; x 96&#8221; (around $8 / each) split into 6 pieces @ 36&#8221; long and 6 pieces @ 60&#8221; long
+
+
+I asked that the sawyer cut the pieces the same size. I did not care that the pieces were exactly 36&#8221; or 60&#8221;, but
 it was important to me that they were all the same. The parts came out with about 0.125&#8221; of variation. A more
-experienced sawyer using a stop on the saw, should be able to cut the parts to close tolerances.</p>
+experienced sawyer using a stop on the saw, should be able to cut the parts to close tolerances.
 
-<p><img class="left" src="/assets/2015-04-13-building-a-custom-machined-raised-bed/soil.jpg" width="300" title="auto" ></p>
+<img class="left" src="/assets/2015-04-13-building-a-custom-machined-raised-bed/soil.jpg" width="300" title="auto" >
 
-<p>I also purchased potting soil, which is sold in 3 cubic foot bags at Home Depot. The soil should be
-be a few inches below the 18&#8221; post. Here is how I calculated the amount of soil I needed for the project:</p>
+I also purchased potting soil, which is sold in 3 cubic foot bags at Home Depot. The soil should be
+be a few inches below the 18&#8221; post. Here is how I calculated the amount of soil I needed for the project:
 
-<pre><code>16" x 36" x 60" = 34,560 in^3 / (1,728 in^3 / 1 foot^3)
-= 20 feet^3
-</code></pre>
+    16&#8221; x 36&#8221; x 60&#8221; = 34,560 in^3 / (1,728 in^3 / 1 foot^3)
+    = 20 feet^3
 
-<p>The calculation suggested that about six or seven bags were needed. I decided to go for three bags of garden soil
+The calculation suggested that about six or seven bags were needed. I decided to go for three bags of garden soil
 ($8.50 / each) and three bags of raised bed and potting mix ($10 / each). The garden soil would comprise the lower
-layer and the raised bed mix would be on the top.</p>
+layer and the raised bed mix would be on the top.
 
-<p>With the boards and soil in hand, I headed home for the next part of the project.</p>
+With the boards and soil in hand, I headed home for the next part of the project.
 
-<p><strong>Fabrication</strong></p>
+**Fabrication**
 
-<p>The key to putting a slot the 4&#8221; x 4&#8221; post would be to create a small fixture that would hold the part in place
+The key to putting a slot the 4&#8221; x 4&#8221; post would be to create a small fixture that would hold the part in place
 during the machining process. My CNC router imparts several pounds of force into the work and it is important
 that the work is held securely in place to ensure a good quality part. The 4&#8221; x 4&#8221; posts were about 3.625&#8221; square.
-I came up with the following shop drawing:</p>
+I came up with the following shop drawing:
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/drawing.png" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/drawing.png" title="auto auto" >
 
-<p>I used a 23.5&#8221; x 11.25&#8221; scrap of plywood for the base of the fixture. I held this down using
-my table&rsquo;s vacuum fixture and cut a trace of approximate size of the 4&#8221; x 4&#8221; x 18&#8221; board about 0.02&#8221; deep. The
+I used a 23.5&#8221; x 11.25&#8221; scrap of plywood for the base of the fixture. I held this down using
+my table&#8217;s vacuum fixture and cut a trace of approximate size of the 4&#8221; x 4&#8221; x 18&#8221; board about 0.02&#8221; deep. The
 critical dimension here is the 3.625&#8221; width. I fastened a 2&#8221; x 2&#8221; block right along the long edge of the trace and then
-put an angle bracket along the end.</p>
+put an angle bracket along the end.
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/fixture.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/fixture.jpg" title="auto auto" >
 
-<p>Finally I wrapped a 4&#8221; x 4&#8221; x 18&#8221; cut piece in paper and put it up against the two edges. The paper allows for about
+Finally I wrapped a 4&#8221; x 4&#8221; x 18&#8221; cut piece in paper and put it up against the two edges. The paper allows for about
 0.01&#8221; extra spacing. Then I installed two final angle brackets ensuring a snug fit. It is important to be able
 to move all of the 4&#8221; x 4&#8221;s in and out of the fixture. I tested each 4&#8221; x 4&#8221; and rotated each 90 degrees in the
-tool.</p>
+tool.
 
-<p>I put two screws though the angle brackets into the work to hold it in place while the router was running. The
+I put two screws though the angle brackets into the work to hold it in place while the router was running. The
 run time was about 10 minutes per pocket. This video shows the pocket being machining:
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/b4Hyl-paMj4" allowfullscreen></iframe></div></p>
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/b4Hyl-paMj4" allowfullscreen></iframe></div>
 
-<p>The next operation was to put a 0.25&#8221; x 45 degree chamfer on the top of each post. This operation was performed on
-the manual router table:</p>
+The next operation was to put a 0.25&#8221; x 45 degree chamfer on the top of each post. This operation was performed on
+the manual router table:
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/chamfer.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/chamfer.jpg" title="auto auto" >
 
-<p>Finally, I needed to added some pilot holes and countersunk holes to make assembly easier. First I made marks at
+Finally, I needed to added some pilot holes and countersunk holes to make assembly easier. First I made marks at
 5.5&#8221; and 11&#8221; inches. These are the approximate locations of the boards from the edge of the pocket (close to
 the top of the post). Then I added marks roughly 2&#8221; on center. For one pocket I drilled through holes at 1&#8221; and 3&#8221;
 from the top of each board. Then for the other pocket I drilled holes at 2&#8221; and 4&#8221; from the top of each board. This
-ensured that the screws would not intersect in the middle of the post:</p>
+ensured that the screws would not intersect in the middle of the post:
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/holes.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/holes.jpg" title="auto auto" >
 
-<p>The last operation was to reverse drill the pilot holes with a countersink bit on the drill press. I recessed the
+The last operation was to reverse drill the pilot holes with a countersink bit on the drill press. I recessed the
 countersink roughly 0.5&#8221; into the board to hide the 4&#8221; galvanized screws that I purchased. The
-one pound box ($7.50) contained 50 screws and I needed 48 to do the job (12 boards x 4 fasteners per board):</p>
+one pound box ($7.50) contained 50 screws and I needed 48 to do the job (12 boards x 4 fasteners per board):
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/countersink.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/countersink.jpg" title="auto auto" >
 
-<p><strong>Assembly</strong></p>
+**Assembly**
 
-<p>With the fabrication complete, I took all of the parts outside on the sidewalk. Assembly was a snap. I started by
+With the fabrication complete, I took all of the parts outside on the sidewalk. Assembly was a snap. I started by
 turning the 4&#8221; x 4&#8221; posts upside down so the chamfered top was on the sidewalk. I put each 2&#8221; x 6&#8221; post into the slot,
 tapped the 4&#8221; x 4&#8221; posts towards each other and then put in the 4&#8221; long screws. I fastened each board one at a
-time, working my way up:</p>
+time, working my way up:
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/assembly.jpg" title="auto auto" ></p>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/assembly.jpg" title="auto auto" >
 
-<p>After about 20 minutes with the drill, the raised bed frame was complete. I flipped the assembly over and positioned
+After about 20 minutes with the drill, the raised bed frame was complete. I flipped the assembly over and positioned
 it next to the sidewalk. We put cardboard in the bottom of the box after reading good things about it. Finally, the
-six bags of soil went into the box. After each bag we used the rake and a shovel to even things out.</p>
+six bags of soil went into the box. After each bag we used the rake and a shovel to even things out.
 
-<p><img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/installed.jpg" title="auto auto" ></p>
-]]></content>
+<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/installed.jpg" title="auto auto" >]]></content>
   </entry>
   
 </feed>
