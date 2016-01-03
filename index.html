@@ -9,8 +9,8 @@
   <meta name="author" content="Nick Aschenbach">
 
   
-  <meta name="description" content="AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
-searching rubygems.org and I thought it would be &hellip;">
+  <meta name="description" content="Quick Clips video follow up for post
+Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer: ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,6 +33,18 @@ searching rubygems.org and I thought it would be &hellip;">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-71685367-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 <body   >
@@ -54,6 +66,48 @@ searching rubygems.org and I thought it would be &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/03/video-reverse-engineering-web-apis/">Video: Reverse Engineering Web APIs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-03T08:07:27-08:00" pubdate data-updated="true">Jan 3<sup>rd</sup>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Quick Clips video follow up for post
+<a href="/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer</a>:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1076,113 +1130,6 @@ was perhaps one of the first games that used isometric graphics.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/21/a-small-dsl-rack-app/">Writing a Small DSL Using Rack</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-21T22:03:36-08:00" pubdate data-updated="true">Feb 21<sup>st</sup>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In this post, I write a small domain specific language to handle HTTP requests (inspired by
-<a href="http://www.sinatrarb.com/">Sinatra</a>) using Rack. We start by taking a quick look at a few small rack applications
-and then write a small DSL.</p>
-
-<p><strong> Rack </strong></p>
-
-<p>Rack provides an abstraction layer between multiple web servers (unicorn, webrick, thin, etc) and your ruby application.
-This allows developers to focus on the application layer instead of working on handling the low level details associated
-with dealing with a HTTP request.</p>
-
-<p>Let&rsquo;s take a look at the &ldquo;hello world&rdquo; example provided by <a href="http://rack.github.io/">Rack</a>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rack&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
-</span><span class='line'>  <span class="o">[</span><span class="s1">&#39;200&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;application/json&#39;</span><span class="p">},</span> <span class="o">[</span><span class="s1">&#39;A barebones rack app.&#39;</span><span class="o">]]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">WEBrick</span><span class="o">.</span><span class="n">run</span> <span class="n">app</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To use rack, one must provide an object (class, proc or lambda) that responds to <code>call</code> and returns an array with
-elements. The first element is a stringified HTTP status code. The second is a hash of response headers. The last
-element is the response body, which must respond to the <code>each</code> method.</p>
-
-<p>Let&rsquo;s run the rack app in one terminal and issue a HTTP request against it in a different one:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -v localhost:8080
-</span><span class='line'>&gt; GET / HTTP/1.1
-</span><span class='line'>&gt; User-Agent: curl/7.30.0
-</span><span class='line'>&gt; Host: localhost:8080
-</span><span class='line'>&gt; Accept: */*
-</span><span class='line'>&gt;
-</span><span class='line'>&lt; HTTP/1.1 200 OK
-</span><span class='line'>&lt; Content-Type: application/json
-</span><span class='line'>&lt; Server: WEBrick/1.3.1 <span class="o">(</span>Ruby/2.1.1/2014-02-24<span class="o">)</span>
-</span><span class='line'>&lt; Date: Fri, 20 Feb 2015 06:19:57 GMT
-</span><span class='line'>&lt; Content-Length: 18
-</span><span class='line'>&lt; Connection: Keep-Alive
-</span><span class='line'>&lt;
-</span><span class='line'>Barebones rack app
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/02/21/a-small-dsl-rack-app/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1198,6 +1145,10 @@ element is the response body, which must respond to the <code>each</code> method
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/03/video-reverse-engineering-web-apis/">Video: Reverse Engineering Web APIs</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/08/let-it-snow-with-accuweather-gem/">Let It Snow With the Accuweather Gem</a>
       </li>
     
@@ -1211,10 +1162,6 @@ element is the response body, which must respond to the <code>each</code> method
     
       <li class="post">
         <a href="/blog/2015/06/17/renumber-gem/">Renumber Filenames Sequentially</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/27/arkanoid-game-levels/">Arkanoid Game Levels</a>
       </li>
     
   </ul>
@@ -1235,12 +1182,14 @@ element is the response body, which must respond to the <code>each</code> method
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
-<li class='category'><a href='/blog/categories/learning/'>learning (3)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (4)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
+<li class='category'><a href='/blog/categories/quick-clips/'>quick-clips (1)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
 <li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
-<li class='category'><a href='/blog/categories/utilities/'>utilities (3)</a></li>
-<li class='category'><a href='/blog/categories/web-api/'>web-api (2)</a></li>
+<li class='category'><a href='/blog/categories/utilities/'>utilities (4)</a></li>
+<li class='category'><a href='/blog/categories/video/'>video (1)</a></li>
+<li class='category'><a href='/blog/categories/web-api/'>web-api (3)</a></li>
 <li class='category'><a href='/blog/categories/wood/'>wood (4)</a></li>
 
   </ul>
@@ -1263,7 +1212,7 @@ Any views or opinions presented in this blog are my own and do not necessarily r
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Nick Aschenbach -
+  Copyright &copy; 2016 - Nick Aschenbach -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

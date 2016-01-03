@@ -4,7 +4,7 @@
   <title><![CDATA[Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-12-22T11:42:12-08:00</updated>
+  <updated>2016-01-03T08:17:22-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Video: Reverse Engineering Web APIs]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis/"/>
+    <updated>2016-01-03T08:07:27-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis</id>
+    <content type="html"><![CDATA[<p>Quick Clips video follow up for post
+<a href="http://nick-aschenbach.github.io/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/">Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer</a>:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Let It Snow With the Accuweather Gem]]></title>
@@ -3515,19 +3530,6 @@ JavaScript  | 676,383        | 15,664,918,541  | 23,160
 <p>The ratio is the number of lines of code on GitHub relative to the number of Stack Overflow comments. All three languages have a similar number of comments on Stack, but have very different ratios.</p>
 
 <p>The article closes by suggesting that we have moved towards an increasingly fragmented programming language landscape. With the rise of domain specific languages and the increasing reliance on web technologies, it will be fascinating to see what programming languages will dominate in the future.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby Quiz]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
-    <updated>2014-07-30T08:29:53-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
-    <content type="html"><![CDATA[<p>I listen to the <a href="http://rubyrogues.com/">Ruby Rogues</a> Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the <a href="http://rubyquiz.com/">Ruby Quiz</a>.</p>
-
-<p>At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by Ruby Rogue James Edward Gray II (<a href="https://twitter.com/JEG2">Twitter</a>, <a href="https://github.com/JEG2">Github</a>, <a href="http://graysoftinc.com/">Blog</a>). While the book is out of print, I found a digital copy available on <a href="http://it-ebooks-search.info/search?q=ruby%20quiz">IT Books</a>.</p>
-
-<p>Happy hacking!</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Learning | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/learning/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2015-12-22T11:42:12-08:00</updated>
+  <updated>2016-01-03T08:17:22-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Video: Reverse Engineering Web APIs]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis/"/>
+    <updated>2016-01-03T08:07:27-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis</id>
+    <content type="html"><![CDATA[Quick Clips video follow up for post 
+[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/):
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer]]></title>
