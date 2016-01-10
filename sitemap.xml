@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://nick-aschenbach.github.io/blog/2016/01/09/the-value-of-professional-development/</loc>
+    <lastmod>2016-01-09T09:39:27-08:00</lastmod>
+  </url>
+  <url>
     <loc>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis/</loc>
     <lastmod>2016-01-03T08:07:27-08:00</lastmod>
   </url>
@@ -175,6 +179,12 @@
   </url>
   <url>
     <loc>http://nick-aschenbach.github.io/blog/categories/quick-clips/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/posts/2/</loc>
+  </url>
+  <url>
+    <loc>http://nick-aschenbach.github.io/posts/3/</loc>
   </url>
   <url>
     <loc>http://nick-aschenbach.github.io/assets/2014-07-18-generating-code-from-color-gradients/index.html</loc>
