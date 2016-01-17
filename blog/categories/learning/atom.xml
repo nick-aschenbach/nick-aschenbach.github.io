@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Learning | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/learning/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-09T20:08:41-08:00</updated>
+  <updated>2016-01-16T22:02:14-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -12,6 +12,14 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Video: Decorator Design Pattern in Ruby]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby/"/>
+    <updated>2016-01-16T21:58:39-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby</id>
+    <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Q7dTPDuUOL4" allowfullscreen></iframe></div>]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Value of Professional Development]]></title>
@@ -357,19 +365,6 @@ Resources:
 - Amazon makes a handful of [Freebase Data Dumps](https://aws.amazon.com/search?searchQuery=freebase) freely available.
 Also they several other [public data sets](https://aws.amazon.com/datasets/).
 - Wikidata [data dumps](http://dumps.wikimedia.org/) are also available.]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby Quiz]]></title>
-    <link href="http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz/"/>
-    <updated>2014-07-30T08:29:53-07:00</updated>
-    <id>http://nick-aschenbach.github.io/blog/2014/07/30/ruby-quiz</id>
-    <content type="html"><![CDATA[I listen to the [Ruby Rogues](http://rubyrogues.com/) Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the [Ruby Quiz](http://rubyquiz.com/).
-
-At the time of this blog post, the website has over Ruby 150 programming problems with several candidate solutions. The best of these were compiled by Ruby Rogue James Edward Gray II ([Twitter](https://twitter.com/JEG2), [Github](https://github.com/JEG2), [Blog](http://graysoftinc.com/)). While the book is out of print, I found a digital copy available on [IT Books](http://it-ebooks-search.info/search?q=ruby%20quiz).
-
-Happy hacking!
-]]></content>
   </entry>
   
 </feed>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Design-patterns | Aschenblog]]></title>
+  <link href="http://nick-aschenbach.github.io/blog/categories/design-patterns/atom.xml" rel="self"/>
+  <link href="http://nick-aschenbach.github.io/"/>
+  <updated>2016-01-16T22:02:14-08:00</updated>
+  <id>http://nick-aschenbach.github.io/</id>
+  <author>
+    <name><![CDATA[Nick Aschenbach]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Video: Decorator Design Pattern in Ruby]]></title>
+    <link href="http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby/"/>
+    <updated>2016-01-16T21:58:39-08:00</updated>
+    <id>http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby</id>
+    <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Q7dTPDuUOL4" allowfullscreen></iframe></div>]]></content>
+  </entry>
+  
+</feed>
