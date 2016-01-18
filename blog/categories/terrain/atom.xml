@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Terrain | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/terrain/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-17T17:41:27-08:00</updated>
+  <updated>2016-01-18T12:40:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -26,14 +26,14 @@ game titles like Tetris, Zelda, Super Mario Bros place the camera either above t
 vertical axis or looking directly from the side. Basic techniques like shading and parallax scrolling (where foreground
 images scroll faster than background images) help to provide a sense of depth.
 
-{% img /assets/2015-02-25-isometric-tile-engine/images/mario.gif auto 300 %}
+<img src="/assets/2015-02-25-isometric-tile-engine/images/mario.gif" title="auto 300" >
 
 An [isometric projection](http://en.wikipedia.org/wiki/Isometric_projection) is a popular way of visualizing 3D objects
 on a 2D screen. This involves rotating the camera 45 degrees to one side and then angling down roughly 30 degrees. This
 approach is used in several role playing and strategy games (Sim City 2000 pictured below). Q*bert, released in 1982,
 was perhaps one of the first games that used isometric graphics.
 
-{% img /assets/2015-02-25-isometric-tile-engine/images/simcity.png auto 300 %}
+<img src="/assets/2015-02-25-isometric-tile-engine/images/simcity.png" title="auto 300" >
 
 <!-- more -->
 
@@ -50,85 +50,142 @@ Here is a simple example with 128x64 tiles on a HTML5 canvas:
 This snippet describes how to position the diamond / rhombus shapes in a grid
 ([full source](/assets/2015-02-25-isometric-tile-engine/isometric01/js/isometric.js)):
 
-{% codeblock lang:js %}
-tileColumnOffset: 64,
-tileRowOffset: 32,
-
-redrawTiles: function() {
-  for(var Xi = 0; Xi < this.Xtiles; Xi++) {
-    for(var Yi = 0; Yi < this.Ytiles; Yi++) {
-      var offX = Xi * this.tileColumnOffset / 2 + Yi * this.tileColumnOffset / 2 + this.originX;
-      var offY = Yi * this.tileRowOffset / 2 - Xi * this.tileRowOffset / 2 + this.originY;
-
-      // Draw tile outline
-      var color = '#999';
-      this.drawLine(offX, offY + this.tileRowOffset / 2, offX + this.tileColumnOffset / 2, offY, color);
-      this.drawLine(offX + this.tileColumnOffset / 2, offY, offX + this.tileColumnOffset, offY + this.tileRowOffset / 2, color);
-      this.drawLine(offX + this.tileColumnOffset, offY + this.tileRowOffset / 2, offX + this.tileColumnOffset / 2, offY + this.tileRowOffset, color);
-      this.drawLine(offX + this.tileColumnOffset / 2, offY + this.tileRowOffset, offX, offY + this.tileRowOffset / 2, color);
-    }
-  }
-}
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">tileColumnOffset</span><span class="o">:</span> <span class="mi">64</span><span class="p">,</span>
+</span><span class='line'><span class="nx">tileRowOffset</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">// Draw tile outline</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 When we use actual graphical tiles `redrawTiles`, the draw order will need to be changed so that tiles in the back
-are rendered before ones in the front. Let's extend the work by adding colors, coordinates and some mouse listeners:
+are rendered before ones in the front. Let&#8217;s extend the work by adding colors, coordinates and some mouse listeners:
 
 <iframe src="http://nick-aschenbach.github.io/assets/2015-02-25-isometric-tile-engine/isometric02/index.html" width="100%" height="375"></iframe>
 
 Here is the salient code that handles canvas drawing
 ([full source](/assets/2015-02-25-isometric-tile-engine/isometric02/js/isometric.js)):
 
-{% codeblock lang:js %}
-redrawTiles: function() {
-  for(var Xi = (this.Xtiles - 1); Xi >= 0; Xi&#8211;) {
-    for(var Yi = 0; Yi < this.Ytiles; Yi++) {
-      this.drawTile(Xi, Yi);
-    }
-  }
-},
-
-drawTile: function(Xi, Yi) {
-  var offX = Xi * this.tileColumnOffset / 2 + Yi * this.tileColumnOffset / 2 + this.originX;
-  var offY = Yi * this.tileRowOffset / 2 - Xi * this.tileRowOffset / 2 + this.originY;
-
-  // Draw tile interior
-  if( Xi == this.selectedTileX && Yi == this.selectedTileY)
-    this.context.fillStyle = 'yellow';
-  else
-    this.context.fillStyle = 'green';
-  this.context.moveTo(offX, offY + this.tileRowOffset / 2);
-  this.context.lineTo(offX + this.tileColumnOffset / 2, offY, offX + this.tileColumnOffset, offY + this.tileRowOffset / 2);
-  this.context.lineTo(offX + this.tileColumnOffset, offY + this.tileRowOffset / 2, offX + this.tileColumnOffset / 2, offY + this.tileRowOffset);
-  this.context.lineTo(offX + this.tileColumnOffset / 2, offY + this.tileRowOffset, offX, offY + this.tileRowOffset / 2);
-  this.context.stroke();
-  this.context.fill();
-  this.context.closePath();
-
-  // Draw tile outline
-  var color = '#999';
-  this.drawLine(offX, offY + this.tileRowOffset / 2, offX + this.tileColumnOffset / 2, offY, color);
-  this.drawLine(offX + this.tileColumnOffset / 2, offY, offX + this.tileColumnOffset, offY + this.tileRowOffset / 2, color);
-  this.drawLine(offX + this.tileColumnOffset, offY + this.tileRowOffset / 2, offX + this.tileColumnOffset / 2, offY + this.tileRowOffset, color);
-  this.drawLine(offX + this.tileColumnOffset / 2, offY + this.tileRowOffset, offX, offY + this.tileRowOffset / 2, color);
-
-  if(this.showCoordinates) {
-    this.context.fillStyle = 'orange';
-    this.context.fillText(Xi + ", " + Yi, offX + this.tileColumnOffset/2 - 9, offY + this.tileRowOffset/2 + 3);
-  }
-},
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">redrawTiles</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Xi</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Xtiles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">Xi</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Xi</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">8211</span><span class="p">;)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">Yi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">Yi</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">Ytiles</span><span class="p">;</span> <span class="nx">Yi</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">drawTile</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">drawTile</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Xi</span><span class="p">,</span> <span class="nx">Yi</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">offX</span> <span class="o">=</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">offY</span> <span class="o">=</span> <span class="nx">Yi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">Xi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Draw tile interior</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nx">Xi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileX</span> <span class="o">&amp;&amp;</span> <span class="nx">Yi</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectedTileY</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;yellow&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">closePath</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Draw tile outline</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;#999&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">drawLine</span><span class="p">(</span><span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">,</span> <span class="nx">offX</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">showCoordinates</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">Xi</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nx">Yi</span><span class="p">,</span> <span class="nx">offX</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileColumnOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">9</span><span class="p">,</span> <span class="nx">offY</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Determining the location of the mouse over a canvas tile (tileX, tileY) is determined by a few calculations in a
 mouse move listener:
 
-{% codeblock lang:js %}
-$(window).on('mousemove', function(e) {
-  e.pageX = e.pageX - self.tileColumnOffset / 2 - self.originX;
-  e.pageY = e.pageY - self.tileRowOffset / 2 - self.originY;
-  tileX = Math.round(e.pageX / self.tileColumnOffset - e.pageY / self.tileRowOffset);
-  tileY = Math.round(e.pageX / self.tileColumnOffset + e.pageY / self.tileRowOffset);
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originX</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">originY</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">tileX</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">-</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">tileY</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileColumnOffset</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">tileRowOffset</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 **Graphical Tiles**
 
@@ -170,10 +227,10 @@ sprite rendering engine.]]></content>
     <id>http://nick-aschenbach.github.io/blog/2015/01/12/building-better-worlds</id>
     <content type="html"><![CDATA[For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a side project I am working on, I utilized an excellent rendering engine for natural environments and terrain called [Terragen 3](http://planetside.co.uk/products/terragen3) from Planetside Software. Here are a couple of screen shots from their [image gallery](http://planetside.co.uk/galleries/terragen-gallery):
 
-[{% img /assets/2015-01-12-building-better-worlds/images/lake.jpg 300 auto %}](/assets/2015-01-12-building-better-worlds/images/lake.jpg)
-[{% img /assets/2015-01-12-building-better-worlds/images/desert.jpg 300 auto %}](/assets/2015-01-12-building-better-worlds/images/desert.jpg)
-[{% img /assets/2015-01-12-building-better-worlds/images/village.jpg 300 auto %}](/assets/2015-01-12-building-better-worlds/images/village.jpg)
-[{% img /assets/2015-01-12-building-better-worlds/images/volcano.jpg 300 auto %}](/assets/2015-01-12-building-better-worlds/images/volcano.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/lake.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/lake.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/desert.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/desert.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/village.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/village.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/volcano.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/volcano.jpg)
 
 <!-- more -->
 
@@ -181,8 +238,8 @@ I found the [free version](http://planetside.co.uk/products/download-tg3) fairly
 
 When you load the program it creates a simple environment for you. To render this basic scene, click the `View->Render` menu. Click `Render` button and wait. On my Macbook Pro, the rendering took approximately 40 seconds (pictured below right). A shortcut for the Render command is ⌘R. There is a rough view in the upper right that shows an approximation of how the rendered scene will appear.
 
-[{% img /assets/2015-01-12-building-better-worlds/images/ui.png 300 auto %}](/assets/2015-01-12-building-better-worlds/images/ui.png)
-[{% img /assets/2015-01-12-building-better-worlds/images/basic.jpg 300 auto %}](/assets/2015-01-12-building-better-worlds/images/basic.jpg)
+[<img src="/assets/2015-01-12-building-better-worlds/images/ui.png" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/ui.png)
+[<img src="/assets/2015-01-12-building-better-worlds/images/basic.jpg" width="300" title="auto" >](/assets/2015-01-12-building-better-worlds/images/basic.jpg)
 
 The node network displayed in the lower right part of the interface is a hierarchial display of the scene. This includes Renderers, Cameras and scene elements like clouds, terrain and shaders. Double clicking on the `Render 01` node in the `Renderers` pane brings up the properties (to change the resolution, etc). This is limited to a maximum of 1280x900 in the free version.
 
@@ -190,11 +247,11 @@ The same configuration page is also available via the `Renderers` button on the 
 
 I spent some time following Vladimir Chopine&#8217;s video tutorials on youtube. This was a good starting point for me:
 
-{% youtube HnRFJ4Vptt8 %}
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/HnRFJ4Vptt8" allowfullscreen></iframe></div>
 
 I followed along with a couple of videos and with some trial and error created this rendering:
 
-[{% img left /assets/2015-01-12-building-better-worlds/images/mountain.jpg auto auto %}](/assets/2015-01-12-building-better-worlds/images/mountain.jpg)
+[<img class="left" src="/assets/2015-01-12-building-better-worlds/images/mountain.jpg" title="auto auto" >](/assets/2015-01-12-building-better-worlds/images/mountain.jpg)
 
 Here is the Terragen 3 [file](/assets//2015-01-12-building-better-worlds/images/layered_colors3.tgd) I used to generate the above rendering. Mainly I focused on creating shaders for the elements in the scene (grass, snow, sand). I played with the atmospheric, lighting and cloud elements until I found something that I liked. The rendering took about 11 minutes to complete on my laptop.
 
@@ -212,28 +269,41 @@ Terragen supports import and export FBX, Wavefront OBJ, Lightwave LWO2 and their
 I modified the script from Tenderlove's `av_capture` gem's [github page](https://github.com/tenderlove/av_capture):
 <!-- more -->
 
-{% codeblock lang:rb %}
-require &#8216;av_capture&#8217;
-
-session = AVCapture::Session.new
-dev     = AVCapture.devices.find(&:video?)
-
-session.run_with(dev) do |connection|
-  10000.times do |i|
-    counter = i.to_s.rjust(4, &#8220;0&#8221;)
-    File.open(&#8220;img_#{counter}.jpg&#8221;, &#8216;wb&#8217;) do |f|
-      f.write connection.capture
-    end
-    sleep 5
-  end
-end
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;av_capture&amp;#8217;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span> <span class="o">=</span> <span class="no">AVCapture</span><span class="o">::</span><span class="no">Session</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">dev</span>     <span class="o">=</span> <span class="no">AVCapture</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:video?</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="n">run_with</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">connection</span><span class="o">|</span>
+</span><span class='line'>  <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="c1">#8220;0&amp;#8221;)</span>
+</span><span class='line'>    <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8220;img_#{counter}.jpg&amp;#8221;, &amp;#8216;wb&amp;#8217;) do |f|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">write</span> <span class="n">connection</span><span class="o">.</span><span class="n">capture</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">sleep</span> <span class="mi">5</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 I left fill with zeros so that the files will be `img_0000.jpg`, `img_0001.jpg` &#8230; If you want to increase the number of times we take photos (let&#8217;s call it N) then change the `4` on line 8 to be `log_10(N).ceil`. So if we want to take 15,000 photos:
 
-{% codeblock lang:rb %}
-    counter = i.to_s.rjust(5, &#8220;0&#8221;)
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'>    <span class="n">counter</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="c1">#8220;0&amp;#8221;)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Now that we ran the script and generated a ton of sequentially numbered photos, how do we turn them into a movie? I used FFMPEG on a few projects in graduate school a few years ago and figured that it would be the right tool for the job.
 
@@ -253,7 +323,7 @@ The `-r 60` flag sets the video frame rate to 60 frames per second.
 
 I ran this script for about 3.5 hours starting in the early afternoon on October 6th facing towards Devil&#8217;s Thumb, a local geological feature. Here is the result:
 
-{% youtube k9uW1tmKZTo %}
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/k9uW1tmKZTo" allowfullscreen></iframe></div>
 
 I started with 30 second intervals, but found that there was too much movement between frames. I changed the script to use a 5 second delay, which seemed to result in smoother transitions. Also I used YouTube&#8217;s image stabilization post-processing feature. This is why the video appears to pan around a little. Occasionally the web cam took pictures that appeared to be too light. These appear as a white flash in the video. I identified these and copied the next image in the sequence over the white image.
 ]]></content>
@@ -264,7 +334,7 @@ I started with 30 second intervals, but found that there was too much movement b
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
     <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
-    <content type="html"><![CDATA[{% img right /images/colorado-mountains.jpg Snowy view towards Devil's Thumb Ranch %}
+    <content type="html"><![CDATA[<img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" >
 
 I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (https://github.com/hallahan/ http://www.spatialdev.com/#about) to craft a gift for one of the ranch families.
 
@@ -272,7 +342,7 @@ The project involved quite a bit of GIS modeling and graphic design work. The sp
 
 <!-- more -->
 
-{% img right /images/colorado-mid-scale.jpg 350 auto Mid scale map %}
+<img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" >
 
 Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.
 
@@ -288,7 +358,7 @@ Map details look best when line weights are taken into consideration. While the 
 
 To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (http://www.tapplastics.com/). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.
 
-{% img /images/lazy-susan-collage.jpg Finished lazy susan %}]]></content>
+<img src="/images/lazy-susan-collage.jpg" title="Finished lazy susan" >]]></content>
   </entry>
   
   <entry>
@@ -298,7 +368,7 @@ To finish up the part we went back to the CNC router to pocket it out for the la
     <id>http://nick-aschenbach.github.io/blog/2014/07/06/2d-fractal-terrain</id>
     <content type="html"><![CDATA[A while ago I discovered a simple algorithm to generate infinite fractal terrain. One application for this is to produce mountain-like backgrounds for 2D side-scrolling video games. 
 
-{% img right /images/fractal-2d.png Evolution of a fractal mountain %}
+<img class="right" src="/images/fractal-2d.png" title="Evolution of a fractal mountain" >
 
 This is called the midpoint displacement algorithm. It works by recursively breaking a line into smaller and smaller segments and at each step changing the Y-value up or down by a random amount. The amount of change is reduced by some amount at each step to produce a rough or smooth looking mountain scape.
 
@@ -320,18 +390,27 @@ Also, note that you will have to determine what sufficiently detailed means. Arr
 
 Let&#8217;s take a look at a Javascript implementation of the algorithm above. 
 
-{% codeblock lang:js %}
-function generateTerrain(leftIndex, rightIndex, displacement) {
-  if((leftIndex + 1) == rightIndex) return;
-  var midIndex = Math.floor((leftIndex + rightIndex) / 2);
-  var change = (Math.random() * 2 - 1) * displacement;
-  terrain_array[midIndex] = (terrain_array[leftIndex] + terrain_array[rightIndex]) / 2 + change;
-
-  displacement = displacement * roughness;
-  generateTerrain(leftIndex, midIndex, displacement);
-  generateTerrain(midIndex, rightIndex, displacement);
-}
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">midIndex</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">leftIndex</span> <span class="o">+</span> <span class="nx">rightIndex</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">change</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">displacement</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">midIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">terrain_array</span><span class="p">[</span><span class="nx">leftIndex</span><span class="p">]</span> <span class="o">+</span> <span class="nx">terrain_array</span><span class="p">[</span><span class="nx">rightIndex</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nx">change</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">displacement</span> <span class="o">=</span> <span class="nx">displacement</span> <span class="o">*</span> <span class="nx">roughness</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">leftIndex</span><span class="p">,</span> <span class="nx">midIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">generateTerrain</span><span class="p">(</span><span class="nx">midIndex</span><span class="p">,</span> <span class="nx">rightIndex</span><span class="p">,</span> <span class="nx">displacement</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The if block on line two prevents infinite recursion. Also note, that we define a global array of floating point values called terrain_array. All values in the array are initialized to zero. We also defined a global variable for roughness.
 

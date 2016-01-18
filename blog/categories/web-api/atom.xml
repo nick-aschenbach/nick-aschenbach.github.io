@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Web-api | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/web-api/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-17T17:41:27-08:00</updated>
+  <updated>2016-01-18T12:40:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -19,9 +19,9 @@
     <updated>2016-01-03T08:07:27-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis</id>
     <content type="html"><![CDATA[Quick Clips video follow up for post 
-[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer]({% post_url 2015-10-15-reverse-engineering-web-apis-using-mobile-apps %}):
+[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/):
 
-{% youtube l3y1-CqtGv0 %}
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
 ]]></content>
   </entry>
   
@@ -32,60 +32,83 @@
     <id>http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem</id>
     <content type="html"><![CDATA[AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
 searching [rubygems.org](https://rubygems.org) and I thought it would be fun to write one after spending a little time
-reverse engineering the web API ([related post]({% post_url 2015-10-15-reverse-engineering-web-apis-using-mobile-apps %})).
+reverse engineering the web API ([related post](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/)).
 
-{% img left /assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png 250 auto %}
+<img class="left" src="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" >
 
 First, find a location via the city search API:
 
-{% codeblock lang:rb %}
-require 'accuweather'
-
-locations = Accuweather.city_search(name: 'vancouver')
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 This returns a list of locations that match the input. Each location provides several pieces of information including
 a city identifier:
 
-{% codeblock lang:rb %}
-vancouver = locations.first
-
-vancouver.id        # => &#8216;cityId:53286&#8217;
-vancouver.city      # => &#8216;Vancouver&#8217;
-vancouver.state     # => &#8216;Canada (British Columbia)&#8217;
-vancouver.latitude  # => &#8216;49.2448&#8217;
-vancouver.longitude # => &#8216;123.1154&#8217;
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &amp;#8216;cityId:53286&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &amp;#8216;Vancouver&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &amp;#8216;Canada (British Columbia)&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &amp;#8216;49.2448&amp;#8217;</span>
+</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &amp;#8216;123.1154&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The gem caches over 175K cities around the world. If the location `name` is not in the cache, the gem will
 make a HTTP request to AccuWeather to try and find it.
 
 The location identifier is used to get more information about current weather conditions:
 
-{% codeblock lang:rb %}
-current_weather = Accuweather.get_conditions(location_id: &#8216;cityId:53286&#8217;).current
-current_weather.temperature    # => &#8216;41&#8217;
-current_weather.weather_text   # => &#8216;Partly Sunny&#8217;
-current_weather.pressure       # => &#8216;30.35&#8217;
-current_weather.humidity       # => &#8216;43%&#8217;
-current_weather.cloud_cover    # => &#8216;40%&#8217;
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).current</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &amp;#8216;41&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &amp;#8216;Partly Sunny&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &amp;#8216;30.35&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &amp;#8216;43%&amp;#8217;</span>
+</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &amp;#8216;40%&amp;#8217;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 A week of day and nighttime forecasts are available:
 
-{% codeblock lang:rb %}
-weather_forecast = Accuweather.get_conditions(location_id: &#8216;cityId:53286&#8217;).forecast
-last_forecast_day = weather_forecast.last
-last_forecast_day.date        # => &#8220;12/3/2015&#8221;
-last_forecast_day.day_of_week # => &#8220;Thursday&#8221;
-last_forecast_day.sunrise     # => &#8220;7:49 AM&#8221;
-last_forecast_day.sunset      # => &#8220;4:16 PM&#8221;
-
-# Get the dates, daytime high and nighttime low temperatures
-weather_forecast.map(&:date)                             #  => [&#8220;11/27/2015&#8221;, &#8220;11/28/2015&#8221;, &#8220;11/29/2015&#8221;, &#8220;11/30/2015&#8221;, &#8220;12/1/2015&#8221;, &#8220;12/2/2015&#8221;, &#8220;12/3/2015&#8221;]
-weather_forecast.map(&:daytime).map(&:high_temperature)  # => [&#8220;45&#8221;, &#8220;45&#8221;, &#8220;47&#8221;, &#8220;44&#8221;, &#8220;44&#8221;, &#8220;48&#8221;, &#8220;48&#8221;]
-weather_forecast.map(&:nighttime).map(&:low_temperature) # => [&#8220;27&#8221;, &#8220;28&#8221;, &#8220;31&#8221;, &#8220;32&#8221;, &#8220;40&#8221;, &#8220;42&#8221;, &#8220;36&#8221;]
-{% endcodeblock %}
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).forecast</span>
+</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &amp;#8220;12/3/2015&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &amp;#8220;Thursday&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &amp;#8220;7:49 AM&amp;#8221;</span>
+</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &amp;#8220;4:16 PM&amp;#8221;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&amp;#8220;11/27/2015&amp;#8221;, &amp;#8220;11/28/2015&amp;#8221;, &amp;#8220;11/29/2015&amp;#8221;, &amp;#8220;11/30/2015&amp;#8221;, &amp;#8220;12/1/2015&amp;#8221;, &amp;#8220;12/2/2015&amp;#8221;, &amp;#8220;12/3/2015&amp;#8221;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&amp;#8220;45&amp;#8221;, &amp;#8220;45&amp;#8221;, &amp;#8220;47&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;48&amp;#8221;, &amp;#8220;48&amp;#8221;]</span>
+</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&amp;#8220;27&amp;#8221;, &amp;#8220;28&amp;#8221;, &amp;#8220;31&amp;#8221;, &amp;#8220;32&amp;#8221;, &amp;#8220;40&amp;#8221;, &amp;#8220;42&amp;#8221;, &amp;#8220;36&amp;#8221;]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 The API returns a `weather_icon` number for the current weather and forecast. This number appears to correspond to PNG
 file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
@@ -115,30 +138,30 @@ provide a small example using the overstock.com app to look into current Flash D
 monitor a large variety of network traffic running on the phone. The app I used also decrypts SSL packets, which is
 useful for viewing HTTPS traffic.
 
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png 250 auto %}
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png 250 auto %}
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png 250 auto %}
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png" width="250" title="auto" >
 
 First, I installed [Packet Capture](https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture&hl=en) for
 Android. The application requires permission to monitor network traffic when you press the `Play` button. Please do
 so at your own risk. Also, this captures a large amount of data, so you might want to limit the length of time it is
 running.
 
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png 250 auto %}
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png 250 auto %}
-{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png 250 auto %}
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png" width="250" title="auto" >
+<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png" width="250" title="auto" >
 
 I downloaded the [Overstock.com](https://play.google.com/store/apps/details?id=com.overstock&hl=en) Android application,
 started it and then started the packet capture. I tapped `FLASH DEALS` and then stopped the packet capture. The last
 image (above right) shows the HTTP request and response that corresponded to my interaction with the application. You may
 have to look through a large number of packets to identify the one of interest.
 
-While the response is gzipped, I'm more interested in the HTTP request. The first thing I tried was a simple curl
+While the response is gzipped, I&#8217;m more interested in the HTTP request. The first thing I tried was a simple curl
 from the command line to reproduce the application:
 
     $ curl http://www.overstock.com/api2/flashdeals/current?offset=0&limit=12
 
-In some cases, you may need to use the same HTTP request headers (use the `-H "<HEADER_KEY>: <HEADER_VALUE>&#8221;` command
+In some cases, you may need to use the same HTTP request headers (use the `-H &#8221;<HEADER_KEY>: <HEADER_VALUE>&#8221;` command
 line option) to convince the remote HTTP server that the request was made from their application. However, this was not
 needed for the Overstock.com web API. Here is a snippet of the response:
 

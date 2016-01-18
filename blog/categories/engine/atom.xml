@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Engine | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/engine/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-17T17:41:27-08:00</updated>
+  <updated>2016-01-18T12:40:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -33,46 +33,79 @@ to impose an authentication system from the gem on the host application. Ryan Bi
 We investigated a handful of approaches. The simplest, least invasive approach seemed to be to use Rack middleware.
 First, we register the middleware with an array of endpoints to validate:
 
-{% codeblock lang:rb application.rb %}
-config.middleware.use Middleware::TokenAuthorizer, [&#8216;api/accounts/&#8217;]
-{% endcodeblock %}
+<figure class='code'><figcaption><span>application.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">Middleware</span><span class="o">::</span><span class="no">TokenAuthorizer</span><span class="p">,</span> <span class="o">[&amp;</span><span class="c1">#8216;api/accounts/&amp;#8217;]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 Then we define the middleware:
 
-{% codeblock lang:rb token_authorizer.rb %}
-module Middleware
-  class TokenAuthorizer
-    def initialize(app, validation_endpoints)
-      @app = app
-      @validation_endpoints = validation_endpoints
-    end
-
-    def call(env)
-      return unauthorized if need_to_validate?(env[&#8216;PATH_INFO&#8217;]) && invalid_token?(env[&#8216;HTTP_AUTHORIZATION&#8217;])
-
-      @app.call(env)
-    end
-
-    private
-
-    def need_to_validate?(request_path)
-      @validation_endpoints.each do |validation_endpoint|
-        return true if request_path.include?(validation_endpoint)
-      end
-      false
-    end
-
-    def invalid_token?(token)
-      return true if token.nil?
-      !WebServices::TokenAuth.new(token).is_valid_token?
-    end
-
-    def unauthorized
-      [401, {}, [&#8216;Unauthorized&#8217;]]
-    end
-  end
-end
-{% endcodeblock %}
+<figure class='code'><figcaption><span>token_authorizer.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">module</span> <span class="nn">Middleware</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">TokenAuthorizer</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">validation_endpoints</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+</span><span class='line'>      <span class="vi">@validation_endpoints</span> <span class="o">=</span> <span class="n">validation_endpoints</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">unauthorized</span> <span class="k">if</span> <span class="n">need_to_validate?</span><span class="p">(</span><span class="n">env</span><span class="o">[&amp;</span><span class="c1">#8216;PATH_INFO&amp;#8217;]) &amp;&amp; invalid_token?(env[&amp;#8216;HTTP_AUTHORIZATION&amp;#8217;])</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">need_to_validate?</span><span class="p">(</span><span class="n">request_path</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@validation_endpoints</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">validation_endpoint</span><span class="o">|</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">request_path</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">validation_endpoint</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="kp">false</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">invalid_token?</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>      <span class="o">!</span><span class="no">WebServices</span><span class="o">::</span><span class="no">TokenAuth</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="o">.</span><span class="n">is_valid_token?</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">unauthorized</span>
+</span><span class='line'>      <span class="o">[</span><span class="mi">401</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[&amp;</span><span class="c1">#8216;Unauthorized&amp;#8217;]]</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 In most cases, we will just end up executing calling the host application (via `@app.call(env)`). However if the
 `PATH_INFO` matches an initialized endpoint and we pass in an invalid token, then we will return a `401` HTTP status
@@ -102,7 +135,7 @@ description, an array of image URLs and a link to the original detailed Freebase
 - The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
 in a Rails project:
 
-[{% img /assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg auto auto %}](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
+[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 

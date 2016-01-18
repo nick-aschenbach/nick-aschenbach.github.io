@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design-patterns | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/design-patterns/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-17T17:41:27-08:00</updated>
+  <updated>2016-01-18T12:40:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,7 +18,7 @@
     <link href="http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby/"/>
     <updated>2016-01-16T21:58:39-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby</id>
-    <content type="html"><![CDATA[{% youtube Q7dTPDuUOL4 %}]]></content>
+    <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Q7dTPDuUOL4" allowfullscreen></iframe></div>]]></content>
   </entry>
   
 </feed>
