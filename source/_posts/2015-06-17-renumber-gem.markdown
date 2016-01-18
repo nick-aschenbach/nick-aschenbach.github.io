@@ -4,6 +4,8 @@ title: "Renumber Filenames Sequentially"
 date: 2015-06-17 20:07:04 -0700
 comments: true
 categories: gems utilities
+description: A little open source utility that renames files in a directory so that they sequentially ordered.
+keywords: gem bash utilities renumber file open source ruby
 ---
 
 `renumber` is a small command line utility that renames files in a single directory. Files are sorted in

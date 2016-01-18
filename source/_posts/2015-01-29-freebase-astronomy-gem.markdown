@@ -4,6 +4,8 @@ title: "Freebase Astronomy Gems"
 date: 2015-01-29 20:34:04 -0800
 comments: true
 categories: gems astronomy learning engine
+description: This post talks about a pair of open source gems that represents knowledge from the Freebase web API 
+keywords: gem learning rails engine astronomy web API open source
 ---
 
 With 47 million topics and 2.7 billion facts, Freebase has an imposing amount of community curated data.

@@ -4,6 +4,8 @@ title: "Arkanoid Game Levels"
 date: 2015-04-27 19:12:09 -0700
 comments: true
 categories: games graphics
+description: Use Arkanoid game map and an image parsing technique to generate code (array of arrays)
+keywords: games arkanoid image parsing png ruby arrays javascript
 ---
 
 {% img left /assets/2015-04-27-arkanoid-game-levels/images/arkanoid_arcadeflyer.png auto auto %} I loved playing

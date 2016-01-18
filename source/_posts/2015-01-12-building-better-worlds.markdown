@@ -4,6 +4,8 @@ title: "Building Better Worlds with Terragen 3"
 date: 2015-01-12 21:13:04 -0800
 comments: true
 categories: terrain graphics
+description: Using Terragen 3 to create photo-realistic looking 3D environments 
+keywords: terragen proceedural worlds graphics games
 ---
 
 For years I have been interested in modeling terrain. I wrote 2D and 3D fractal terrain generators for fun when I was in school. To help inspire a side project I am working on, I utilized an excellent rendering engine for natural environments and terrain called [Terragen 3](http://planetside.co.uk/products/terragen3) from Planetside Software. Here are a couple of screen shots from their [image gallery](http://planetside.co.uk/galleries/terragen-gallery):

@@ -4,6 +4,8 @@ title: "Something to Show at the End of the Day"
 date: 2014-07-26 09:43:50 -0700
 comments: true
 categories: CNC wood
+description: Using voronoi diagrams to create beautiful cutting boards in wood.
+keywords: voronoi digram cnc wood algorithm fabrication 
 ---
 Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.
 

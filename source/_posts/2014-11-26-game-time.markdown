@@ -4,6 +4,8 @@ title: "Game Time"
 date: 2014-11-26 11:09:34 -0800
 comments: true
 categories: games gems
+description: A gem that can be used generate words for games like charades and pictionary
+keywords: game boardgame gem open source
 ---
 
 My team laughed quite a bit recently while playing Pictionary at lunchtime over the past several weeks. We have had a few HR (not safe for work) fails in addition to several entertaining missed phrases (including `Pizza Gazebo` instead of `Pizza Hut`). We use tablets as our drawing surfaces to save paper, which introduces challenges when trying to draw rapidly. To find words, we used the [Game Gal's word generator](https://www.thegamegal.com/word-generator/).

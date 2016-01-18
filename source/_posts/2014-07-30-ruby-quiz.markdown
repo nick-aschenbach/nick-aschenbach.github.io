@@ -4,6 +4,8 @@ title: "Ruby Quiz"
 date: 2014-07-30 08:29:53 -0700
 comments: true
 categories: learning
+description: Challenge your Ruby skills using the Ruby Quiz
+keywords: ruby quiz learning
 ---
 I listen to the [Ruby Rogues](http://rubyrogues.com/) Podcasts on my way to work in the morning. A number of episodes focus on learning, education and keeping your skills sharp. I learn best by working on small projects to enhance my understanding of different aspects of a programming language. I was looking for some non-trivial example problems to work on and found the [Ruby Quiz](http://rubyquiz.com/).
 

@@ -4,6 +4,8 @@ title: "Open Source Pirate Swords"
 date: 2015-11-01 20:23:37 -0800
 comments: true
 categories: CNC wood
+description: Free pirate sword designs in multiple formats 
+keywords: CNC pirate sword design 3dm ai dxf dwg pdf
 ---
 
 Every year my work has a competition for who can come up with the best Halloween decorations. My team has the good

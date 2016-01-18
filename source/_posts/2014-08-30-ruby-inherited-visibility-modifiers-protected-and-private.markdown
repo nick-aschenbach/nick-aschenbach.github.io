@@ -4,6 +4,8 @@ title: "Protected and private visibility modifiers and inheritance in Ruby"
 date: 2014-08-30 09:01:20 -0700
 comments: true
 categories: inheritance
+description: Treatment of private and protected visibility modifiers in the Ruby programming language
+keywords: ruby inheritance
 ---
 
 During a recent code review at work, I was surprised by how Ruby handles `private` and `protected` method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:

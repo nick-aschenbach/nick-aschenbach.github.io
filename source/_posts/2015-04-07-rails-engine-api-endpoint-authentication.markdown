@@ -4,6 +4,8 @@ title: "Rails Engine API Endpoint Authentication using Rack Middleware"
 date: 2015-04-07 22:28:10 -0700
 comments: true
 categories: engine 
+description: How to do authentication for a rails engine using rack middleware
+keywords: rails engine rack middleware authentication ruby
 ---
 
 At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host

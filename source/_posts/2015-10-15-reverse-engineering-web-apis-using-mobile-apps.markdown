@@ -4,6 +4,8 @@ title: "Reverse Engineering Web APIs using Mobile Apps and a Packet Sniffer"
 date: 2015-10-15 21:09:30 -0700
 comments: true
 categories: utilities learning web-api
+description: How to reverse engineering a web API using a packet sniffer on an android phone 
+keywords: tutorial android weather gem learning
 ---
 
 Recently I have been having fun using a packet sniffer running on my Android phone to explore non-public APIs. I will

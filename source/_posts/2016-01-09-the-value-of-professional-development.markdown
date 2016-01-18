@@ -4,6 +4,8 @@ title: "The Value of Professional Development"
 date: 2016-01-09 09:39:27 -0800
 comments: true
 categories: learning 
+description: Professional development is an essential for those in technical disciplines. This is what I do to stay up to date. 
+keywords: learning professional development work career
 ---
 
 One of my career goals is to keep getting better at what I do. When I was a manager, I always tried to help my

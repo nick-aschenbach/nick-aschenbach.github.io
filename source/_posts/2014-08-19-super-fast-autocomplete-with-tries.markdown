@@ -4,6 +4,8 @@ title: "Fast autocompletion with Tries"
 date: 2014-08-19 19:50:17 -0700
 comments: true
 categories: data-structures
+description: A nifty tree-based data structure that can be used to find dictionary words quickly using breadth first search
+keywords: tries word search autocomplete data structures
 ---
 {% img left /assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png 200 auto Trie Graph %} 
 

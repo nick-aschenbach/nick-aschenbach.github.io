@@ -4,6 +4,8 @@ title: "Building a Gem for RubyGems.org"
 date: 2014-09-29 18:49:06 -0700
 comments: true
 categories: gems data-structures
+description: A short tutorial to create a gem and publish it to rubygems.org
+keywords: gem learning tutorial
 ---
 
 We are going through some large code refactors at work and are building [rails engines](http://guides.rubyonrails.org/engines.html). This requires creating apps within our main app. Each sub-app resides in its own gem and is typically mounted or consumed in some way by the host application. While I work on several gems for different projects at work, I had never developed one from scratch and submitted it to [RubyGems](http://rubygems.org/). I took some previous work on a [SMS Scrabble cheater app](/blog/2014/07/20/text-messaging-made-easy-with-twilio/) to help motivate the project. 

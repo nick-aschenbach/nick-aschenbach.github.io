@@ -4,6 +4,8 @@ title: "jRuby Test Drive"
 date: 2015-03-14 09:09:13 -0700
 comments: true
 categories: jruby languages
+description: Building a small application with a user interface using jRuby 
+keywords: ruby jruby rvm java ui learning
 ---
 
 After hearing about jRuby on several Ruby Rogues podcasts and reading posts about it online, I wanted to give it a shot.

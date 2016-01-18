@@ -4,6 +4,8 @@ title: "pet cemetery headstones"
 date: 2014-10-25 13:37:23 -0700
 comments: true
 categories: CNC 
+description: A small project to make fake pet cemetery headstones
+keywords: cnc halloween decorations
 ---
 This year we decided to take on a small project to help decorate the front yard for Halloween. We were sad to lose our dear orange tabby cat Frank this July. To memorialize Frank and our pets from years past, we decided to create a small faux pet cemetary in the front yard.
 

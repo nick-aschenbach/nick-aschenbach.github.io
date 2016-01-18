@@ -4,6 +4,8 @@ title: "Writing a Small DSL using Rack"
 date: 2015-02-21 22:03:36 -0800
 comments: true
 categories: rack dsl
+description: Building a small DSL like sinatra on top of rack
+keywords: ruby rack dsl web
 ---
 
 In this post, I write a small domain specific language to handle HTTP requests (inspired by

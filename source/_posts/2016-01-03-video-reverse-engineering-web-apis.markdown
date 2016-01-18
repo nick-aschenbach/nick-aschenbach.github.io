@@ -4,6 +4,8 @@ title: "Video: Reverse Engineering Web APIs"
 date: 2016-01-03 08:07:27 -0800
 comments: true
 categories: video quick-clips utilities learning web-api
+description: Video tutorial that describes how to reverse engineer the Accuweather web API using an android phone 
+keywords: video tutorial android weather gem learning
 ---
 
 Quick Clips video follow up for post 

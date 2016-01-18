@@ -4,6 +4,8 @@ title: "Simple Isometric Tiling"
 date: 2015-02-25 22:40:30 -0800
 comments: true
 categories: graphics games terrain
+description: Simple isometric tiling using html5 canvas and javascript
+keywords: isometric tiling terrain videogame ruby javascript
 ---
 
 In this post I share a few simple javascript examples of isometric tiling commonly used to create the illusion

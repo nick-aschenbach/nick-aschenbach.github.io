@@ -4,6 +4,8 @@ title: "Let It Snow with the Accuweather Gem"
 date: 2015-12-08 22:09:29 -0800
 comments: true
 categories: gems utilities web-api
+description: Presenting the open source accuweather gem. This gem is a lightweight wrapper around the Accuweather web API. 
+keywords: gem accuweather weather web API
 ---
 
 AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after

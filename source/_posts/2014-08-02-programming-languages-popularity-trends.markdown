@@ -4,6 +4,8 @@ title: "Popularity Trends in Programming Languages"
 date: 2014-08-02 11:18:06 -0700
 comments: true
 categories: languages
+description: A short survey of popularity of different programming languages
+keywords: popularity programming languages trends
 ---
 Full disclosure: I am a Ruby and Java developer. 
 

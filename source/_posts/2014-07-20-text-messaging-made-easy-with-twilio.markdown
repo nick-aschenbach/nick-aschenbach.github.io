@@ -4,6 +4,8 @@ title: "Text Messaging Made Easy with Twilio"
 date: 2014-07-20 21:01:23 -0700
 comments: true
 categories: communication
+description: A quick integration with Twilio using Sinatra
+keywords: sms text messaging twilio sinatra
 ---
 A few months ago I was determined to find out how to send and receive SMS text messages programmatically. After some research, I found that [Twilio](https://www.twilio.com) has a range of communication tools for developers for SMS / MMS, voice, mobile and web. They take care of low level details which facilitates the process of focusing on the core app. Their [documentation](https://www.twilio.com/docs) is excellent and you can experiment with their tools for free. 
 

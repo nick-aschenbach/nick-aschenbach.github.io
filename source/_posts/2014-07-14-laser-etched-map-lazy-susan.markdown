@@ -4,6 +4,8 @@ title: "Maps, Lasers and Bamboo"
 date: 2014-07-14 22:41:29 -0700
 comments: true
 categories: graphics terrain CNC wood
+description: A project to create a lazy susan with a laser etch contour map of colorado
+keywords: cnc wood laser etch fabrication colorado
 ---
 {% img right /images/colorado-mountains.jpg Snowy view towards Devil's Thumb Ranch %}
 

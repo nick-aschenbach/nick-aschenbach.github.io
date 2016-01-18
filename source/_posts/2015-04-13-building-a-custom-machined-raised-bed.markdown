@@ -4,6 +4,8 @@ title: "Building a Custom Machined Raised Bed"
 date: 2015-04-13 20:42:10 -0700
 comments: true
 categories: cnc wood gardening
+description: A small project to build a raised bed using CNC cut parts
+keywords: cnc wood gardening raised bed machining CNC woodworking
 ---
 
 Looking forward to sunshine and warmer temperatures, I decided to take on a project over the weekend to build
