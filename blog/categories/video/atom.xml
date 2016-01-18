@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Video | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/video/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,7 +18,7 @@
     <link href="http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby/"/>
     <updated>2016-01-16T21:58:39-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby</id>
-    <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Q7dTPDuUOL4" allowfullscreen></iframe></div>]]></content>
+    <content type="html"><![CDATA[{% youtube Q7dTPDuUOL4 %}]]></content>
   </entry>
   
   <entry>
@@ -27,9 +27,9 @@
     <updated>2016-01-03T08:07:27-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis</id>
     <content type="html"><![CDATA[Quick Clips video follow up for post 
-[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/):
+[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer]({% post_url 2015-10-15-reverse-engineering-web-apis-using-mobile-apps %}):
 
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
+{% youtube l3y1-CqtGv0 %}
 ]]></content>
   </entry>
   

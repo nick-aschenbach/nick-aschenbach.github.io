@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cnc | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/cnc/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -24,16 +24,16 @@ in the building. Our team's resident creative genius [Sheena](https://twitter.co
 the concept of dead pirates / death in the deep. As a companion to our pirate costumes, I created a basic
 pirate sword design with a curved blade:
 
-<img src="/assets/2015-11-01-pirate-swords/images/sword-collage.jpg" title="auto auto" >
+{% img /assets/2015-11-01-pirate-swords/images/sword-collage.jpg auto auto %}
 
-I cut the swords out of a sheet of 1/2&#8221; cabinet grade plywood. This is important because it has a flat and smooth
+I cut the swords out of a sheet of 1/2" cabinet grade plywood. This is important because it has a flat and smooth
 pre-finished surface, which I found very easy to prime and spray paint. I used silver metallic paint for the blade
 portion and then used a metallic bronze for the hilt. Painters tape was used as masking to provide a sharp line between
 the two colors.
 
-<img src="/assets/2015-11-01-pirate-swords/images/final-sword.jpg" title="auto auto" >
+{% img /assets/2015-11-01-pirate-swords/images/final-sword.jpg auto auto %}
 
-As a final touch, I used a hot glue gun to attach 1/8&#8221; leather cord to the handle of the hilt.
+As a final touch, I used a hot glue gun to attach 1/8" leather cord to the handle of the hilt.
 
 Here are the sword designs in various formats, if you want to make your own:
 
@@ -53,13 +53,13 @@ Here are the sword designs in various formats, if you want to make your own:
 a small raised bed so we could try planting some peppers and herbs this spring. My wife asked that the bed be
 around 18" tall. I went to work in my project notebook and came up with the following hand sketch:
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/hand-sketch.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/hand-sketch.jpg auto auto %}
 
-I wanted to use 4&#8221; x 4&#8221; posts for the corners and 2&#8221; x 6&#8221; boards for the walls of the planter box. There were a
-couple of design elements that I wanted to incorporate. First, I wanted the 2&#8221; x 6&#8221; boards to be recessed into
-the post. Also, I wanted to put a 45 degree chamfer on the top of each 4&#8221; x 4&#8221; for decoration. I decided
-that the overall dimensions should be around 36&#8221; x 60&#8221; so I could maximize utilization of the 8 foot lengths
-of the 2&#8221; x 6&#8221; stock board size.
+I wanted to use 4" x 4" posts for the corners and 2" x 6" boards for the walls of the planter box. There were a
+couple of design elements that I wanted to incorporate. First, I wanted the 2" x 6" boards to be recessed into
+the post. Also, I wanted to put a 45 degree chamfer on the top of each 4" x 4" for decoration. I decided
+that the overall dimensions should be around 36" x 60" so I could maximize utilization of the 8 foot lengths
+of the 2" x 6" stock board size.
 
 **Materials**
 
@@ -80,7 +80,7 @@ I asked that the sawyer cut the pieces the same size. I did not care that the pi
 it was important to me that they were all the same. The parts came out with about 0.125&#8221; of variation. A more
 experienced sawyer using a stop on the saw, should be able to cut the parts to close tolerances.
 
-<img class="left" src="/assets/2015-04-13-building-a-custom-machined-raised-bed/soil.jpg" width="300" title="auto" >
+{% img left /assets/2015-04-13-building-a-custom-machined-raised-bed/soil.jpg 300 auto %}
 
 I also purchased potting soil, which is sold in 3 cubic foot bags at Home Depot. The soil should be
 be a few inches below the 18&#8221; post. Here is how I calculated the amount of soil I needed for the project:
@@ -101,14 +101,14 @@ during the machining process. My CNC router imparts several pounds of force into
 that the work is held securely in place to ensure a good quality part. The 4&#8221; x 4&#8221; posts were about 3.625&#8221; square.
 I came up with the following shop drawing:
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/drawing.png" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/drawing.png auto auto %}
 
 I used a 23.5&#8221; x 11.25&#8221; scrap of plywood for the base of the fixture. I held this down using
 my table&#8217;s vacuum fixture and cut a trace of approximate size of the 4&#8221; x 4&#8221; x 18&#8221; board about 0.02&#8221; deep. The
 critical dimension here is the 3.625&#8221; width. I fastened a 2&#8221; x 2&#8221; block right along the long edge of the trace and then
 put an angle bracket along the end.
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/fixture.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/fixture.jpg auto auto %}
 
 Finally I wrapped a 4&#8221; x 4&#8221; x 18&#8221; cut piece in paper and put it up against the two edges. The paper allows for about
 0.01&#8221; extra spacing. Then I installed two final angle brackets ensuring a snug fit. It is important to be able
@@ -117,12 +117,12 @@ tool.
 
 I put two screws though the angle brackets into the work to hold it in place while the router was running. The
 run time was about 10 minutes per pocket. This video shows the pocket being machining:
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/b4Hyl-paMj4" allowfullscreen></iframe></div>
+{% youtube b4Hyl-paMj4 %}
 
 The next operation was to put a 0.25&#8221; x 45 degree chamfer on the top of each post. This operation was performed on
 the manual router table:
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/chamfer.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/chamfer.jpg auto auto %}
 
 Finally, I needed to added some pilot holes and countersunk holes to make assembly easier. First I made marks at
 5.5&#8221; and 11&#8221; inches. These are the approximate locations of the boards from the edge of the pocket (close to
@@ -130,13 +130,13 @@ the top of the post). Then I added marks roughly 2&#8221; on center. For one poc
 from the top of each board. Then for the other pocket I drilled holes at 2&#8221; and 4&#8221; from the top of each board. This
 ensured that the screws would not intersect in the middle of the post:
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/holes.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/holes.jpg auto auto %}
 
 The last operation was to reverse drill the pilot holes with a countersink bit on the drill press. I recessed the
 countersink roughly 0.5&#8221; into the board to hide the 4&#8221; galvanized screws that I purchased. The
 one pound box ($7.50) contained 50 screws and I needed 48 to do the job (12 boards x 4 fasteners per board):
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/countersink.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/countersink.jpg auto auto %}
 
 **Assembly**
 
@@ -145,13 +145,13 @@ turning the 4&#8221; x 4&#8221; posts upside down so the chamfered top was on th
 tapped the 4&#8221; x 4&#8221; posts towards each other and then put in the 4&#8221; long screws. I fastened each board one at a
 time, working my way up:
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/assembly.jpg" title="auto auto" >
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/assembly.jpg auto auto %}
 
 After about 20 minutes with the drill, the raised bed frame was complete. I flipped the assembly over and positioned
 it next to the sidewalk. We put cardboard in the bottom of the box after reading good things about it. Finally, the
 six bags of soil went into the box. After each bag we used the rake and a shovel to even things out.
 
-<img src="/assets/2015-04-13-building-a-custom-machined-raised-bed/installed.jpg" title="auto auto" >]]></content>
+{% img /assets/2015-04-13-building-a-custom-machined-raised-bed/installed.jpg auto auto %}]]></content>
   </entry>
   
   <entry>
@@ -173,7 +173,7 @@ Here are the raw materials we used:
 
 My wife who is a graphic designer created the geometry for the project [download here](/assets/2014-10-25-pet-cemetery-headstones/files/petcemetary.zip). The PDF files can be enlarged to a desired size on paper and then cut out with a pair of scissors. You can print large format sheets at a copy center or use regular copier paper taped together to form a template. I used the PDF files in my CAD / CAM software and cut the patterns out on my CNC router.
 
-<img class="left" src="/assets/2014-10-25-pet-cemetery-headstones/images/pre-finished.jpg" width="300" title="auto Pre-finished Headstones" >
+{% img left /assets/2014-10-25-pet-cemetery-headstones/images/pre-finished.jpg 300 auto Pre-finished Headstones %}
 
 The Corning foam can be fabricated with a utility knife, hot knife or a router. The best cut can probably be achieved with a small router or a Dremel tool. In addition, I found that the material was hand-sandable. I would experiment to find which tools work best for you. This [guide](http://insulation.owenscorning.com/assets/0/428/429/465/07b971b3-5112-46b7-a783-1f7132b59897.pdf) from the manufacturer has some fabrication tips. If I did the project again, I would consider hand drawing the letters / designs or using stencils.
 
@@ -181,13 +181,13 @@ The Corning foam can be fabricated with a utility knife, hot knife or a router. 
 
 ** Painting the headstones **
 
-<img class="right" src="/assets/2014-10-25-pet-cemetery-headstones/images/stake.jpg" width="400" title="auto Stake with Headstone" >
+{% img right /assets/2014-10-25-pet-cemetery-headstones/images/stake.jpg 400 auto Stake with Headstone %}
 
 Our goal was to give the headstones the an aged, dirty appearance. We started with the black spray primer with long strokes perhaps 6-12&#8221; away from the headstone. Start with short bursts of spray and take care not to stay in one spot. Cover the front, back and the edges until the purple color of the foam is not noticeable. Let dry and apply another coat as necessary. Then we applied the grey primer in streaks around the head stones. You may want to alternate between the grey and black primer to achieve the desired effect.
 
 ** Installing the headstones **
 
-<img class="left" src="/assets/2014-10-25-pet-cemetery-headstones/images/collage.jpg" width="400" title="auto Headstone Collage" >
+{% img left /assets/2014-10-25-pet-cemetery-headstones/images/collage.jpg 400 auto Headstone Collage %}
 
 I cut the paint mixing sticks on a compound miter saw into the form of a V on one end (pictured above). This allows the sticks to be used as a stake. These were driven several inches deep into the ground (perhaps 5-7&#8221;). I used a small 3-pound sledge to drive these into the group taking care not to split the wood. You may consider putting a small piece of wood behind the stake to help distribute the load a little bit. This should help to minimize splitting.
 
@@ -205,146 +205,94 @@ Have fun time decorating this year and have a safe and happy Halloween!
     <id>http://nick-aschenbach.github.io/blog/2014/07/26/wood-boards-from-voronoi-diagrams</id>
     <content type="html"><![CDATA[Sometimes it is difficult as a software engineer to feel connected to our work product. At the end of the day, what can be demonstrated and communicated to others? It is a little easier when developing user interfaces as at least we have something we can show visually. A more cynical view is that all we did today is change some bits in a computer. This is why I like working with wood. I come up with an idea and am rewarded by seeing its physical instantiation.
 
-<img class="left" src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/voronoi.png" width="300" title="auto Voronoi Diagram" >
+{% img left /assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/voronoi.png 300 auto Voronoi Diagram %}
 
 I find that projects that engage both the analytical and creative parts of my brain are especially fun. Last summer I started making some custom wooden parts based on Voronoi Diagrams (at left).
 
 First, a number of seed points are generated. Then the space is divided into Voronoi regions, which are sets of points closest to a seed point than any other. Typically, each region has a randomly generated color. The black dots in the image indicate the location of the seed points.
 
-First, we will create a small helper class that will encapsulate a point&#8217;s position and help us calculate the distance to a given pixel. 
+First, we will create a small helper class that will encapsulate a point's position and help us calculate the distance to a given pixel. 
 
 <!-- more -->
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Point</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:x</span><span class="p">,</span> <span class="ss">:y</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@x</span> <span class="o">=</span> <span class="n">x</span>
-</span><span class='line'>    <span class="vi">@y</span> <span class="o">=</span> <span class="n">y</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">distanceTo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">deltaX</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="vi">@x</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-</span><span class='line'>    <span class="n">deltaY</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="vi">@y</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span>
-</span><span class='line'>    <span class="no">Math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">deltaX</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">deltaY</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># Euclidean distance</span>
-</span><span class='line'>    <span class="c1"># deltaX + deltaY # Manhattan distance</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">random</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
-</span><span class='line'>    <span class="no">Point</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">max_x</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">max_y</span><span class="p">))</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class Point
+  attr_reader :x, :y
+  def initialize(x, y)
+    @x = x
+    @y = y
+  end
+
+  def distanceTo(x, y)
+    deltaX = (x - @x).abs
+    deltaY = (y - @y).abs
+    Math.sqrt(deltaX ** 2 + deltaY ** 2) # Euclidean distance
+    # deltaX + deltaY # Manhattan distance
+  end
+
+  def self.random(max_x, max_y)
+    Point.new(Random.rand(max_x), Random.rand(max_y))
+  end
+end
+{% endcodeblock %}
 
 I&#8217;ve added a class factory method that returns new random Points. This will help us later when we generate seed points.
 
 Let&#8217;s take a look at the main part of the Voronoi Diagram generation algorithm:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;chunky_png&amp;#8217;</span>
-</span><span class='line'><span class="n">require_relative</span> <span class="o">&amp;</span><span class="c1">#8216;point&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Image size and voronoi seed sites</span>
-</span><span class='line'><span class="n">width</span> <span class="o">=</span> <span class="mi">512</span>
-</span><span class='line'><span class="n">height</span> <span class="o">=</span> <span class="mi">512</span>
-</span><span class='line'><span class="n">sites</span> <span class="o">=</span> <span class="mi">20</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Create seed points and associated colors</span>
-</span><span class='line'><span class="n">seed_points</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">Point</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'><span class="n">seed_region_colors</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">.</span><span class="n">rgb</span><span class="p">(</span><span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span> <span class="no">Random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Initialize a new image</span>
-</span><span class='line'><span class="n">png</span> <span class="o">=</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">TRANSPARENT</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Iterate over all pixels in the image</span>
-</span><span class='line'><span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;width).each do |x|</span>
-</span><span class='line'>  <span class="p">(</span><span class="mi">0</span><span class="o">&amp;</span><span class="c1">#8230;height).each do |y|</span>
-</span><span class='line'>    <span class="n">closest_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-</span><span class='line'>    <span class="n">closest_distance</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="c1"># Determine the closest seed point</span>
-</span><span class='line'>    <span class="n">seed_points</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">point</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">distance</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">distanceTo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">closest_distance</span>
-</span><span class='line'>        <span class="n">closest_distance</span> <span class="o">=</span> <span class="n">distance</span>
-</span><span class='line'>        <span class="n">closest_index</span> <span class="o">=</span> <span class="n">index</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="n">png</span><span class="o">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">]</span> <span class="o">=</span> <span class="n">seed_region_colors</span><span class="o">[</span><span class="n">closest_index</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Show seed points</span>
-</span><span class='line'><span class="n">seed_points</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">point</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">png</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">BLACK</span><span class="p">,</span> <span class="no">ChunkyPNG</span><span class="o">::</span><span class="no">Color</span><span class="o">::</span><span class="no">BLACK</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require &#8216;chunky_png&#8217;
+require_relative &#8216;point&#8217;
+
+# Image size and voronoi seed sites
+width = 512
+height = 512
+sites = 20
+
+# Create seed points and associated colors
+seed_points = sites.times.map { Point.random(width, height) }
+seed_region_colors = sites.times.map { ChunkyPNG::Color.rgb(Random.rand(256), Random.rand(256), Random.rand(256)) }
+
+# Initialize a new image
+png = ChunkyPNG::Image.new(width, height, ChunkyPNG::Color::TRANSPARENT)
+
+# Iterate over all pixels in the image
+(0&#8230;width).each do |x|
+  (0&#8230;height).each do |y|
+    closest_index = -1
+    closest_distance = width * height + 1
+    # Determine the closest seed point
+    seed_points.each_with_index do |point, index|
+      distance = point.distanceTo(x, y)
+      if distance < closest_distance
+        closest_distance = distance
+        closest_index = index
+      end
+    end
+    png[x, y] = seed_region_colors[closest_index]
+  end
+end
+
+# Show seed points
+seed_points.each do |point|
+  png.circle(point.x, point.y, 2, ChunkyPNG::Color::BLACK, ChunkyPNG::Color::BLACK)
+end
+{% endcodeblock %}
 
 The `width`, `height` and `sites` are parameters to the Voronoi diagram. They determine the width and height of the image as well as the number of seed points.
 
-It should be noted that this code is particularly inefficient; it is written more for clarity than for speed. Several efficient algorithms exist. One of the best known is [Fortune&#8217;s algorithm](http://en.wikipedia.org/wiki/Fortune%27s_algorithm) and runs in O(n log n) time. Several open source implementations are available online.
+It should be noted that this code is particularly inefficient; it is written more for clarity than for speed. Several efficient algorithms exist. One of the best known is [Fortune's algorithm](http://en.wikipedia.org/wiki/Fortune%27s_algorithm) and runs in O(n log n) time. Several open source implementations are available online.
 
 We use [Chunky PNG](https://github.com/wvanbergen/chunky_png) to help us create the PNG output file.
 
 <strong>Fabricated Wooden Boards</strong>
 
-<img class="right" src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/wall-hanging.jpg" title="Voronoi Wall Hanging" >
+{% img right /assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/wall-hanging.jpg Voronoi Wall Hanging %}
 The first wall art piece is fabricated from 1/2&#8221; thick cherry and paduak
 
 Vector files are required to import designs into my CAD / CAM software. I used Raymond Hill&#8217;s [Javascript Voronoi](https://github.com/gorhill/Javascript-Voronoi) library, [Raphaël](http://raphaeljs.com) and [Raphaël Export](https://github.com/ElbertF/Raphael.Export) to generate SVG files. Two software tools were used to massage the geometry into something that could be machined: Autodesk&#8217;s [AutoCAD](http://www.autodesk.com/products/autocad/)&reg; and Vectric&#8217;s [Aspire](http://www.vectric.com/products/aspire.html)&reg;. The parts had to be machined precisely on a CNC router so that they could be nested and glued together as portrayed in the images below.
 
-<img src="/assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/cutting-board.jpg" title="Voronoi Cutting Board" >
+{% img /assets/2014-07-26-wood-boards-from-voronoi-diagrams/images/cutting-board.jpg Voronoi Cutting Board %}
 The second cutting board is fabricated from 1/2&#8221; thick cherry and carbonized bamboo plywood
 ]]></content>
   </entry>
@@ -354,7 +302,7 @@ The second cutting board is fabricated from 1/2&#8221; thick cherry and carboniz
     <link href="http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan/"/>
     <updated>2014-07-14T22:41:29-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/07/14/laser-etched-map-lazy-susan</id>
-    <content type="html"><![CDATA[<img class="right" src="/images/colorado-mountains.jpg" title="Snowy view towards Devil's Thumb Ranch" >
+    <content type="html"><![CDATA[{% img right /images/colorado-mountains.jpg Snowy view towards Devil's Thumb Ranch %}
 
 I spent a week over the winter at 8,500 feet in the mountains at Old Sky Valley Ranch near Tabernash, Colorado. It is an inspiring place and I undertook a project with fellow GIS developer Nicholas Hallahan (https://github.com/hallahan/ http://www.spatialdev.com/#about) to craft a gift for one of the ranch families.
 
@@ -362,7 +310,7 @@ The project involved quite a bit of GIS modeling and graphic design work. The sp
 
 <!-- more -->
 
-<img class="right" src="/images/colorado-mid-scale.jpg" width="350" title="auto Mid scale map" >
+{% img right /images/colorado-mid-scale.jpg 350 auto Mid scale map %}
 
 Once all of the source data was gathered, we used ArcGIS to filter out unwanted features and narrow down the area of the data to the extent of the map we wanted to produce. The work was further cleaned up in Adobe Illustrator.
 
@@ -378,7 +326,7 @@ Map details look best when line weights are taken into consideration. While the 
 
 To finish up the part we went back to the CNC router to pocket it out for the lazy susan mechanism. The 9&#8221; turntable was obtained from Tap Plastics (http://www.tapplastics.com/). While the pocket diameter was 9-1/16&#8221;, the depth was slightly less than the height of the mechanism. This allows the turntable to support the bamboo piece up off of the table. Finally, mineral oil was used to finish the part and protect it. Mineral oil is both food safe, readily available (check your local drug store) and brings out color the natural bamboo.
 
-<img src="/images/lazy-susan-collage.jpg" title="Finished lazy susan" >]]></content>
+{% img /images/lazy-susan-collage.jpg Finished lazy susan %}]]></content>
   </entry>
   
 </feed>

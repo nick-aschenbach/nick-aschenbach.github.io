@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Data-structures | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/data-structures/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -43,53 +43,31 @@ Initializing git repo in /Users/sela/workspace/foobar
 
 Let&#8217;s take a look at the gemspec file:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># coding: utf-8</span>
-</span><span class='line'><span class="n">lib</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;../lib&amp;#8217;, __FILE__)</span>
-</span><span class='line'><span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;foobar/version&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Gem</span><span class="o">::</span><span class="no">Specification</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">spec</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">name</span>          <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;foobar&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">version</span>       <span class="o">=</span> <span class="no">Foobar</span><span class="o">::</span><span class="no">VERSION</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">authors</span>       <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;Nick Aschenbach&amp;#8221;]</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">email</span>         <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;nick.aschenbach@gmail.com&amp;#8221;]</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">license</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;MIT&amp;#8221;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">files</span>         <span class="o">=</span> <span class="sb">`git ls-files -z`</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8220;\x0&amp;#8221;)</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">executables</span>   <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^bin/}</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">test_files</span>    <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^(test|spec|features)/}</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">require_paths</span> <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;lib&amp;#8221;]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;bundler&amp;#8221;, &amp;#8220;~&gt; 1.6&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;rake&amp;#8221;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+# coding: utf-8
+lib = File.expand_path(&#8216;../lib&#8217;, __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require &#8216;foobar/version&#8217;
+
+Gem::Specification.new do |spec|
+  spec.name          = &#8220;foobar&#8221;
+  spec.version       = Foobar::VERSION
+  spec.authors       = [&#8220;Nick Aschenbach&#8221;]
+  spec.email         = [&#8220;nick.aschenbach@gmail.com&#8221;]
+  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.homepage      = &#8220;&#8221;
+  spec.license       = &#8220;MIT&#8221;
+
+  spec.files         = `git ls-files -z`.split(&#8220;\x0&#8221;)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = [&#8220;lib&#8221;]
+
+  spec.add_development_dependency &#8220;bundler&#8221;, &#8220;~> 1.6&#8221;
+  spec.add_development_dependency &#8220;rake&#8221;
+end
+{% endcodeblock %}
 
 Also a handy `README.md` file is created that shows users how to install the gem using bundler. 
 
@@ -230,151 +208,93 @@ Happy gem cutting!
     <link href="http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries/"/>
     <updated>2014-08-19T19:50:17-07:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2014/08/19/super-fast-autocomplete-with-tries</id>
-    <content type="html"><![CDATA[<img class="left" src="/assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png" width="200" title="auto Trie Graph" > 
+    <content type="html"><![CDATA[{% img left /assets/2014-08-19-super-fast-autocomplete-with-tries/images/trie.png 200 auto Trie Graph %} 
 
-Tries (pronounced &#8216;try&#8217; or &#8216;trie&#8217; as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.
+Tries (pronounced 'try' or 'trie' as in retrieval) is an ordered data structure often used to store strings. It is a type of tree where the decoration on each node represents the position of the element being stored. If we store a string, then a depth first search of the tree to a leaf node will visit characters that make up that string.
 
 Tries are great for super-fast autocomplete search. A breadth first search from any given point in the tree will find an exact match (if it exists), then matches one character away, then two and so on down the tree.
 
-To build a trie we will need a recursively defined node called `TrieNode`. Let&#8217;s take a look at some Ruby code that we will use to build a Trie:
+To build a trie we will need a recursively defined node called `TrieNode`. Let's take a look at some Ruby code that we will use to build a Trie:
 
 <!-- more -->
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">TrieNode</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">decoration</span> <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8216;.&amp;#8217;)</span>
-</span><span class='line'>    <span class="vi">@decoration</span> <span class="o">=</span> <span class="n">decoration</span>
-</span><span class='line'>    <span class="vi">@children</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">addLetters</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="p">,</span> <span class="n">letters</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="p">,</span> <span class="n">full_word</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@full_word</span> <span class="o">=</span> <span class="n">full_word</span> <span class="ow">and</span> <span class="k">return</span> <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">first_letter</span> <span class="o">=</span> <span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
-</span><span class='line'>    <span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">]</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span> <span class="k">unless</span> <span class="vi">@children</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">first_letter</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@children</span><span class="o">[</span><span class="n">first_letter</span><span class="o">].</span><span class="n">addLettersRecursively</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">full_word</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class TrieNode
+  def initialize(decoration = &#8216;.&#8217;)
+    @decoration = decoration
+    @children = {}
+  end
+
+  def addLetters(letters)
+    addLettersRecursively(letters, letters)
+  end
+
+  protected
+
+  def addLettersRecursively(letters, full_word)
+    @full_word = full_word and return if letters.size == 0
+
+    first_letter = letters[0]
+    @children[first_letter] = TrieNode.new(first_letter) unless @children.has_key?(first_letter)
+    @children[first_letter].addLettersRecursively(letters[1..-1], full_word)
+  end
+end
+{% endcodeblock %}
 
 It has a few instance variables including a `decoration` and a `full_word`. We store child relationships by recursively adding new `TrieNodes` in a `children` hash peeling off one letter at a time. I could have used a single method for the recursion, but use a `addLetters` method as a driver for the `addLettersRecursively` method.
 
 Finding a node in the Trie follows the same pattern as adding letters:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">findNode</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nb">self</span> <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">return</span> <span class="vi">@children</span><span class="o">[</span><span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]].</span><span class="n">findNode</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@children</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">letters</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="kp">nil</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+def findNode(letters)
+  return self if letters.size == 0
+
+  return @children[letters[0]].findNode(letters[1..-1]) if @children.has_key?(letters[0])
+  nil
+end
+{% endcodeblock %}
 
 Note that not all nodes in the tree represent member strings that are stored in the Trie. We marked the Trie member nodes with the `full_word` instance variable above. We need the `findNode` method for traversals as we will see in a minute.
 
 Now we can implement the Trie itself. It maintains the root node of the tree and has facilities to insert, membership and search:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">Trie</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">words</span> <span class="o">=</span> <span class="o">[]</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@root_node</span> <span class="o">=</span> <span class="no">TrieNode</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>    <span class="n">words</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">addLetters</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@root_node</span><span class="o">.</span><span class="n">addLetters</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">contains?</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span>
-</span><span class='line'>    <span class="kp">false</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">letters</span> <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8221;)</span>
-</span><span class='line'>    <span class="n">words</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="n">queue</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="n">node</span> <span class="o">=</span> <span class="vi">@root_node</span><span class="o">.</span><span class="n">findNode</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="o">[]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>    <span class="n">words</span> <span class="o">&lt;&lt;</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">word</span>
-</span><span class='line'>    <span class="n">queue</span> <span class="o">&lt;&lt;</span> <span class="n">node</span>
-</span><span class='line'>    <span class="k">until</span> <span class="n">queue</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">shift</span>
-</span><span class='line'>      <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">child_node</span><span class="o">|</span>
-</span><span class='line'>        <span class="n">word</span> <span class="o">=</span> <span class="n">child_node</span><span class="o">.</span><span class="n">word</span>
-</span><span class='line'>        <span class="n">words</span> <span class="o">&lt;&lt;</span> <span class="n">word</span> <span class="k">unless</span> <span class="n">word</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>        <span class="n">queue</span> <span class="o">&lt;&lt;</span> <span class="n">child_node</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="n">words</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class Trie
+  def initialize(words = [])
+    @root_node = TrieNode.new
+    words.each { |word| @root_node.addLetters(word) }
+  end
+
+  def insert(word)
+    @root_node.addLetters(word)
+  end
+
+  def contains?(word)
+    node = @root_node.findNode(word)
+
+    return true if node and node.word
+    false
+  end
+
+  def search(letters = &#8221;)
+    words = []
+    queue = []
+    node = @root_node.findNode(letters)
+    return [] if node.nil?
+    words << node.word if node.word
+    queue << node
+    until queue.size == 0 do
+      node = queue.shift
+      node.children.each do |child_node|
+        word = child_node.word
+        words << word unless word.nil?
+        queue << child_node
+      end
+    end
+    words
+  end
+end
+{% endcodeblock %}
 
 The search method maintains a list of found `words` and a `queue` for a breadth first search of the Trie. We use the `shift` and `<<` operators to get queue first-in-first-out behavior. Calling search without specifying letters will result in full search for all members in the Trie.
 
@@ -387,34 +307,22 @@ https://github.com/nick-aschenbach/trie-autocomplete
 I used a database with about 210K words and did some rough, informal calculations to compare performance between arrays, hashes and my trie implementation. The prefix search is finding all words that started with a substring. Membership is for finding one exact string. Here is what I found:
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Prefix search (1000x repetitions)
-</span><span class='line'>Trie: 0.034 seconds
-</span><span class='line'>Array: 51.3 seconds
-</span><span class='line'>Hash: 91.85 seconds
-</span><span class='line'>
-</span><span class='line'>Membership search (100,000x)
-</span><span class='line'>Trie: 0.22 seconds
-</span><span class='line'>Array: 1580 seconds (estimated: 10,000x took 158 seconds)
-</span><span class='line'>Hash: 0.027 seconds
-</span><span class='line'>
-</span><span class='line'>Insertion (100x)
-</span><span class='line'>Trie: 88.6 seconds
-</span><span class='line'>Array: 0.000023 seconds
-</span><span class='line'>Hash: 7.69 seconds</span></code></pre></td></tr></table></div></figure>
+```
+Prefix search (1000x repetitions)
+Trie: 0.034 seconds
+Array: 51.3 seconds
+Hash: 91.85 seconds
+
+Membership search (100,000x)
+Trie: 0.22 seconds
+Array: 1580 seconds (estimated: 10,000x took 158 seconds)
+Hash: 0.027 seconds
+
+Insertion (100x)
+Trie: 88.6 seconds
+Array: 0.000023 seconds
+Hash: 7.69 seconds
+```
 
 Prefix search performance appears to be efficient compared to arrays and hashes. Membership search appears to be a little slower than hashes. Array membership requires a full search of the array in the worst case O(N). Hash lookup is expected constant time performance. Trie membership is O(M) where M is the number of characters in the string. Insertion performance is very slow (probably due to all of the hashes being generated with this implementation). Typical use of this data structure is for search and insertion should be relatively rare. 
 ]]></content>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Astronomy | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/astronomy/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -31,7 +31,7 @@ description, an array of image URLs and a link to the original detailed Freebase
 - The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
 in a Rails project:
 
-[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
+[{% img /assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg auto auto %}](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 

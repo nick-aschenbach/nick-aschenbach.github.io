@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dsl | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/dsl/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -30,21 +30,15 @@ with dealing with a HTTP request.
 
 Let's take a look at the "hello world" example provided by [Rack](http://rack.github.io/):
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rack&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
-</span><span class='line'>  <span class="o">[</span><span class="s1">&#39;200&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="o">&amp;</span><span class="c1">#8216;application/json&amp;#8217;}, [&amp;#8216;A barebones rack app.&amp;#8217;]]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">WEBrick</span><span class="o">.</span><span class="n">run</span> <span class="n">app</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require 'rack'
+
+app = Proc.new do |env|
+  ['200', {'Content-Type' => &#8216;application/json&#8217;}, [&#8216;A barebones rack app.&#8217;]]
+end
+
+Rack::Handler::WEBrick.run app
+{% endcodeblock %}
 
 To use rack, one must provide an object (class, proc or lambda) that responds to `call` and returns an array with
 elements. The first element is a stringified HTTP status code. The second is a hash of response headers. The last
@@ -52,139 +46,82 @@ element is the response body, which must respond to the `each` method.
 
 Let&#8217;s run the rack app in one terminal and issue a HTTP request against it in a different one:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -v localhost:8080
-</span><span class='line'>&gt; GET / HTTP/1.1
-</span><span class='line'>&gt; User-Agent: curl/7.30.0
-</span><span class='line'>&gt; Host: localhost:8080
-</span><span class='line'>&gt; Accept: */*
-</span><span class='line'>&gt;
-</span><span class='line'>&lt; HTTP/1.1 200 OK
-</span><span class='line'>&lt; Content-Type: application/json
-</span><span class='line'>&lt; Server: WEBrick/1.3.1 <span class="o">(</span>Ruby/2.1.1/2014-02-24<span class="o">)</span>
-</span><span class='line'>&lt; Date: Fri, 20 Feb 2015 06:19:57 GMT
-</span><span class='line'>&lt; Content-Length: 18
-</span><span class='line'>&lt; Connection: Keep-Alive
-</span><span class='line'>&lt;
-</span><span class='line'>Barebones rack app
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:bash %}
+$ curl -v localhost:8080
+> GET / HTTP/1.1
+> User-Agent: curl/7.30.0
+> Host: localhost:8080
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+< Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
+< Date: Fri, 20 Feb 2015 06:19:57 GMT
+< Content-Length: 18
+< Connection: Keep-Alive
+<
+Barebones rack app
+{% endcodeblock %}
 
 <!-- more -->
 
 Let&#8217;s supply a class that implements a `call` class method. Let&#8217;s also use `awesome_print` to interrogate the `env`
 parameter:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;rack&amp;#8217;</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;awesome_print&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">RackApp</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">ap</span> <span class="n">env</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">[&amp;</span><span class="c1">#8216;200&amp;#8217;, {&amp;#8216;Content-Type&amp;#8217; =&gt; &amp;#8216;text/html&amp;#8217;}, [&amp;#8216;Hello World&amp;#8217;]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">WEBrick</span><span class="o">.</span><span class="n">run</span> <span class="no">RackApp</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require &#8216;rack&#8217;
+require &#8216;awesome_print&#8217;
+
+class RackApp
+  def self.call(env)
+    ap env
+
+    [&#8216;200&#8217;, {&#8216;Content-Type&#8217; => &#8216;text/html&#8217;}, [&#8216;Hello World&#8217;]]
+  end
+end
+
+Rack::Handler::WEBrick.run RackApp
+{% endcodeblock %}
 
 Let&#8217;s issue a HTTP request against this app using the bash command `curl -v localhost:8080/foobar?baz=true` and observe
 the app output:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">{</span>
-</span><span class='line'>    <span class="p">&amp;</span><span class="c">#8220;GATEWAY_INTERFACE&amp;#8221; =&gt; &amp;#8220;CGI/1.1&amp;#8221;,</span>
-</span><span class='line'>            <span class="p">&amp;</span><span class="c">#8220;PATH_INFO&amp;#8221; =&gt; &amp;#8220;/foobar&amp;#8221;,</span>
-</span><span class='line'>         <span class="p">&amp;</span><span class="c">#8220;QUERY_STRING&amp;#8221; =&gt; &amp;#8220;baz=true&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;REMOTE_ADDR&amp;#8221; =&gt; &amp;#8220;::1&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;REMOTE_HOST&amp;#8221; =&gt; &amp;#8220;localhost&amp;#8221;,</span>
-</span><span class='line'>       <span class="p">&amp;</span><span class="c">#8220;REQUEST_METHOD&amp;#8221; =&gt; &amp;#8220;GET&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;REQUEST_URI&amp;#8221; =&gt; &amp;#8220;http://localhost:8080/foobar?baz=true&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;SCRIPT_NAME&amp;#8221; =&gt; &amp;#8220;&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;SERVER_NAME&amp;#8221; =&gt; &amp;#8220;localhost&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;SERVER_PORT&amp;#8221; =&gt; &amp;#8220;8080&amp;#8221;,</span>
-</span><span class='line'>      <span class="p">&amp;</span><span class="c">#8220;SERVER_PROTOCOL&amp;#8221; =&gt; &amp;#8220;HTTP/1.1&amp;#8221;,</span>
-</span><span class='line'>      <span class="p">&amp;</span><span class="c">#8220;SERVER_SOFTWARE&amp;#8221; =&gt; &amp;#8220;WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)&amp;#8221;,</span>
-</span><span class='line'>      <span class="p">&amp;</span><span class="c">#8220;HTTP_USER_AGENT&amp;#8221; =&gt; &amp;#8220;curl/7.30.0&amp;#8221;,</span>
-</span><span class='line'>            <span class="p">&amp;</span><span class="c">#8220;HTTP_HOST&amp;#8221; =&gt; &amp;#8220;localhost:8080&amp;#8221;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;HTTP_ACCEPT&amp;#8221; =&gt; &amp;#8220;*/*&amp;#8221;,</span>
-</span><span class='line'>         <span class="p">&amp;</span><span class="c">#8220;rack.version&amp;#8221; =&gt; [</span>
-</span><span class='line'>        <span class="o">[</span>0<span class="o">]</span> 1,
-</span><span class='line'>        <span class="o">[</span>1<span class="o">]</span> 3
-</span><span class='line'>    <span class="o">]</span>,
-</span><span class='line'>           <span class="p">&amp;</span><span class="c">#8220;rack.input&amp;#8221; =&gt; #&lt;StringIO:0x0000010198dda0&gt;,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;rack.errors&amp;#8221; =&gt; #&lt;IO:&lt;STDERR&gt;&gt;,</span>
-</span><span class='line'>     <span class="p">&amp;</span><span class="c">#8220;rack.multithread&amp;#8221; =&gt; true,</span>
-</span><span class='line'>    <span class="p">&amp;</span><span class="c">#8220;rack.multiprocess&amp;#8221; =&gt; false,</span>
-</span><span class='line'>        <span class="p">&amp;</span><span class="c">#8220;rack.run_once&amp;#8221; =&gt; false,</span>
-</span><span class='line'>      <span class="p">&amp;</span><span class="c">#8220;rack.url_scheme&amp;#8221; =&gt; &amp;#8220;http&amp;#8221;,</span>
-</span><span class='line'>         <span class="p">&amp;</span><span class="c">#8220;rack.hijack?&amp;#8221; =&gt; true,</span>
-</span><span class='line'>          <span class="p">&amp;</span><span class="c">#8220;rack.hijack&amp;#8221; =&gt; #&lt;Proc:0x0000010198dbe8@/Users/sela/.rvm/gems/ruby-2.1.1/gems/rack-1.6.0/lib/rack/handler/webrick.rb:77 (lambda)&gt;,</span>
-</span><span class='line'>       <span class="p">&amp;</span><span class="c">#8220;rack.hijack_io&amp;#8221; =&gt; nil,</span>
-</span><span class='line'>         <span class="p">&amp;</span><span class="c">#8220;HTTP_VERSION&amp;#8221; =&gt; &amp;#8220;HTTP/1.1&amp;#8221;,</span>
-</span><span class='line'>         <span class="p">&amp;</span><span class="c">#8220;REQUEST_PATH&amp;#8221; =&gt; &amp;#8220;/foobar&amp;#8221;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>localhost - - <span class="o">[</span>19/Feb/2015:23:05:30 PST<span class="o">]</span> <span class="p">&amp;</span><span class="c">#8220;GET /foobar?baz=true HTTP/1.1&amp;#8221; 200 11</span>
-</span><span class='line'>- -&gt; /foobar?baz<span class="o">=</span><span class="nb">true</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:bash %}
+{
+    &#8220;GATEWAY_INTERFACE&#8221; => &#8220;CGI/1.1&#8221;,
+            &#8220;PATH_INFO&#8221; => &#8220;/foobar&#8221;,
+         &#8220;QUERY_STRING&#8221; => &#8220;baz=true&#8221;,
+          &#8220;REMOTE_ADDR&#8221; => &#8220;::1&#8221;,
+          &#8220;REMOTE_HOST&#8221; => &#8220;localhost&#8221;,
+       &#8220;REQUEST_METHOD&#8221; => &#8220;GET&#8221;,
+          &#8220;REQUEST_URI&#8221; => &#8220;http://localhost:8080/foobar?baz=true&#8221;,
+          &#8220;SCRIPT_NAME&#8221; => &#8220;&#8221;,
+          &#8220;SERVER_NAME&#8221; => &#8220;localhost&#8221;,
+          &#8220;SERVER_PORT&#8221; => &#8220;8080&#8221;,
+      &#8220;SERVER_PROTOCOL&#8221; => &#8220;HTTP/1.1&#8221;,
+      &#8220;SERVER_SOFTWARE&#8221; => &#8220;WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)&#8221;,
+      &#8220;HTTP_USER_AGENT&#8221; => &#8220;curl/7.30.0&#8221;,
+            &#8220;HTTP_HOST&#8221; => &#8220;localhost:8080&#8221;,
+          &#8220;HTTP_ACCEPT&#8221; => &#8220;*/*&#8221;,
+         &#8220;rack.version&#8221; => [
+        [0] 1,
+        [1] 3
+    ],
+           &#8220;rack.input&#8221; => #<StringIO:0x0000010198dda0>,
+          &#8220;rack.errors&#8221; => #<IO:<STDERR>>,
+     &#8220;rack.multithread&#8221; => true,
+    &#8220;rack.multiprocess&#8221; => false,
+        &#8220;rack.run_once&#8221; => false,
+      &#8220;rack.url_scheme&#8221; => &#8220;http&#8221;,
+         &#8220;rack.hijack?&#8221; => true,
+          &#8220;rack.hijack&#8221; => #<Proc:0x0000010198dbe8@/Users/sela/.rvm/gems/ruby-2.1.1/gems/rack-1.6.0/lib/rack/handler/webrick.rb:77 (lambda)>,
+       &#8220;rack.hijack_io&#8221; => nil,
+         &#8220;HTTP_VERSION&#8221; => &#8220;HTTP/1.1&#8221;,
+         &#8220;REQUEST_PATH&#8221; => &#8220;/foobar&#8221;
+}
+localhost - - [19/Feb/2015:23:05:30 PST] &#8220;GET /foobar?baz=true HTTP/1.1&#8221; 200 11
+- -> /foobar?baz=true
+{% endcodeblock %}
 
 The `env` hash provides some insight into the the facilities that Rack provides. Let&#8217;s take a look at some of the HTTP
 request components:
@@ -211,174 +148,111 @@ Sinatra&#8217;s minimal and expressive syntax. After digging into
 
 My goal is register a block of code that gets executed when a HTTP request is made to a particular endpoint:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">get</span> <span class="o">&amp;</span><span class="c1">#8216;/foobar&amp;#8217; do</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8216;Hello world at /foobar&amp;#8217;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+get &#8216;/foobar&#8217; do
+  &#8216;Hello world at /foobar&#8217;
+end
+{% endcodeblock %}
 
 We want to associate `&#8217;/foobar&#8217;` with the block of code, which is defined within the `do &#8230; end` block. A hash seems
 like a convenient data structure for this purpose. First, let&#8217;s define a class called `RackTest` that responds to
 `call` with a `404` not found (we will change this later). Also, let&#8217;s define an `add_callback` method that takes the
 route as a string and associates it with a block of code in a `@callback` hash.
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">RackTest</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">add_callback</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@callback</span> <span class="o">||=</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="vi">@callback</span><span class="o">[</span><span class="n">route</span><span class="o">]</span> <span class="o">=</span> <span class="n">block</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">[&amp;</span><span class="c1">#8216;404&amp;#8217;, { &amp;#8216;Content-Type&amp;#8217; =&gt; &amp;#8216;text/html&amp;#8217; }, [&amp;#8216;Resource not found&amp;#8217;]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class RackTest
+  def add_callback(route, &block)
+    @callback ||= {}
+    @callback[route] = block
+  end
+
+  def call(env)
+    [&#8216;404&#8217;, { &#8216;Content-Type&#8217; => &#8216;text/html&#8217; }, [&#8216;Resource not found&#8217;]]
+  end
+end
+{% endcodeblock %}
 
 Now we need to define a get method outside of the `RackTest` class:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">APP</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+def get(route, &block)
+  APP.add_callback(route, &block)
+end
+{% endcodeblock %}
 
 Finally, let&#8217;s put everything together. We need to call the block of code associated with a `REQUEST_PATH` from the
 incoming HTTP request. If no endpoint is registered in the `@callback` hash, then we want to return a `404`:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;rack&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">RackTest</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">add_callback</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@callback</span> <span class="o">||=</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="vi">@callback</span><span class="o">[</span><span class="n">route</span><span class="o">]</span> <span class="o">=</span> <span class="n">block</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1"># Trigger callback if it exists</span>
-</span><span class='line'>    <span class="o">[&amp;</span><span class="c1">#8216;200&amp;#8217;, {}, [response = @callback[env[&amp;#8216;REQUEST_PATH&amp;#8217;]].call]]</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Nothing was registered</span>
-</span><span class='line'>    <span class="k">rescue</span> <span class="no">NoMethodError</span>
-</span><span class='line'>      <span class="o">[&amp;</span><span class="c1">#8216;404&amp;#8217;, { &amp;#8216;Content-Type&amp;#8217; =&gt; &amp;#8216;text/html&amp;#8217; }, [&amp;#8216;Resource not found&amp;#8217;]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">APP</span> <span class="o">=</span> <span class="no">RackTest</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="no">APP</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">get</span> <span class="o">&amp;</span><span class="c1">#8216;/foobar&amp;#8217; do</span>
-</span><span class='line'>  <span class="o">&amp;</span><span class="c1">#8216;Hello world at /foobar&amp;#8217;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Rack</span><span class="o">::</span><span class="no">Handler</span><span class="o">::</span><span class="no">WEBrick</span><span class="o">.</span><span class="n">run</span> <span class="no">APP</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require &#8216;rack&#8217;
+
+class RackTest
+  def add_callback(route, &block)
+    @callback ||= {}
+    @callback[route] = block
+  end
+
+  def call(env)
+    # Trigger callback if it exists
+    [&#8216;200&#8217;, {}, [response = @callback[env[&#8216;REQUEST_PATH&#8217;]].call]]
+
+    # Nothing was registered
+    rescue NoMethodError
+      [&#8216;404&#8217;, { &#8216;Content-Type&#8217; => &#8216;text/html&#8217; }, [&#8216;Resource not found&#8217;]]
+  end
+end
+
+APP = RackTest.new
+
+def get(route, &block)
+  APP.add_callback(route, &block)
+end
+
+get &#8216;/foobar&#8217; do
+  &#8216;Hello world at /foobar&#8217;
+end
+
+Rack::Handler::WEBrick.run APP
+{% endcodeblock %}
 
 Let&#8217;s exercise this code via curl:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>curl -v localhost:8080/foobar
-</span><span class='line'>&gt; GET /foobar HTTP/1.1
-</span><span class='line'>&gt; User-Agent: curl/7.30.0
-</span><span class='line'>&gt; Host: localhost:8080
-</span><span class='line'>&gt; Accept: */*
-</span><span class='line'>&gt;
-</span><span class='line'>&lt; HTTP/1.1 200 OK
-</span><span class='line'>&lt; Server: WEBrick/1.3.1 <span class="o">(</span>Ruby/2.1.1/2014-02-24<span class="o">)</span>
-</span><span class='line'>&lt; Date: Sat, 21 Feb 2015 05:49:14 GMT
-</span><span class='line'>&lt; Content-Length: 22
-</span><span class='line'>&lt; Connection: Keep-Alive
-</span><span class='line'>&lt;
-</span><span class='line'>Hello world at /foobar
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:bash %}
+$ curl -v localhost:8080/foobar
+> GET /foobar HTTP/1.1
+> User-Agent: curl/7.30.0
+> Host: localhost:8080
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
+< Date: Sat, 21 Feb 2015 05:49:14 GMT
+< Content-Length: 22
+< Connection: Keep-Alive
+<
+Hello world at /foobar
+{% endcodeblock %}
 
-Our DSL is pretty limited, let&#8217;s look into extending it. Minimally, I want to be able to specify the HTTP status code
+Our DSL is pretty limited, let's look into extending it. Minimally, I want to be able to specify the HTTP status code
 and content type in the HTTP response headers.
 
-Let&#8217;s start with how we want to use the DSL in the `MyRack` class:
+Let's start with how we want to use the DSL in the `MyRack` class:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">MyRack</span> <span class="o">&lt;</span> <span class="no">RackApp</span>
-</span><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/foo&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">status</span> <span class="mi">201</span>
-</span><span class='line'>    <span class="s1">&#39;Response from /foo&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">get</span> <span class="s1">&#39;/bar&#39;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">content_type</span> <span class="s1">&#39;application/json&#39;</span>
-</span><span class='line'>    <span class="s1">&#39;Response from /bar&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class MyRack < RackApp
+  get '/foo' do
+    status 201
+    'Response from /foo'
+  end
 
-It is important to understand that the `do &#8230; end` block is executed in the context of the `call(env)` method.
+  get '/bar' do
+    content_type 'application/json'
+    'Response from /bar'
+  end
+end
+{% endcodeblock %}
+
+It is important to understand that the `do ... end` block is executed in the context of the `call(env)` method.
 Therefore we would see a `NoMethodError`s for the `status` and `content_type` method calls because these methods are not
 defined in `MyRack` or `RackApp`. We want to direct these method calls to a new class.
 
@@ -386,125 +260,70 @@ This class will serve as a data structure for our HTTP response data. The `statu
 return stored instance variables or set them depending on whether the parameter is specified. This is purely syntactic
 sugar for the DSL.
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">HttpResponse</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:block</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@block</span> <span class="o">=</span> <span class="n">block</span>
-</span><span class='line'>    <span class="vi">@code</span> <span class="o">=</span> <span class="mi">200</span>
-</span><span class='line'>    <span class="vi">@type</span> <span class="o">=</span> <span class="s1">&#39;text/html&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="n">code</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="vi">@code</span> <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="vi">@code</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">join</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">content_type</span><span class="p">(</span><span class="n">type</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">return</span> <span class="vi">@type</span> <span class="k">if</span> <span class="n">type</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="vi">@type</span> <span class="o">=</span> <span class="n">type</span><span class="o">.</span><span class="n">join</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">response_headers</span>
-</span><span class='line'>    <span class="p">{</span> <span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="vi">@type</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class HttpResponse
+  attr_reader :block
+
+  def initialize(&block)
+    @block = block
+    @code = 200
+    @type = 'text/html'
+  end
+
+  def status(code = nil)
+    return @code if code.nil?
+
+    @code = code.join
+  end
+
+  def content_type(type = nil)
+    return @type if type.nil?
+
+    @type = type.join
+  end
+
+  def response_headers
+    { 'Content-Type' => @type }
+  end
+end
+{% endcodeblock %}
 
 Now let&#8217;s define the `RackApp` parent class:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;rack&amp;#8217;</span>
-</span><span class='line'><span class="n">require_relative</span> <span class="o">&amp;</span><span class="c1">#8216;http_response&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">RackApp</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@response</span> <span class="o">=</span> <span class="vi">@registry</span><span class="o">[</span><span class="n">env</span><span class="o">[&amp;</span><span class="c1">#8216;REQUEST_PATH&amp;#8217;]]</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">not_found</span> <span class="k">if</span> <span class="vi">@response</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">result</span> <span class="o">=</span> <span class="vi">@response</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>    <span class="o">[</span><span class="vi">@response</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="vi">@response</span><span class="o">.</span><span class="n">response_headers</span><span class="p">,</span> <span class="o">[</span><span class="n">result</span><span class="o">]]</span> <span class="k">unless</span> <span class="vi">@response</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_missing</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@response</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">not_found</span>
-</span><span class='line'>    <span class="o">[&amp;</span><span class="c1">#8216;404&amp;#8217;, {&amp;#8216;Content-Type&amp;#8217; =&gt; &amp;#8216;text/html&amp;#8217;}, [&amp;#8216;Resource not found&amp;#8217;]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">get</span><span class="p">(</span><span class="n">route</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="no">HttpResponse</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">registry</span><span class="o">[</span><span class="n">route</span><span class="o">]</span> <span class="o">=</span> <span class="n">response</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">registry</span>
-</span><span class='line'>    <span class="vi">@registry</span> <span class="o">||=</span> <span class="p">{}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require &#8216;rack&#8217;
+require_relative &#8216;http_response&#8217;
+
+class RackApp
+  def self.call(env)
+    @response = @registry[env[&#8216;REQUEST_PATH&#8217;]]
+    return not_found if @response.nil?
+
+    result = @response.block.call
+    [@response.status, @response.response_headers, [result]] unless @response.nil?
+  end
+
+  def self.method_missing(name, *args)
+    @response.send(name, args)
+  end
+
+  def self.not_found
+    [&#8216;404&#8217;, {&#8216;Content-Type&#8217; => &#8216;text/html&#8217;}, [&#8216;Resource not found&#8217;]]
+  end
+
+  protected
+
+  def self.get(route, &block)
+    response = HttpResponse.new(&block)
+
+    registry[route] = response
+  end
+
+  def self.registry
+    @registry ||= {}
+  end
+end
+{% endcodeblock %}
 
 We return early with a `404` unless `@registry[env[&#8216;REQUEST_PATH&#8217;]]` was defined. Otherwise, we call the `block`
 stored in our `HttpResponse` instance. Executing this block may result in `status` and `content_type` calls, but in the
@@ -514,9 +333,9 @@ symbolized name of the method and the `args` are forwarded to this method.
 For simplicity, this minimal example does not differentiate between HTTP verbs. We could easily extend the `@registry`
 hash to do so by adding nesting for each verb:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">registry</span><span class="o">[</span><span class="n">env</span><span class="o">[&amp;</span><span class="c1">#8216;REQUEST_METHOD&amp;#8217;]][env[&amp;#8216;REQUEST_PATH&amp;#8217;]] = response</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+registry[env[&#8216;REQUEST_METHOD&#8217;]][env[&#8216;REQUEST_PATH&#8217;]] = response
+{% endcodeblock %}
 
 We could add support for processing query string params via `Rack::Request` class. There are numerous possible
 improvements for our DSL. However, the goal here was not to recreate a robust DSL like Sinatra, but to show how easy

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Gems | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/gems/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -20,83 +20,60 @@
     <id>http://nick-aschenbach.github.io/blog/2015/12/08/let-it-snow-with-accuweather-gem</id>
     <content type="html"><![CDATA[AccuWeather is one of the standard widgets on my Android phone. I found no API wrapper for it after
 searching [rubygems.org](https://rubygems.org) and I thought it would be fun to write one after spending a little time
-reverse engineering the web API ([related post](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/)).
+reverse engineering the web API ([related post]({% post_url 2015-10-15-reverse-engineering-web-apis-using-mobile-apps %})).
 
-<img class="left" src="/assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png" width="250" title="auto" >
+{% img left /assets/2015-12-08-let-it-snow-with-accuweather/images/accuweather.png 250 auto %}
 
 First, find a location via the city search API:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;accuweather&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">locations</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">city_search</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;vancouver&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+require 'accuweather'
+
+locations = Accuweather.city_search(name: 'vancouver')
+{% endcodeblock %}
 
 This returns a list of locations that match the input. Each location provides several pieces of information including
 a city identifier:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">vancouver</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">first</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">id</span>        <span class="c1"># =&gt; &amp;#8216;cityId:53286&amp;#8217;</span>
-</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">city</span>      <span class="c1"># =&gt; &amp;#8216;Vancouver&amp;#8217;</span>
-</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">state</span>     <span class="c1"># =&gt; &amp;#8216;Canada (British Columbia)&amp;#8217;</span>
-</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">latitude</span>  <span class="c1"># =&gt; &amp;#8216;49.2448&amp;#8217;</span>
-</span><span class='line'><span class="n">vancouver</span><span class="o">.</span><span class="n">longitude</span> <span class="c1"># =&gt; &amp;#8216;123.1154&amp;#8217;</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+vancouver = locations.first
+
+vancouver.id        # => &#8216;cityId:53286&#8217;
+vancouver.city      # => &#8216;Vancouver&#8217;
+vancouver.state     # => &#8216;Canada (British Columbia)&#8217;
+vancouver.latitude  # => &#8216;49.2448&#8217;
+vancouver.longitude # => &#8216;123.1154&#8217;
+{% endcodeblock %}
 
 The gem caches over 175K cities around the world. If the location `name` is not in the cache, the gem will
 make a HTTP request to AccuWeather to try and find it.
 
 The location identifier is used to get more information about current weather conditions:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">current_weather</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).current</span>
-</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">temperature</span>    <span class="c1"># =&gt; &amp;#8216;41&amp;#8217;</span>
-</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">weather_text</span>   <span class="c1"># =&gt; &amp;#8216;Partly Sunny&amp;#8217;</span>
-</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">pressure</span>       <span class="c1"># =&gt; &amp;#8216;30.35&amp;#8217;</span>
-</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">humidity</span>       <span class="c1"># =&gt; &amp;#8216;43%&amp;#8217;</span>
-</span><span class='line'><span class="n">current_weather</span><span class="o">.</span><span class="n">cloud_cover</span>    <span class="c1"># =&gt; &amp;#8216;40%&amp;#8217;</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+current_weather = Accuweather.get_conditions(location_id: &#8216;cityId:53286&#8217;).current
+current_weather.temperature    # => &#8216;41&#8217;
+current_weather.weather_text   # => &#8216;Partly Sunny&#8217;
+current_weather.pressure       # => &#8216;30.35&#8217;
+current_weather.humidity       # => &#8216;43%&#8217;
+current_weather.cloud_cover    # => &#8216;40%&#8217;
+{% endcodeblock %}
 
 A week of day and nighttime forecasts are available:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">weather_forecast</span> <span class="o">=</span> <span class="no">Accuweather</span><span class="o">.</span><span class="n">get_conditions</span><span class="p">(</span><span class="ss">location_id</span><span class="p">:</span> <span class="o">&amp;</span><span class="c1">#8216;cityId:53286&amp;#8217;).forecast</span>
-</span><span class='line'><span class="n">last_forecast_day</span> <span class="o">=</span> <span class="n">weather_forecast</span><span class="o">.</span><span class="n">last</span>
-</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">date</span>        <span class="c1"># =&gt; &amp;#8220;12/3/2015&amp;#8221;</span>
-</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">day_of_week</span> <span class="c1"># =&gt; &amp;#8220;Thursday&amp;#8221;</span>
-</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunrise</span>     <span class="c1"># =&gt; &amp;#8220;7:49 AM&amp;#8221;</span>
-</span><span class='line'><span class="n">last_forecast_day</span><span class="o">.</span><span class="n">sunset</span>      <span class="c1"># =&gt; &amp;#8220;4:16 PM&amp;#8221;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Get the dates, daytime high and nighttime low temperatures</span>
-</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:date</span><span class="p">)</span>                             <span class="c1">#  =&gt; [&amp;#8220;11/27/2015&amp;#8221;, &amp;#8220;11/28/2015&amp;#8221;, &amp;#8220;11/29/2015&amp;#8221;, &amp;#8220;11/30/2015&amp;#8221;, &amp;#8220;12/1/2015&amp;#8221;, &amp;#8220;12/2/2015&amp;#8221;, &amp;#8220;12/3/2015&amp;#8221;]</span>
-</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:daytime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:high_temperature</span><span class="p">)</span>  <span class="c1"># =&gt; [&amp;#8220;45&amp;#8221;, &amp;#8220;45&amp;#8221;, &amp;#8220;47&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;44&amp;#8221;, &amp;#8220;48&amp;#8221;, &amp;#8220;48&amp;#8221;]</span>
-</span><span class='line'><span class="n">weather_forecast</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:nighttime</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:low_temperature</span><span class="p">)</span> <span class="c1"># =&gt; [&amp;#8220;27&amp;#8221;, &amp;#8220;28&amp;#8221;, &amp;#8220;31&amp;#8221;, &amp;#8220;32&amp;#8221;, &amp;#8220;40&amp;#8221;, &amp;#8220;42&amp;#8221;, &amp;#8220;36&amp;#8221;]</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+weather_forecast = Accuweather.get_conditions(location_id: &#8216;cityId:53286&#8217;).forecast
+last_forecast_day = weather_forecast.last
+last_forecast_day.date        # => &#8220;12/3/2015&#8221;
+last_forecast_day.day_of_week # => &#8220;Thursday&#8221;
+last_forecast_day.sunrise     # => &#8220;7:49 AM&#8221;
+last_forecast_day.sunset      # => &#8220;4:16 PM&#8221;
+
+# Get the dates, daytime high and nighttime low temperatures
+weather_forecast.map(&:date)                             #  => [&#8220;11/27/2015&#8221;, &#8220;11/28/2015&#8221;, &#8220;11/29/2015&#8221;, &#8220;11/30/2015&#8221;, &#8220;12/1/2015&#8221;, &#8220;12/2/2015&#8221;, &#8220;12/3/2015&#8221;]
+weather_forecast.map(&:daytime).map(&:high_temperature)  # => [&#8220;45&#8221;, &#8220;45&#8221;, &#8220;47&#8221;, &#8220;44&#8221;, &#8220;44&#8221;, &#8220;48&#8221;, &#8220;48&#8221;]
+weather_forecast.map(&:nighttime).map(&:low_temperature) # => [&#8220;27&#8221;, &#8220;28&#8221;, &#8220;31&#8221;, &#8220;32&#8221;, &#8220;40&#8221;, &#8220;42&#8221;, &#8220;36&#8221;]
+{% endcodeblock %}
 
 The API returns a `weather_icon` number for the current weather and forecast. This number appears to correspond to PNG
 file from AccuWeather.com. I downloaded the full set of PNG files and included them here, but found a handful of better
@@ -238,7 +215,7 @@ description, an array of image URLs and a link to the original detailed Freebase
 - The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
 in a Rails project:
 
-[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
+[{% img /assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg auto auto %}](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 
@@ -382,53 +359,31 @@ Initializing git repo in /Users/sela/workspace/foobar
 
 Let&#8217;s take a look at the gemspec file:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="c1"># coding: utf-8</span>
-</span><span class='line'><span class="n">lib</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8216;../lib&amp;#8217;, __FILE__)</span>
-</span><span class='line'><span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span> <span class="k">unless</span> <span class="vg">$LOAD_PATH</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span>
-</span><span class='line'><span class="nb">require</span> <span class="o">&amp;</span><span class="c1">#8216;foobar/version&amp;#8217;</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Gem</span><span class="o">::</span><span class="no">Specification</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">spec</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">name</span>          <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;foobar&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">version</span>       <span class="o">=</span> <span class="no">Foobar</span><span class="o">::</span><span class="no">VERSION</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">authors</span>       <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;Nick Aschenbach&amp;#8221;]</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">email</span>         <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;nick.aschenbach@gmail.com&amp;#8221;]</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">summary</span>       <span class="o">=</span> <span class="sx">%q{TODO: Write a short summary. Required.}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">description</span>   <span class="o">=</span> <span class="sx">%q{TODO: Write a longer description. Optional.}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">homepage</span>      <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">license</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="c1">#8220;MIT&amp;#8221;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">files</span>         <span class="o">=</span> <span class="sb">`git ls-files -z`</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="o">&amp;</span><span class="c1">#8220;\x0&amp;#8221;)</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">executables</span>   <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^bin/}</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="no">File</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">test_files</span>    <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">grep</span><span class="p">(</span><span class="sr">%r{^(test|spec|features)/}</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">require_paths</span> <span class="o">=</span> <span class="o">[&amp;</span><span class="c1">#8220;lib&amp;#8221;]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;bundler&amp;#8221;, &amp;#8220;~&gt; 1.6&amp;#8221;</span>
-</span><span class='line'>  <span class="n">spec</span><span class="o">.</span><span class="n">add_development_dependency</span> <span class="o">&amp;</span><span class="c1">#8220;rake&amp;#8221;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+# coding: utf-8
+lib = File.expand_path(&#8216;../lib&#8217;, __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require &#8216;foobar/version&#8217;
+
+Gem::Specification.new do |spec|
+  spec.name          = &#8220;foobar&#8221;
+  spec.version       = Foobar::VERSION
+  spec.authors       = [&#8220;Nick Aschenbach&#8221;]
+  spec.email         = [&#8220;nick.aschenbach@gmail.com&#8221;]
+  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.homepage      = &#8220;&#8221;
+  spec.license       = &#8220;MIT&#8221;
+
+  spec.files         = `git ls-files -z`.split(&#8220;\x0&#8221;)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = [&#8220;lib&#8221;]
+
+  spec.add_development_dependency &#8220;bundler&#8221;, &#8220;~> 1.6&#8221;
+  spec.add_development_dependency &#8220;rake&#8221;
+end
+{% endcodeblock %}
 
 Also a handy `README.md` file is created that shows users how to install the gem using bundler. 
 

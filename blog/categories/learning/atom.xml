@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Learning | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/learning/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -18,7 +18,7 @@
     <link href="http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby/"/>
     <updated>2016-01-16T21:58:39-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/16/video-decorator-design-pattern-in-ruby</id>
-    <content type="html"><![CDATA[<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Q7dTPDuUOL4" allowfullscreen></iframe></div>]]></content>
+    <content type="html"><![CDATA[{% youtube Q7dTPDuUOL4 %}]]></content>
   </entry>
   
   <entry>
@@ -53,9 +53,9 @@ to be successful in my career both today and in the future.
     <updated>2016-01-03T08:07:27-08:00</updated>
     <id>http://nick-aschenbach.github.io/blog/2016/01/03/video-reverse-engineering-web-apis</id>
     <content type="html"><![CDATA[Quick Clips video follow up for post 
-[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer](/blog/2015/10/15/reverse-engineering-web-apis-using-mobile-apps/):
+[Reverse Engineering Web APIs Using Mobile Apps and a Packet Sniffer]({% post_url 2015-10-15-reverse-engineering-web-apis-using-mobile-apps %}):
 
-<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/l3y1-CqtGv0" allowfullscreen></iframe></div>
+{% youtube l3y1-CqtGv0 %}
 ]]></content>
   </entry>
   
@@ -69,30 +69,30 @@ provide a small example using the overstock.com app to look into current Flash D
 monitor a large variety of network traffic running on the phone. The app I used also decrypts SSL packets, which is
 useful for viewing HTTPS traffic.
 
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png" width="250" title="auto" >
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture_install.png 250 auto %}
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/app_screen.png 250 auto %}
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/trust_application.png 250 auto %}
 
 First, I installed [Packet Capture](https://play.google.com/store/apps/details?id=app.greyshirts.sslcapture&hl=en) for
 Android. The application requires permission to monitor network traffic when you press the `Play` button. Please do
 so at your own risk. Also, this captures a large amount of data, so you might want to limit the length of time it is
 running.
 
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png" width="250" title="auto" >
-<img src="/assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png" width="250" title="auto" >
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock_install.png 250 auto %}
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/overstock.png 250 auto %}
+{% img /assets/2015-10-15-reverse-engineering-web-apis-using-mobile-apps/images/packet_capture.png 250 auto %}
 
 I downloaded the [Overstock.com](https://play.google.com/store/apps/details?id=com.overstock&hl=en) Android application,
 started it and then started the packet capture. I tapped `FLASH DEALS` and then stopped the packet capture. The last
 image (above right) shows the HTTP request and response that corresponded to my interaction with the application. You may
 have to look through a large number of packets to identify the one of interest.
 
-While the response is gzipped, I&#8217;m more interested in the HTTP request. The first thing I tried was a simple curl
+While the response is gzipped, I'm more interested in the HTTP request. The first thing I tried was a simple curl
 from the command line to reproduce the application:
 
     $ curl http://www.overstock.com/api2/flashdeals/current?offset=0&limit=12
 
-In some cases, you may need to use the same HTTP request headers (use the `-H &#8221;<HEADER_KEY>: <HEADER_VALUE>&#8221;` command
+In some cases, you may need to use the same HTTP request headers (use the `-H "<HEADER_KEY>: <HEADER_VALUE>&#8221;` command
 line option) to convince the remote HTTP server that the request was made from their application. However, this was not
 needed for the Overstock.com web API. Here is a snippet of the response:
 
@@ -325,7 +325,7 @@ description, an array of image URLs and a link to the original detailed Freebase
 - The `astronomy_engine` wraps the `astronomy` gem and has a web interface and can easily be included
 in a Rails project:
 
-[<img src="/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg" title="auto auto" >](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
+[{% img /assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg auto auto %}](/assets/2015-01-29-freebase-astronomy-gem/images/astronomy_engine.jpg)
 
 <!-- more -->
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Inheritance | Aschenblog]]></title>
   <link href="http://nick-aschenbach.github.io/blog/categories/inheritance/atom.xml" rel="self"/>
   <link href="http://nick-aschenbach.github.io/"/>
-  <updated>2016-01-16T22:02:14-08:00</updated>
+  <updated>2016-01-17T17:41:27-08:00</updated>
   <id>http://nick-aschenbach.github.io/</id>
   <author>
     <name><![CDATA[Nick Aschenbach]]></name>
@@ -20,55 +20,38 @@
     <id>http://nick-aschenbach.github.io/blog/2014/08/30/ruby-inherited-visibility-modifiers-protected-and-private</id>
     <content type="html"><![CDATA[During a recent code review at work, I was surprised by how Ruby handles `private` and `protected` method visibility modifiers in derived classes. The behavior is distinct from visibility modifiers in other languages like Java. Specifically, you can call a private parent class method as is demonstrated by the following code:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;foobar&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
-</span><span class='line'>    <span class="n">foo</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class A
+  private
+
+  def foo
+    puts "foobar"
+  end
+end
+
+class B < A
+  def bar
+    foo
+  end
+end
+{% endcodeblock %}
 
 I did some experimentation in the irb console. As expected, one may not call the `private` method foo on an instance of A:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">foo</span>
-</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&amp;#8217; called for #&lt;A:0x00000102a0b498&gt;</span>
-</span><span class='line'><span class="sb">  from (irb):7</span>
-</span><span class='line'><span class="sb">  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `</span><span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;&amp;</span><span class="c1">#8217;</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+> A.new.foo
+NoMethodError: private method `foo&#8217; called for #<A:0x00000102a0b498>
+  from (irb):7
+  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `<main>&#8217;
+{% endcodeblock %}
 
 What surprised me is that in the child class `B` that we can call `foo` on the parent class. Again, back to irb:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
-</span><span class='line'><span class="n">foobar</span>
-</span><span class='line'> <span class="o">=&gt;</span> <span class="kp">nil</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+> B.new.bar
+foobar
+ => nil 
+{% endcodeblock %}
 
 <!-- more -->
 
@@ -76,83 +59,59 @@ Class B is calling a private method on class A, which seems to break with my exp
 
 Time for some digging. I read through a couple of articles and found a draft of the Ruby language specification. Section 13.3.5 discusses method visibility. While not an official spec, here is what it says about private methods:
 
-<blockquote><p>A private method cannot be invoked with an explicit receiver, i.e., a private method cannot be invoked if a primary-expression or a chained-method-invocation occurs at the position which corresponds to the method receiver in the method invocation, except for a method invocation of any of the following forms where the primary-expression is a self-expression.</p><p>- single-method-assignment<br/>- abbreviated-method-assignment<br/>- single-indexing-assignment<br/>- abbreviated-indexing-assignment</p><footer><strong>IPA Ruby Standardization WG Draft</strong> <cite>Programming Languages - Ruby</cite></footer></blockquote>
+{% blockquote IPA Ruby Standardization WG Draft, Programming Languages - Ruby %}
+A private method cannot be invoked with an explicit receiver, i.e., a private method cannot be invoked if a primary-expression or a chained-method-invocation occurs at the position which corresponds to the method receiver in the method invocation, except for a method invocation of any of the following forms where the primary-expression is a self-expression.
+
+- single-method-assignment
+- abbreviated-method-assignment
+- single-indexing-assignment
+- abbreviated-indexing-assignment
+{% endblockquote %}
 
 The way I interpret the spec is that a private method can be called with an implicit receiver (read object). This is why calling `foo` from method `bar` above is allowable. Invoking a method with an explicit receiver is not allowed. This is why `A.new.foo` results in a `NoMethodError`.
 
 The following code may clarify the difference between calling a method with an implicit vs. explicit receiver:
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">class</span> <span class="nc">A</span>
-</span><span class='line'>  <span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">baz</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8220;foobaz&amp;#8221;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">foo</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="o">&amp;</span><span class="c1">#8220;foobar&amp;#8221;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">&lt;</span> <span class="n">A</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">bar</span>
-</span><span class='line'>    <span class="c1"># Implicit</span>
-</span><span class='line'>    <span class="n">baz</span>
-</span><span class='line'>    <span class="n">foo</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Explicit</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">baz</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">foo</span>    <span class="c1"># Results in NoMethodError</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+{% codeblock lang:rb %}
+class A
+  protected
 
-Note that now we see that the `protected` method can be called explicitly, while the `private` method cannot. Let&#8217;s exercise the above code in irb:
+  def baz
+    puts &#8220;foobaz&#8221;
+  end
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">bar</span>
-</span><span class='line'><span class="n">foobaz</span>
-</span><span class='line'><span class="n">foobar</span>
-</span><span class='line'><span class="n">foobaz</span>
-</span><span class='line'><span class="ss">NoMethodError</span><span class="p">:</span> <span class="kp">private</span> <span class="nb">method</span> <span class="sb">`foo&amp;#8217; called for #&lt;B:0x000001019b3460&gt;</span>
-</span><span class='line'><span class="sb">  from (irb):23:in `</span><span class="n">bar</span><span class="o">&amp;</span><span class="c1">#8217;</span>
-</span><span class='line'>  <span class="n">from</span> <span class="p">(</span><span class="n">irb</span><span class="p">):</span><span class="mi">26</span>
-</span><span class='line'>  <span class="n">from</span> <span class="sr">/Users/se</span><span class="n">la</span><span class="o">/.</span><span class="n">rvm</span><span class="o">/</span><span class="n">rubies</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">irb</span><span class="p">:</span><span class="mi">11</span><span class="ss">:in</span> <span class="sb">`&lt;main&gt;&amp;#8217;</span>
-</span></code></pre></td></tr></table></div></figure>
+  private
+
+  def foo
+    puts &#8220;foobar&#8221;
+  end
+end
+
+class B < A
+  def bar
+    # Implicit
+    baz
+    foo
+
+    # Explicit
+    self.baz
+    self.foo    # Results in NoMethodError
+  end
+end
+{% endcodeblock %}
+
+Note that now we see that the `protected` method can be called explicitly, while the `private` method cannot. Let's exercise the above code in irb:
+
+{% codeblock lang:rb %}
+> B.new.bar
+foobaz
+foobar
+foobaz
+NoMethodError: private method `foo&#8217; called for #<B:0x000001019b3460>
+  from (irb):23:in `bar&#8217;
+  from (irb):26
+  from /Users/sela/.rvm/rubies/ruby-2.1.1/bin/irb:11:in `<main>&#8217;
+{% endcodeblock %}
 
 References:
 
