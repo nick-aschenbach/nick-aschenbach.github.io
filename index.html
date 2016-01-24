@@ -73,6 +73,58 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/01/24/running-ruby-on-windows-with-vagrant/">Workflow: Ruby on Windows With Vagrant</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-24T10:00:58-08:00" pubdate data-updated="true">Jan 24<sup>th</sup>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I wanted to share a workflow that I use to do Ruby development on Windows using Vagrant. I should mention that I always
+prefer to do Ruby development on a Mac or running Linux, but this workflow might work well for someone doing both .NET
+and Ruby development.</p>
+
+<p>This general approach should work in most cases where the development environment does not match the
+deployment platform. As a first step, I suggest trying out the <a href="http://rubyinstaller.org/">Ruby Installer</a> for Windows.
+I&rsquo;ve found that this works for small projects, but have trouble with larger projects especially with a large number of
+gem dependencies.</p>
+
+<p>The workflow involves using your native environment to launch a virtual machine that more closely matches the one use to
+deploy your code in production. You get the benefits of the windowing system tools (Sublime Text, RubyMine, Notepad++, etc)
+with the benefits of running specs and code in an environment closer to production.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/24/running-ruby-on-windows-with-vagrant/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/01/16/video-decorator-design-pattern-in-ruby/">Video: Decorator Design Pattern in Ruby</a></h1>
     
     
@@ -1040,55 +1092,6 @@ of the 2&#8221; x 6&#8221; stock board size.</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/04/07/rails-engine-api-endpoint-authentication/">Rails Engine API Endpoint Authentication Using Rack Middleware</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-04-07T22:28:10-07:00" pubdate data-updated="true">Apr 7<sup>th</sup>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At work, we recently discussed how best to authenticate an API endpoint that we needed from a rails engine. In the host
-application, we require that clients use tokens for API authentication. In a parent class before filter, we call a
-remote web service to validate these tokens. We all agreed that it was a bad idea to copy this code over from the host
-into the engine.</p>
-
-<p>There were a couple of reasons for this. Not only would the code be duplicated, but we felt like it would be a better
-separation of concerns to keep authentication out of the engine. Another argument is that we would not want
-to impose an authentication system from the gem on the host application. Ryan Bigg expands on this in a
-<a href="http://ryanbigg.com/2012/03/engines-and-authentication/">blog post</a> on Forem.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/04/07/rails-engine-api-endpoint-authentication/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1104,6 +1107,10 @@ to impose an authentication system from the gem on the host application. Ryan Bi
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/24/running-ruby-on-windows-with-vagrant/">Workflow: Ruby on Windows With Vagrant</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/16/video-decorator-design-pattern-in-ruby/">Video: Decorator Design Pattern in Ruby</a>
       </li>
     
@@ -1117,10 +1124,6 @@ to impose an authentication system from the gem on the host application. Ryan Bi
     
       <li class="post">
         <a href="/blog/2015/12/08/let-it-snow-with-accuweather-gem/">Let It Snow With the Accuweather Gem</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/11/01/pirate-swords/">Open Source Pirate Swords</a>
       </li>
     
   </ul>
@@ -1142,15 +1145,17 @@ to impose an authentication system from the gem on the host application. Ryan Bi
 <li class='category'><a href='/blog/categories/inheritance/'>inheritance (1)</a></li>
 <li class='category'><a href='/blog/categories/jruby/'>jruby (1)</a></li>
 <li class='category'><a href='/blog/categories/languages/'>languages (2)</a></li>
-<li class='category'><a href='/blog/categories/learning/'>learning (6)</a></li>
+<li class='category'><a href='/blog/categories/learning/'>learning (7)</a></li>
 <li class='category'><a href='/blog/categories/metaprogramming/'>metaprogramming (1)</a></li>
 <li class='category'><a href='/blog/categories/quick-clips/'>quick-clips (2)</a></li>
 <li class='category'><a href='/blog/categories/rack/'>rack (1)</a></li>
 <li class='category'><a href='/blog/categories/terrain/'>terrain (5)</a></li>
 <li class='category'><a href='/blog/categories/utilities/'>utilities (4)</a></li>
+<li class='category'><a href='/blog/categories/vagrant/'>vagrant (1)</a></li>
 <li class='category'><a href='/blog/categories/video/'>video (2)</a></li>
 <li class='category'><a href='/blog/categories/web-api/'>web-api (3)</a></li>
 <li class='category'><a href='/blog/categories/wood/'>wood (4)</a></li>
+<li class='category'><a href='/blog/categories/workflow/'>workflow (1)</a></li>
 
   </ul>
 </section><strong>About the Author</strong>
