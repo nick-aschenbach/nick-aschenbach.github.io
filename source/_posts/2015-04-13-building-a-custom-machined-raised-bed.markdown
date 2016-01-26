@@ -111,3 +111,10 @@ it next to the sidewalk. We put cardboard in the bottom of the box after reading
 six bags of soil went into the box. After each bag we used the rake and a shovel to even things out.
 
 {% img /assets/2015-04-13-building-a-custom-machined-raised-bed/installed.jpg auto auto %}
+
+**Resources**
+
+I added the resources for the two raised bed projects I fabricated on the CNC. I included the AutoCAD drawings,
+ShopBot and Vectric Aspire files I used on both projects:
+
+- [ZIP file](/assets/2015-04-13-building-a-custom-machined-raised-bed/raised_bed_posts.zip)
